@@ -55,6 +55,7 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.rtbAnnotations = new Extended.Windows.Forms.RichTextBoxExtended();
+            this.button1 = new System.Windows.Forms.Button();
             this.GroupBox5.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -152,7 +153,7 @@
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Location = new System.Drawing.Point(10, 464);
+            this.button3.Location = new System.Drawing.Point(10, 487);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(386, 23);
             this.button3.TabIndex = 15;
@@ -164,7 +165,7 @@
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(10, 434);
+            this.button2.Location = new System.Drawing.Point(10, 457);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(386, 23);
             this.button2.TabIndex = 14;
@@ -185,10 +186,10 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Location = new System.Drawing.Point(10, 111);
+            this.tabControl1.Location = new System.Drawing.Point(10, 143);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(386, 317);
+            this.tabControl1.Size = new System.Drawing.Size(386, 308);
             this.tabControl1.TabIndex = 16;
             // 
             // tabPage1
@@ -197,7 +198,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(378, 291);
+            this.tabPage1.Size = new System.Drawing.Size(378, 282);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Connections";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -210,7 +211,7 @@
             this.TabControl2.Location = new System.Drawing.Point(3, 3);
             this.TabControl2.Name = "TabControl2";
             this.TabControl2.SelectedIndex = 0;
-            this.TabControl2.Size = new System.Drawing.Size(372, 285);
+            this.TabControl2.Size = new System.Drawing.Size(372, 276);
             this.TabControl2.TabIndex = 1;
             // 
             // TabPage4
@@ -265,7 +266,7 @@
             this.TabPage5.Location = new System.Drawing.Point(4, 22);
             this.TabPage5.Name = "TabPage5";
             this.TabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPage5.Size = new System.Drawing.Size(364, 259);
+            this.TabPage5.Size = new System.Drawing.Size(364, 250);
             this.TabPage5.TabIndex = 1;
             this.TabPage5.Text = "Outlet Ports";
             this.TabPage5.UseVisualStyleBackColor = true;
@@ -284,7 +285,7 @@
             this.gridProducts.Location = new System.Drawing.Point(3, 3);
             this.gridProducts.Name = "gridProducts";
             this.gridProducts.RowHeadersVisible = false;
-            this.gridProducts.Size = new System.Drawing.Size(358, 253);
+            this.gridProducts.Size = new System.Drawing.Size(358, 244);
             this.gridProducts.TabIndex = 1;
             this.gridProducts.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridProducts_CellValueChanged);
             // 
@@ -310,9 +311,9 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(378, 291);
+            this.tabPage2.Size = new System.Drawing.Size(378, 314);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Global Settings";
+            this.tabPage2.Text = "Model Configuration";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // tabPage3
@@ -320,7 +321,7 @@
             this.tabPage3.Controls.Add(this.rtbAnnotations);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(378, 291);
+            this.tabPage3.Size = new System.Drawing.Size(378, 314);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Annotations";
             // 
@@ -332,14 +333,27 @@
             this.rtbAnnotations.Rtf = "{\\rtf1\\ansi\\ansicpg1252\\deff0\\nouicompat\\deflang1046{\\fonttbl{\\f0\\fnil Microsoft " +
     "Sans Serif;}}\r\n{\\*\\generator Riched20 10.0.18362}\\viewkind4\\uc1 \r\n\\pard\\f0\\fs17\\" +
     "par\r\n}\r\n";
-            this.rtbAnnotations.Size = new System.Drawing.Size(378, 291);
+            this.rtbAnnotations.Size = new System.Drawing.Size(378, 314);
             this.rtbAnnotations.TabIndex = 1;
+            this.rtbAnnotations.ToolbarVisible = false;
+            // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Location = new System.Drawing.Point(10, 111);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(386, 23);
+            this.button1.TabIndex = 17;
+            this.button1.Text = "Open Model Configuration Wizard";
+            this.button1.UseVisualStyleBackColor = true;
             // 
             // FormEditorNNUO
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(405, 495);
+            this.ClientSize = new System.Drawing.Size(405, 518);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
@@ -390,5 +404,6 @@
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.TabPage tabPage3;
         public Extended.Windows.Forms.RichTextBoxExtended rtbAnnotations;
+        private System.Windows.Forms.Button button1;
     }
 }
