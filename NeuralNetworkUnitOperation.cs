@@ -152,7 +152,7 @@ namespace DWSIM.UnitOperations
             {
                 ImagePath = System.IO.Path.GetTempFileName();
 
-                var bitmap = new System.Drawing.Bitmap(System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("DWSIM.UnitOperations.PipeNetwork.Resources.pipe-network.png"));
+                var bitmap = new System.Drawing.Bitmap(System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("DWSIM.UnitOperations.NeuralNetwork.Resources.icons8-artificial_intelligence.png"));
                 bitmap.Save(ImagePath);
 
                 using (var streamBG = new System.IO.FileStream(ImagePath, System.IO.FileMode.Open))
