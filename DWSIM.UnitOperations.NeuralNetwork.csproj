@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{949A068C-9707-4CA3-81C5-F80EE49BD3D8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DWSIM.UnitOperations.NeuralNetwork</RootNamespace>
+    <AssemblyName>DWSIM.UnitOperations.NeuralNetwork</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CapeOpen">
+      <HintPath>..\dwsim6\DistPackages\Windows\CapeOpen.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DWSIM.Drawing.SkiaSharp">
+      <HintPath>..\dwsim6\DistPackages\Windows\DWSIM.Drawing.SkiaSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DWSIM.DrawingTools.Point">
+      <HintPath>..\dwsim6\DistPackages\Windows\DWSIM.DrawingTools.Point.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DWSIM.ExtensionMethods">
+      <HintPath>..\dwsim6\DistPackages\Windows\DWSIM.ExtensionMethods.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DWSIM.ExtensionMethods.Eto">
+      <HintPath>..\dwsim6\DistPackages\Windows\DWSIM.ExtensionMethods.Eto.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DWSIM.FlowsheetBase">
+      <HintPath>..\dwsim6\DistPackages\Windows\DWSIM.FlowsheetBase.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DWSIM.GlobalSettings">
+      <HintPath>..\dwsim6\DistPackages\Windows\DWSIM.GlobalSettings.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DWSIM.Inspector">
+      <HintPath>..\dwsim6\DistPackages\Windows\DWSIM.Inspector.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DWSIM.Interfaces">
+      <HintPath>..\dwsim6\DistPackages\Windows\DWSIM.Interfaces.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DWSIM.MathOps">
+      <HintPath>..\dwsim6\DistPackages\Windows\DWSIM.MathOps.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DWSIM.SharedClasses">
+      <HintPath>..\dwsim6\DistPackages\Windows\DWSIM.SharedClasses.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DWSIM.Thermodynamics">
+      <HintPath>..\dwsim6\DistPackages\Windows\DWSIM.Thermodynamics.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DWSIM.UI.Desktop.Editors">
+      <HintPath>..\dwsim6\DistPackages\Windows\DWSIM.UI.Desktop.Editors.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DWSIM.UI.Desktop.GTK">
+      <HintPath>..\dwsim6\DistPackages\Windows\DWSIM.UI.Desktop.GTK.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DWSIM.UI.Desktop.Mac">
+      <HintPath>..\dwsim6\DistPackages\Windows\DWSIM.UI.Desktop.Mac.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DWSIM.UI.Desktop.Shared">
+      <HintPath>..\dwsim6\DistPackages\Windows\DWSIM.UI.Desktop.Shared.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DWSIM.UI.Desktop.WinForms">
+      <HintPath>..\dwsim6\DistPackages\Windows\DWSIM.UI.Desktop.WinForms.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DWSIM.UI.Desktop.WPF">
+      <HintPath>..\dwsim6\DistPackages\Windows\DWSIM.UI.Desktop.WPF.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DWSIM.UnitOperations">
+      <HintPath>..\dwsim6\DistPackages\Windows\DWSIM.UnitOperations.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DWSIM.XMLSerializer">
+      <HintPath>..\dwsim6\DistPackages\Windows\DWSIM.XMLSerializer.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Eto">
+      <HintPath>..\dwsim6\DistPackages\Windows\Eto.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\dwsim6\DistPackages\Windows\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RichTextBoxExtended">
+      <HintPath>..\dwsim6\DistPackages\Windows\RichTextBoxExtended.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SkiaSharp">
+      <HintPath>..\dwsim6\DistPackages\Windows\SkiaSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WeifenLuo.WinFormsUI.Docking">
+      <HintPath>..\dwsim6\DistPackages\Windows\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Editor\FormAbout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editor\FormAbout.designer.cs">
+      <DependentUpon>FormAbout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\FormEditorNNUO.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editor\FormEditorNNUO.Designer.cs">
+      <DependentUpon>FormEditorNNUO.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NeuralNetworkUnitOperation.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Editor\FormAbout.resx">
+      <DependentUpon>FormAbout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editor\FormEditorNNUO.resx">
+      <DependentUpon>FormEditorNNUO.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\icons8-artificial_intelligence.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-artificial_intelligence1.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
