@@ -285,5 +285,23 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Editors
                 ((Interfaces.IFlowsheetGUI)SimObject.FlowSheet).UpdateInterface();
             }
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+            var f = new Wizard.ModelWizard(SimObject);
+
+            f.Show();
+
+            if (Eto.Forms.Application.Instance.Platform.IsWpf)
+            {
+                Eto.Forms.Application.Instance.Invoke(() =>
+                {
+                    System.Windows.Threading.Dispatcher.CurrentDispatcher.Thread.IsBackground = true;
+                    System.Windows.Threading.Dispatcher.Run();
+                });
+            }
+
+        }
     }
 }

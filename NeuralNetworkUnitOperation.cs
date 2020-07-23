@@ -16,6 +16,10 @@ using cv = DWSIM.SharedClasses.SystemsOfUnits.Converter;
 using DWSIM.UI.Desktop.Editors;
 using System.Threading.Tasks;
 using DWSIM.UnitOperations.NeuralNetwork.Editors;
+using DWSIM.GlobalSettings;
+using DWSIM.UnitOperations.NeuralNetwork.Classes;
+using System.Reflection;
+using System.IO;
 
 namespace DWSIM.UnitOperations
 {
@@ -33,7 +37,7 @@ namespace DWSIM.UnitOperations
 
         public override bool MobileCompatible { get => false; }
 
-        public override SimulationObjectClass ObjectClass { get => SimulationObjectClass.PressureChangers; set => base.ObjectClass = SimulationObjectClass.PressureChangers; }
+        public override SimulationObjectClass ObjectClass { get => SimulationObjectClass.UserModels; set => base.ObjectClass = SimulationObjectClass.UserModels; }
 
         string IExternalUnitOperation.Name => "Neural Network Unit Operation";
 
@@ -49,6 +53,28 @@ namespace DWSIM.UnitOperations
         public NeuralNetworkUnitOperation() : base()
         {
 
+            if (!LocalSettings.Initialized)
+            {
+                // sets the assembly resolver to find remaining DWSIM libraries on demand
+                AppDomain currentDomain = AppDomain.CurrentDomain;
+                currentDomain.AssemblyResolve += new ResolveEventHandler(LoadFromNestedFolder);
+                LocalSettings.Initialized = true;
+            }
+
+        }
+
+        static Assembly LoadFromNestedFolder(object sender, ResolveEventArgs args)
+        {
+            string assemblyPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "libraries", new AssemblyName(args.Name).Name + ".dll");
+            if (!File.Exists(assemblyPath))
+            {
+                return null;
+            }
+            else
+            {
+                Assembly assembly = Assembly.LoadFrom(assemblyPath);
+                return assembly;
+            }
         }
 
         public override void PerformPostCalcValidation()
@@ -195,7 +221,7 @@ namespace DWSIM.UnitOperations
 
         public override object GetIconBitmap()
         {
-            return new System.Drawing.Bitmap(System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("DWSIM.UnitOperations.PipeNetwork.Resources.pipe-network.png"));
+            return new System.Drawing.Bitmap(System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("DWSIM.UnitOperations.NeuralNetwork.Resources.icons8-artificial_intelligence.png"));
         }
 
         public void PopulateEditorPanel(object container)
@@ -230,7 +256,7 @@ namespace DWSIM.UnitOperations
 
         public object ReturnInstance(string typename)
         {
-                return new NeuralNetworkUnitOperation();
+            return new NeuralNetworkUnitOperation();
         }
 
         public override void UpdateEditForm()
@@ -302,9 +328,9 @@ namespace DWSIM.UnitOperations
         }
 
         public override void Calculate(object args = null)
-        { 
-        
+        {
+
         }
-        
+
     }
 }
