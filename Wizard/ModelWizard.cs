@@ -19,6 +19,12 @@ using System.Collections.Generic;
 using DWSIM.CrossPlatform.UI.Controls.ReoGrid;
 using DWSIM.UnitOperations.NeuralNetwork.Classes;
 
+using NumSharp;
+using Tensorflow;
+using Tensorflow.Gradients;
+using static Tensorflow.Binding;
+using System.Diagnostics;
+
 namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
 {
     public class ModelWizard
@@ -251,6 +257,8 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
                     }
                 }
 
+                Run();
+
                 Application.Instance.Invoke(() => DisplayPage_LabelData());
 
             };
@@ -328,7 +336,7 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
                     i1 += 1;
                 }
 
-                Application.Instance.Invoke(() => DisplayPage_AutoML());
+                Application.Instance.Invoke(() => DisplayPage_ML());
 
             };
 
@@ -373,7 +381,7 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
 
         }
 
-        private void DisplayPage_AutoML()
+        private void DisplayPage_ML()
         {
 
             var page = new WizardPage();
@@ -430,8 +438,6 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
 
         }
 
-
-
         private void DisplayLastPage()
         {
 
@@ -466,9 +472,142 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
 
         }
 
-        string FormatUnit(string units)
+        int training_steps = 1000;
+
+        // Parameters
+        float learning_rate = 0.01f;
+        int display_step = 100;
+
+        NDArray x_train, y_train, x_test, y_test;
+        int n_samples, n_x, n_y;
+
+        public bool Run()
         {
-            return " (" + units + ")";
+            tf.compat.v1.disable_eager_execution();
+
+            PrepareData();
+
+            BuildModel();
+
+            return true;
         }
+
+        public void BuildModel()
+        {
+            // tf Graph Input
+            var X = tf.placeholder(tf.float32, shape: (-1, n_x));
+            var Y = tf.placeholder(tf.float32, shape: (-1, n_y));
+
+            var n_neurons_1 = 120;
+            var n_neurons_2 = 60;
+            var n_neurons_3 = 30;
+            var n_neurons_4 = 15;
+
+            //var sigma = 1.0f;
+            //var weight_initializer = tf.variance_scaling_initializer(mode: "FAN_AVG", uniform: true, factor: sigma);
+            //var bias_initializer = tf.zeros_initializer;
+
+            // Hidden weights
+
+            var W_hidden_1 = tf.Variable(tf.truncated_normal(new int[] { n_x, n_neurons_1 }));
+            var bias_hidden_1 = tf.Variable(tf.truncated_normal(n_neurons_1));
+            var W_hidden_2 = tf.Variable(tf.truncated_normal(new int[] { n_neurons_1, n_neurons_2 }));
+            var bias_hidden_2 = tf.Variable(tf.truncated_normal((n_neurons_2)));
+            var W_hidden_3 = tf.Variable(tf.truncated_normal(new int[] { n_neurons_2, n_neurons_3 }));
+            var bias_hidden_3 = tf.Variable(tf.truncated_normal((n_neurons_3)));
+            var W_hidden_4 = tf.Variable(tf.truncated_normal(new int[] { n_neurons_3, n_neurons_4 }));
+            var bias_hidden_4 = tf.Variable(tf.truncated_normal((n_neurons_4)));
+
+            // Output weights
+
+            var W_out = tf.Variable(tf.truncated_normal(new int[] { n_neurons_4, n_y }));
+            var bias_out = tf.Variable(tf.truncated_normal(n_y));
+
+            // Hidden layer
+
+            var hidden_1 = tf.nn.relu(tf.add(tf.matmul(X, W_hidden_1), bias_hidden_1));
+            var hidden_2 = tf.nn.relu(tf.add(tf.matmul(hidden_1, W_hidden_2), bias_hidden_2));
+            var hidden_3 = tf.nn.relu(tf.add(tf.matmul(hidden_2, W_hidden_3), bias_hidden_3));
+            var hidden_4 = tf.nn.relu(tf.add(tf.matmul(hidden_3, W_hidden_4), bias_hidden_4));
+
+            // Output layer
+
+            var outlayer = tf.add(tf.matmul(hidden_4, W_out), bias_out, name: "out");
+           
+            // Mean squared error
+            var mse = tf.reduce_sum(tf.pow(outlayer - Y, 2.0f)) / (2.0f * n_samples);
+
+            var opt = tf.train.AdamOptimizer(0.01f).minimize(mse);
+
+            // Initialize the variables (i.e. assign their default value)
+            var init = tf.global_variables_initializer();
+
+            // Start training
+            using (var sess = tf.Session())
+            {
+                // Run the initializer
+                sess.run(init);
+
+                // Fit all training data
+                for (int epoch = 0; epoch < training_steps; epoch++)
+                {
+                    foreach (var (x, y) in (x_train, y_train))
+                        sess.run(opt, (X, x), (Y, y));
+
+                    // Display logs per epoch step
+                    if ((epoch + 1) % display_step == 0)
+                    {
+                        var c = sess.run(mse, (X, x_train), (Y, y_train));
+                        Debug.WriteLine($"Epoch: {epoch + 1} cost={c} " + $"W={sess.run(W_out)} b={sess.run(bias_out)}");
+                    }
+                }
+
+                Debug.WriteLine("Optimization Finished!");
+                var training_cost = sess.run(mse, (X, x_train), (Y, y_train));
+                Debug.WriteLine($"Training cost={training_cost} W={sess.run(W_out)} b={sess.run(bias_out)}");
+
+                var pred = sess.run(outlayer, (X, x_test), (Y, y_test));
+
+                // Testing example
+                Debug.WriteLine("Testing... (Mean square loss Comparison)");
+                var testing_cost = sess.run(tf.reduce_sum(tf.pow(pred - Y, 2.0f)) / (2.0f * x_test.shape[0]),
+                    (X, x_test), (Y, y_test));
+                Debug.WriteLine($"Testing cost={testing_cost}");
+                var diff = Math.Abs((float)training_cost - (float)testing_cost);
+                Debug.WriteLine($"Absolute mean square loss difference: {diff}");
+            }
+        }
+        public void PrepareData()
+        {
+
+            var transfdata = data.Select(x => x.ToArray()).ToArray();
+            var ndata = np.array(transfdata);
+
+            //np.random.shuffle(ndata);
+            n_samples = ndata.shape[0];
+
+            // Training and test data
+            var train_start = 0;
+            var train_end = Math.Floor(0.7 * n_samples);
+            var test_start = train_end + 1;
+            var test_end = n_samples;
+
+            var data_train = ndata[np.arange(train_start, train_end)];
+            var data_test = ndata[np.arange(test_start, test_end)];
+
+            // Build X and y
+
+            x_train = data_train[Slice.All, "0:4"];
+            y_train = data_train[Slice.All, "4:6"];
+            x_test = data_test[Slice.All, "0:4"];
+            y_test = data_test[Slice.All, "4:6"];
+
+            // Number of variables in training data
+
+            n_x = x_train.shape[1];
+            n_y = y_train.shape[1];
+
+        }
+
     }
 }
