@@ -980,12 +980,9 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
                     }
                 }
 
-                var training_cost = sess.run(mse, (X, x_train), (Y, y_train));
-
                 Application.Instance.Invoke(() =>
                 {
                     ta.Append("Training Finished!" + nl, true);
-                    ta.Append($"Training Cost = {training_cost}" + nl, true);
                 });
 
                 x_test_unscaled = new NDArray(np.float32, x_test.shape);
@@ -1076,11 +1073,13 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
 
                 // Testing example
 
-                var testing_cost = sess.run(mse, (X, x_test), (Y, yp_test));
+                var training_cost = sess.run(mse, (X, x_train), (Y, y_train));
+                var testing_cost = sess.run(mse, (X, x_test), (Y, y_test));
                 var diff = Math.Abs((float)training_cost - (float)testing_cost);
 
                 Application.Instance.Invoke(() =>
                 {
+                    ta.Append($"Training Cost = {testing_cost}" + nl, true);
                     ta.Append($"Testing Cost = {testing_cost}" + nl, true);
                     ta.Append($"Absolute MSE = {diff}" + nl, true);
                 });
