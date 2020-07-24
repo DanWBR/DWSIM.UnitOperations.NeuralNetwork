@@ -15,15 +15,19 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Classes
 
         public float MaxScale { get; set; } = 1.0f;
 
-        public float MinValue { get; set; } = 1E20f;
+        public List<float> MinValues { get; set; } = new List<float>();
 
-        public float MaxValue { get; set; } = -1E20f;
+        public List<float> MaxValues { get; set; } = new List<float>();
 
         public int NumberOfEpochs { get; set; } = 1000;
 
         public float RelativeMSETolerance { get; set; } = 1E-3f;
 
-        public int NumberOfLayers { get; set; } = 4;
+        public int NumberOfLayers { get; set; } = 3;
+
+        public int NumberOfNeuronsOnFirstLayer { get; set; } = 160;
+
+        public int BatchSize { get; set; } = 10;
 
         public float LearningRate { get; set; } = 0.01f;
 
