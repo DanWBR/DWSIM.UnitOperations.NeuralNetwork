@@ -33,6 +33,14 @@ namespace DWSIM.UnitOperations
 
         double mbal, pbal, ebal;
 
+        // feature / objID / propID / propUnits
+
+        public ANNModel Model { get; set; } = new ANNModel();
+
+        public List<Tuple<string, string, string, string>> InputMaps = new List<Tuple<string, string, string, string>>();
+
+        public List<Tuple<string, string, string, string>> OutputMaps = new List<Tuple<string, string, string, string>>();
+
         // standard props
 
         public override bool MobileCompatible { get => false; }
@@ -233,6 +241,14 @@ namespace DWSIM.UnitOperations
             var c = (DynamicLayout)container;
 
             c.CreateAndAddEmptySpace();
+
+            c.CreateAndAddEmptySpace();
+
+            c.CreateAndAddButtonRow("Open Model Wizard", null, (btn, e) =>
+            {
+                var f = new NeuralNetwork.Wizard.ModelWizard(this);
+                f.Show();
+            });
 
             c.CreateAndAddEmptySpace();
 
