@@ -50,6 +50,8 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
         NDArray x_train_unscaled, y_train_unscaled, x_test_unscaled, y_test_unscaled, yp_train_unscaled, yp_test_unscaled;
         int n_samples, n_x, n_y;
 
+        private Session session;
+
         public ModelWizard(NeuralNetworkUnitOperation uo)
         {
             SimObject = uo;
@@ -73,11 +75,16 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
             page1.hasNextButton = true;
             page1.hasFinishButton = false;
 
-            page1.cancelAction = () => Application.Instance.Invoke(() => page1.Close());
+            page1.cancelAction = () =>
+            {
+                page1.Close();
+                if (session != null) session.Dispose();
+            };
+
 
             page1.Title = "Neural Network Model Wizard";
             page1.HeaderTitle = "Step 1 - Model Management";
-            page1.HeaderDescription = "Select an action.";
+            page1.HeaderDescription = "Select an Action";
             page1.FooterText = "Click 'Next' to Continue.";
 
             var dl = c.GetDefaultContainer();
@@ -136,7 +143,12 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
             page2.hasNextButton = true;
             page2.hasFinishButton = false;
 
-            page2.cancelAction = () => page2.Close();
+            page2.cancelAction = () =>
+            {
+                page2.Close();
+                if (session != null) session.Dispose();
+            };
+
             page2.backAction = () =>
             {
                 Application.Instance.Invoke(() => Show());
@@ -189,7 +201,12 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
             page.hasNextButton = true;
             page.hasFinishButton = false;
 
-            page.cancelAction = () => page.Close();
+            page.cancelAction = () =>
+            {
+                page.Close();
+                if (session != null) session.Dispose();
+            };
+
             page.backAction = () =>
             {
                 Application.Instance.Invoke(() => DisplayPage_LoadData());
@@ -321,7 +338,12 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
             page.hasNextButton = true;
             page.hasFinishButton = false;
 
-            page.cancelAction = () => page.Close();
+            page.cancelAction = () =>
+            {
+                page.Close();
+                if (session != null) session.Dispose();
+            };
+
             page.backAction = () =>
             {
                 Application.Instance.Invoke(() => DisplayPage_DisplayData());
@@ -355,6 +377,8 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
 
             var dl = c.GetDefaultContainer();
             dl.Width = Width;
+
+            dl.CreateAndAddDescriptionRow("The Output Variables must be grouped at the end of the list.");
 
             int i = 1;
             foreach (var item in CurrentModel.Parameters.Labels)
@@ -403,7 +427,12 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
             page.hasNextButton = true;
             page.hasFinishButton = false;
 
-            page.cancelAction = () => page.Close();
+            page.cancelAction = () =>
+            {
+                page.Close();
+                if (session != null) session.Dispose();
+            };
+
             page.backAction = () =>
             {
                 Application.Instance.Invoke(() => DisplayPage_LabelData());
@@ -416,8 +445,8 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
             };
 
             page.Title = "Neural Network Model Wizard";
-            page.HeaderTitle = "Step 5 - Model Parameters";
-            page.HeaderDescription = "Configure Model Parameters.";
+            page.HeaderTitle = "Step 5 - Model Training Parameters";
+            page.HeaderDescription = "Configure Model Training Parameters";
             page.FooterText = "Click 'Next' to Continue.";
 
             var dl = c.GetDefaultContainer();
@@ -492,6 +521,14 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
                 }
             });
 
+            dl.CreateAndAddTextBoxRow("G6", "Minimum Absolute Tolerance for MSE", p.AbsoluteMSETolerance, (tb, e) =>
+            {
+                if (tb.Text.IsValidDouble())
+                {
+                    p.AbsoluteMSETolerance = (float)tb.Text.ToDoubleFromCurrent();
+                }
+            });
+
             dl.CreateAndAddTextBoxRow(nf, "Split Factor for Data Training/Testing", p.SplitFactor, (tb, e) =>
             {
                 if (tb.Text.IsValidDouble())
@@ -525,7 +562,12 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
             page.hasNextButton = true;
             page.hasFinishButton = false;
 
-            page.cancelAction = () => page.Close();
+            page.cancelAction = () =>
+            {
+                page.Close();
+                if (session != null) session.Dispose();
+            };
+
             page.backAction = () =>
             {
                 Application.Instance.Invoke(() => DisplayPage_ModelParameters());
@@ -539,7 +581,7 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
 
             page.Title = "Neural Network Model Wizard";
             page.HeaderTitle = "Step 6 - Model Training and Evaluation";
-            page.HeaderDescription = "Click on the Train and Evaluate Button to Train your Model.";
+            page.HeaderDescription = "Click on the 'Train and Evaluate' Button to Train your Model";
             page.FooterText = "Click 'Next' to Continue.";
 
             var dl = c.GetDefaultContainer();
@@ -616,7 +658,12 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
             page.hasNextButton = true;
             page.hasFinishButton = false;
 
-            page.cancelAction = () => page.Close();
+            page.cancelAction = () =>
+            {
+                page.Close();
+                if (session != null) session.Dispose();
+            };
+
             page.backAction = () =>
             {
                 page.Close();
@@ -624,12 +671,13 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
             };
             page.nextAction = () =>
             {
+                Application.Instance.Invoke(() => DisplayPage_SaveModel());
                 page.Close();
             };
 
             page.Title = "Neural Network Model Wizard";
             page.HeaderTitle = "Step 7 - Trained Model Predictions";
-            page.HeaderDescription = "View and Compare the Results Predicted by the Trained Model.";
+            page.HeaderDescription = "View and Compare the Results Predicted by the Trained Model";
             page.FooterText = "Click 'Next' to Continue.";
 
             var dl = c.GetDefaultContainer();
@@ -712,7 +760,8 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
                 {
                     yseries.Add(y_train_unscaled[j][i]);
                 }
-                plot.Model.AddLineSeries(xseries, yseries.Select(x => (double)x).ToList(), CurrentModel.Parameters.Labels_Outputs[i]);
+                plot.Model.AddScatterSeries(xseries, yseries.Select(x => (double)x).ToList());
+                plot.Model.Series.Last().Title = CurrentModel.Parameters.Labels_Outputs[i];
             }
 
             for (var i = 0; i < yp_train_unscaled.shape[1]; i++)
@@ -740,7 +789,8 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
                 {
                     yseries.Add(y_test_unscaled[j][i]);
                 }
-                plot2.Model.AddLineSeries(xseries2, yseries.Select(x => (double)x).ToList(), CurrentModel.Parameters.Labels_Outputs[i]);
+                plot2.Model.AddScatterSeries(xseries2, yseries.Select(x => (double)x).ToList());
+                plot2.Model.Series.Last().Title = CurrentModel.Parameters.Labels_Outputs[i];
             }
 
             for (var i = 0; i < yp_test_unscaled.shape[1]; i++)
@@ -771,37 +821,95 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
 
         }
 
-
-        private void DisplayLastPage()
+        private void DisplayPage_SaveModel()
         {
 
             var page = new WizardPage();
 
+            var checks = new List<CheckBox>();
+            var tboxes = new List<TextBox>();
+
             page.hasBackButton = true;
             page.hasCancelButton = true;
-            page.hasNextButton = false;
+            page.hasNextButton = true;
             page.hasFinishButton = true;
 
-            page.cancelAction = () => page.Close();
-            page.finishAction = () => page.Close();
+            page.cancelAction = () =>
+            {
+                page.Close();
+                if (session != null) session.Dispose();
+            };
 
             page.backAction = () =>
             {
                 page.Close();
+                DisplayPage_ML();
+            };
+            page.finishAction = () =>
+            {
+                page.Close();
+                if (session != null) session.Dispose();
             };
 
-            page.Title = "Compound Creator Wizard";
-            page.HeaderTitle = "Final Step - Add Compound and Export Data";
-            page.HeaderDescription = "Add the compound to the simulation and/or export the created data to a file.";
-            page.FooterText = "Click 'Finish' to close this wizard.";
-
-            page.Init(Width, Height);
+            page.Title = "Neural Network Model Wizard";
+            page.HeaderTitle = "Step 8 - Save Model";
+            page.HeaderDescription = "Save the Model to a File or Embed it on the Unit Operation Block.";
+            page.FooterText = "Click 'Finish' to close this Wizard.";
 
             var dl = c.GetDefaultContainer();
-            dl.Height = Height;
             dl.Width = Width;
 
-            page.ContentContainer.Add(dl);
+            dl.CreateAndAddLabelRow("Save Model to Zip File");
+
+            var filepicker = new FilePicker { Title = "Save Model to Zip File", FileAction = Eto.FileAction.SaveFile };
+            filepicker.Filters.Add(new FileFilter("Zip File", new string[] { ".zip" }));
+
+            filepicker.FilePathChanged += (s, e) => CurrentModel.ModelPath = filepicker.FilePath;
+
+            dl.CreateAndAddControlRow(filepicker);
+
+            dl.CreateAndAddBoldLabelAndButtonRow("Save Model", "Save", null, (btn, e) =>
+            {
+                try
+                {
+                    Classes.Utils.SaveGraphToZip(session, CurrentModel, CurrentModel.ModelPath);
+                    SimObject.Model = CurrentModel;
+                    MessageBox.Show(String.Format("Model saved successfully to '{0}'", CurrentModel.ModelPath), "Save Model", MessageBoxType.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString(), "Error", MessageBoxType.Error);
+                }
+            });
+
+            dl.CreateAndAddLabelRow("Embed Model Data");
+
+            dl.CreateAndAddBoldLabelAndButtonRow("Embed Model", "Embed", null, (btn, e) =>
+            {
+                try
+                {
+                    using (var ms = new MemoryStream())
+                    {
+                        Classes.Utils.SaveGraphToZipStream(session, CurrentModel, ms);
+                        SimObject.Model = CurrentModel;
+                        ms.Position = 0;
+                        SimObject.Model.SerializedModelData = Classes.Utils.StreamToBase64(ms);
+                        MessageBox.Show(String.Format("Model successfully embedded in Unit Operation.", CurrentModel.ModelPath), "Embed Model", MessageBoxType.Information);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString(), "Error", MessageBoxType.Error);
+                }
+            });
+
+            page.Init(Width, Height);
+            page.Topmost = false;
+
+            var scrollable = new Scrollable { Content = dl, Border = BorderType.None, Size = new Size(Width, Height), ExpandContentHeight = true };
+
+            page.ContentContainer.Add(scrollable);
+
             page.Show();
 
         }
@@ -821,6 +929,13 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
         {
 
             var nl = Environment.NewLine;
+
+            var g = tf.Graph();
+
+            g.as_default();
+
+            if (session != null) { session.Dispose(); session = null; }
+            session = tf.Session(graph: g);
 
             // tf Graph Input
 
@@ -906,10 +1021,6 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
 
             var opt = tf.train.AdamOptimizer(CurrentModel.Parameters.LearningRate).minimize(mse);
 
-            // Initialize the variables (i.e. assign their default value)
-
-            var init = tf.global_variables_initializer();
-
             // Fit neural net
 
             var batch_size = CurrentModel.Parameters.BatchSize;
@@ -917,189 +1028,175 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
             var mse_train = new List<float>();
             var mse_test = new List<float>();
 
+            // Initialize the variables (i.e. assign their default value)
+
+            var init = tf.global_variables_initializer();
+
+            // Run the initializer
+
+            session.run(init);
+
             // Start training
-            using (var sess = tf.Session())
+
+            var epochs = CurrentModel.Parameters.NumberOfEpochs;
+
+            foreach (var e in range(epochs))
             {
 
-                // Run the initializer
+                // Shuffle training data
+                var shuffle_indices = np.random.permutation(np.arange(len(x_train)));
 
-                sess.run(init);
+                var shuffled_x = new NDArray(np.float32, x_train.shape);
+                var shuffled_y = new NDArray(np.float32, y_train.shape);
 
-                var epochs = CurrentModel.Parameters.NumberOfEpochs;
-
-                foreach (var e in range(epochs))
+                int i0 = 0;
+                foreach (var idx0 in shuffle_indices)
                 {
+                    shuffled_x[i0] = x_train[idx0];
+                    shuffled_y[i0] = y_train[idx0];
+                    i0 += 1;
+                }
 
-                    // Shuffle training data
-                    var shuffle_indices = np.random.permutation(np.arange(len(x_train)));
+                // Minibatch training
+                foreach (var i in range(0, len(y_train) / batch_size))
+                {
+                    var start = i * batch_size;
 
-                    var shuffled_x = new NDArray(np.float32, x_train.shape);
-                    var shuffled_y = new NDArray(np.float32, y_train.shape);
+                    var batch_x = shuffled_x[start.ToString() + ":" + (start + batch_size).ToString(), Slice.All];
+                    var batch_y = shuffled_y[start.ToString() + ":" + (start + batch_size).ToString(), Slice.All];
 
-                    int i0 = 0;
-                    foreach (var idx0 in shuffle_indices)
+                    // Run optimizer with batch
+                    session.run(opt, (X, batch_x), (Y, batch_y));
+
+                    // Show progress
+                    var divrem = 0;
+                    Math.DivRem(e, 5, out divrem);
+
+                    if (divrem == 0)
                     {
-                        shuffled_x[i0] = x_train[idx0];
-                        shuffled_y[i0] = y_train[idx0];
-                        i0 += 1;
-                    }
-
-                    // Minibatch training
-                    foreach (var i in range(0, len(y_train) / batch_size))
-                    {
-                        var start = i * batch_size;
-
-                        var batch_x = shuffled_x[start.ToString() + ":" + (start + batch_size).ToString(), Slice.All];
-                        var batch_y = shuffled_y[start.ToString() + ":" + (start + batch_size).ToString(), Slice.All];
-
-                        // Run optimizer with batch
-                        sess.run(opt, (X, batch_x), (Y, batch_y));
-
-                        // Show progress
-                        var divrem = 0;
-                        Math.DivRem(e, 5, out divrem);
-
-                        if (divrem == 0)
+                        // MSE train and test
+                        mse_train.Add(session.run(mse, (X, x_train), (Y, y_train)));
+                        mse_test.Add(session.run(mse, (X, x_test), (Y, y_test)));
+                        Application.Instance.Invoke(() =>
                         {
-                            // MSE train and test
-                            mse_train.Add(sess.run(mse, (X, x_train), (Y, y_train)));
-                            mse_test.Add(sess.run(mse, (X, x_test), (Y, y_test)));
-                            Application.Instance.Invoke(() =>
-                            {
-                                ta.Append("Epoch: " + e.ToString() + nl, true);
-                                ta.Append("MSE (training): " + mse_train.Last().ToString() + nl, true);
-                                ta.Append("MSE (testing): " + mse_test.Last().ToString() + nl, true);
-                                (plot.Model.Series[0] as OxyPlot.Series.LineSeries).Points.Add(new DataPoint(e, mse_train.Last()));
-                                (plot.Model.Series[1] as OxyPlot.Series.LineSeries).Points.Add(new DataPoint(e, mse_test.Last()));
-                                plot.Model.InvalidatePlot(true);
-                            });
-                            if (e > 10 &&
-                                (Math.Abs(mse_train.Last() - mse_train[mse_train.Count - 2]) / mse_train[mse_train.Count - 2] <
-                                CurrentModel.Parameters.RelativeMSETolerance)) break;
-                        }
+                            ta.Append("Epoch: " + e.ToString() + nl, true);
+                            ta.Append("MSE (training): " + mse_train.Last().ToString() + nl, true);
+                            ta.Append("MSE (testing): " + mse_test.Last().ToString() + nl, true);
+                            (plot.Model.Series[0] as OxyPlot.Series.LineSeries).Points.Add(new DataPoint(e, mse_train.Last()));
+                            (plot.Model.Series[1] as OxyPlot.Series.LineSeries).Points.Add(new DataPoint(e, mse_test.Last()));
+                            plot.Model.InvalidatePlot(true);
+                        });
+                        if (e > 10 &&
+                            (Math.Abs(mse_train.Last() - mse_train[mse_train.Count - 2]) / mse_train[mse_train.Count - 2] <
+                            CurrentModel.Parameters.RelativeMSETolerance)) break;
                     }
                 }
-
-                Application.Instance.Invoke(() =>
-                {
-                    ta.Append("Training Finished!" + nl, true);
-                });
-
-                x_test_unscaled = new NDArray(np.float32, x_test.shape);
-                x_train_unscaled = new NDArray(np.float32, x_train.shape);
-
-                for (var i = 0; i < x_test.shape[0]; i++)
-                {
-                    for (var j = 0; j < x_test.shape[1]; j++)
-                    {
-                        x_test_unscaled[i][j] = UnScale(x_test[i][j],
-                        CurrentModel.Parameters.MinValues[j],
-                        CurrentModel.Parameters.MaxValues[j],
-                        CurrentModel.Parameters.MinScale,
-                        CurrentModel.Parameters.MaxScale);
-                    }
-                }
-
-                for (var i = 0; i < x_train.shape[0]; i++)
-                {
-                    for (var j = 0; j < x_train.shape[1]; j++)
-                    {
-                        x_train_unscaled[i][j] = UnScale(x_train[i][j],
-                        CurrentModel.Parameters.MinValues[j],
-                        CurrentModel.Parameters.MaxValues[j],
-                        CurrentModel.Parameters.MinScale,
-                        CurrentModel.Parameters.MaxScale);
-                    }
-                }
-
-                var idx = CurrentModel.Parameters.Labels.IndexOf(CurrentModel.Parameters.Labels_Outputs.First());
-
-                y_test_unscaled = new NDArray(np.float32, y_test.shape);
-                y_train_unscaled = new NDArray(np.float32, y_train.shape);
-
-                for (var i = 0; i < y_test.shape[0]; i++)
-                {
-                    for (var j = 0; j < y_test.shape[1]; j++)
-                    {
-                        y_test_unscaled[i][j] = UnScale(y_test[i][j],
-                        CurrentModel.Parameters.MinValues[idx + j],
-                        CurrentModel.Parameters.MaxValues[idx + j],
-                        CurrentModel.Parameters.MinScale,
-                        CurrentModel.Parameters.MaxScale);
-                    }
-                }
-
-                for (var i = 0; i < y_train.shape[0]; i++)
-                {
-                    for (var j = 0; j < y_train.shape[1]; j++)
-                    {
-                        y_train_unscaled[i][j] = UnScale(y_train[i][j],
-                        CurrentModel.Parameters.MinValues[idx + j],
-                        CurrentModel.Parameters.MaxValues[idx + j],
-                        CurrentModel.Parameters.MinScale,
-                        CurrentModel.Parameters.MaxScale);
-                    }
-                }
-
-                yp_test = sess.run(outlayer, (X, x_test));
-                yp_train = sess.run(outlayer, (X, x_train));
-
-                yp_test_unscaled = new NDArray(np.float32, yp_test.shape);
-                yp_train_unscaled = new NDArray(np.float32, yp_train.shape);
-
-                for (var i = 0; i < yp_test.shape[0]; i++)
-                {
-                    for (var j = 0; j < yp_test.shape[1]; j++)
-                    {
-                        yp_test_unscaled[i][j] = UnScale(yp_test[i][j],
-                        CurrentModel.Parameters.MinValues[idx + j],
-                        CurrentModel.Parameters.MaxValues[idx + j],
-                        CurrentModel.Parameters.MinScale,
-                        CurrentModel.Parameters.MaxScale);
-                    }
-                }
-
-                for (var i = 0; i < yp_train.shape[0]; i++)
-                {
-                    for (var j = 0; j < yp_train.shape[1]; j++)
-                    {
-                        yp_train_unscaled[i][j] = UnScale(yp_train[i][j],
-                        CurrentModel.Parameters.MinValues[idx + j],
-                        CurrentModel.Parameters.MaxValues[idx + j],
-                        CurrentModel.Parameters.MinScale,
-                        CurrentModel.Parameters.MaxScale);
-                    }
-                }
-
-                // Testing example
-
-                var training_cost = sess.run(mse, (X, x_train), (Y, y_train));
-                var testing_cost = sess.run(mse, (X, x_test), (Y, y_test));
-                var diff = Math.Abs((float)training_cost - (float)testing_cost);
-
-                Application.Instance.Invoke(() =>
-                {
-                    ta.Append($"Training Cost = {testing_cost}" + nl, true);
-                    ta.Append($"Testing Cost = {testing_cost}" + nl, true);
-                    ta.Append($"Absolute MSE = {diff}" + nl, true);
-                });
-
-                //var saver = tf.train.Saver();
-                //var tempdir = CreateUniqueTempDirectory();
-                //saver.save(sess, Path.Combine(tempdir, CurrentModel.ModelName));
-
-                //var zippath = "C:/Users/Daniel/Desktop/" + CurrentModel.ModelName + ".zip";
-
-                //ZipFile.CreateFromDirectory(tempdir, zippath);
-
             }
-        }
 
-        public string CreateUniqueTempDirectory()
-        {
-            var uniqueTempDir = Path.GetFullPath(Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString()));
-            Directory.CreateDirectory(uniqueTempDir);
-            return uniqueTempDir;
+            Application.Instance.Invoke(() =>
+            {
+                ta.Append("Training Finished!" + nl, true);
+            });
+
+            x_test_unscaled = new NDArray(np.float32, x_test.shape);
+            x_train_unscaled = new NDArray(np.float32, x_train.shape);
+
+            for (var i = 0; i < x_test.shape[0]; i++)
+            {
+                for (var j = 0; j < x_test.shape[1]; j++)
+                {
+                    x_test_unscaled[i][j] = Classes.Utils.UnScale(x_test[i][j],
+                    CurrentModel.Parameters.MinValues[j],
+                    CurrentModel.Parameters.MaxValues[j],
+                    CurrentModel.Parameters.MinScale,
+                    CurrentModel.Parameters.MaxScale);
+                }
+            }
+
+            for (var i = 0; i < x_train.shape[0]; i++)
+            {
+                for (var j = 0; j < x_train.shape[1]; j++)
+                {
+                    x_train_unscaled[i][j] = Classes.Utils.UnScale(x_train[i][j],
+                    CurrentModel.Parameters.MinValues[j],
+                    CurrentModel.Parameters.MaxValues[j],
+                    CurrentModel.Parameters.MinScale,
+                    CurrentModel.Parameters.MaxScale);
+                }
+            }
+
+            var idx = CurrentModel.Parameters.Labels.IndexOf(CurrentModel.Parameters.Labels_Outputs.First());
+
+            y_test_unscaled = new NDArray(np.float32, y_test.shape);
+            y_train_unscaled = new NDArray(np.float32, y_train.shape);
+
+            for (var i = 0; i < y_test.shape[0]; i++)
+            {
+                for (var j = 0; j < y_test.shape[1]; j++)
+                {
+                    y_test_unscaled[i][j] = Classes.Utils.UnScale(y_test[i][j],
+                    CurrentModel.Parameters.MinValues[idx + j],
+                    CurrentModel.Parameters.MaxValues[idx + j],
+                    CurrentModel.Parameters.MinScale,
+                    CurrentModel.Parameters.MaxScale);
+                }
+            }
+
+            for (var i = 0; i < y_train.shape[0]; i++)
+            {
+                for (var j = 0; j < y_train.shape[1]; j++)
+                {
+                    y_train_unscaled[i][j] = Classes.Utils.UnScale(y_train[i][j],
+                    CurrentModel.Parameters.MinValues[idx + j],
+                    CurrentModel.Parameters.MaxValues[idx + j],
+                    CurrentModel.Parameters.MinScale,
+                    CurrentModel.Parameters.MaxScale);
+                }
+            }
+
+            yp_test = session.run(outlayer, (X, x_test));
+            yp_train = session.run(outlayer, (X, x_train));
+
+            yp_test_unscaled = new NDArray(np.float32, yp_test.shape);
+            yp_train_unscaled = new NDArray(np.float32, yp_train.shape);
+
+            for (var i = 0; i < yp_test.shape[0]; i++)
+            {
+                for (var j = 0; j < yp_test.shape[1]; j++)
+                {
+                    yp_test_unscaled[i][j] = Classes.Utils.UnScale(yp_test[i][j],
+                    CurrentModel.Parameters.MinValues[idx + j],
+                    CurrentModel.Parameters.MaxValues[idx + j],
+                    CurrentModel.Parameters.MinScale,
+                    CurrentModel.Parameters.MaxScale);
+                }
+            }
+
+            for (var i = 0; i < yp_train.shape[0]; i++)
+            {
+                for (var j = 0; j < yp_train.shape[1]; j++)
+                {
+                    yp_train_unscaled[i][j] = Classes.Utils.UnScale(yp_train[i][j],
+                    CurrentModel.Parameters.MinValues[idx + j],
+                    CurrentModel.Parameters.MaxValues[idx + j],
+                    CurrentModel.Parameters.MinScale,
+                    CurrentModel.Parameters.MaxScale);
+                }
+            }
+
+            // Testing example
+
+            var training_cost = session.run(mse, (X, x_train), (Y, y_train));
+            var testing_cost = session.run(mse, (X, x_test), (Y, y_test));
+            var diff = Math.Abs((float)training_cost - (float)testing_cost);
+
+            Application.Instance.Invoke(() =>
+            {
+                ta.Append($"Training Cost = {testing_cost}" + nl, true);
+                ta.Append($"Testing Cost = {testing_cost}" + nl, true);
+                ta.Append($"Absolute MSE = {diff}" + nl, true);
+            });
+
         }
 
         public void PrepareData()
@@ -1131,7 +1228,7 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
             {
                 for (var j = 0; j < CurrentModel.Data[0].Count(); j++)
                 {
-                    transfdata[i][j] = Scale((float)transfdata[i][j],
+                    transfdata[i][j] = Classes.Utils.Scale((float)transfdata[i][j],
                         CurrentModel.Parameters.MinValues[j],
                         CurrentModel.Parameters.MaxValues[j],
                         CurrentModel.Parameters.MinScale,
@@ -1169,19 +1266,7 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
 
         }
 
-        private float Scale(float value, float min, float max, float minScale, float maxScale)
-        {
-            float scaled = minScale + (value - min) / (max - min) * (maxScale - minScale);
-            if (double.IsNaN(scaled) || double.IsInfinity(scaled)) scaled = minScale;
-            return scaled;
-        }
 
-        private float UnScale(float scaledvalue, float min, float max, float minScale, float maxScale)
-        {
-            float unscaled = min + (scaledvalue - minScale) * (max - min) / (maxScale - minScale);
-            if (double.IsNaN(unscaled) || double.IsInfinity(unscaled)) unscaled = min;
-            return unscaled;
-        }
 
     }
 }

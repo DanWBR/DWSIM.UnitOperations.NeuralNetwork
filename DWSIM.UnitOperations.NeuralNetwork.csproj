@@ -190,6 +190,7 @@
     <Compile Include="Classes\LocalSettings.cs" />
     <Compile Include="Classes\Model.cs" />
     <Compile Include="Classes\ModelParameters.cs" />
+    <Compile Include="Classes\Utils.cs" />
     <Compile Include="Editor\FormAbout.cs">
       <SubType>Form</SubType>
     </Compile>

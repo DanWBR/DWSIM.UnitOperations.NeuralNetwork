@@ -23,6 +23,8 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Classes
 
         public float RelativeMSETolerance { get; set; } = 1E-3f;
 
+        public float AbsoluteMSETolerance { get; set; } = 1E-4f;
+
         public int NumberOfLayers { get; set; } = 3;
 
         public int NumberOfNeuronsOnFirstLayer { get; set; } = 160;

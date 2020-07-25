@@ -13,6 +13,12 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Classes
     public class ANNModel: ICustomXMLSerialization
     {
 
+        public enum ModelSourceType
+        { 
+            FileSystem = 0,
+            Embedded = 1
+        }
+
         public ModelParameters Parameters { get; set; } = new ModelParameters();
 
         public List<List<double>> Data { get; set; } = new List<List<double>>();
@@ -22,6 +28,10 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Classes
         public string ModelPath { get; set; } = "";
 
         public string ModelName { get; set; } = "MyModel";
+
+        public string SerializedModelData { get; set; } = "";
+
+        public ModelSourceType ModelSource { get; set; } = ModelSourceType.Embedded;
 
         public ANNModel()
         {
