@@ -58,7 +58,7 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Classes
         public bool LoadData(List<XElement> data)
         {
             XMLSerializer.XMLSerializer.Deserialize(this, data);
-            var d1 = data.Where(x => x.Name == "Data").FirstOrDefault().Elements().ToList();
+            var d1 = data.Where(x => x.Name == "Data").FirstOrDefault()?.Elements().ToList();
             Data = new List<List<double>>();
             foreach (var xel in d1)
             {

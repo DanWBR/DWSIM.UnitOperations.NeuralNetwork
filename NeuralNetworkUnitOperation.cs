@@ -37,9 +37,9 @@ namespace DWSIM.UnitOperations
 
         public ANNModel Model { get; set; } = new ANNModel();
 
-        public List<Tuple<string, string, string, string>> InputMaps = new List<Tuple<string, string, string, string>>();
+        public List<Tuple<string, string, string, string, string>> InputMaps = new List<Tuple<string, string, string, string, string>>();
 
-        public List<Tuple<string, string, string, string>> OutputMaps = new List<Tuple<string, string, string, string>>();
+        public List<Tuple<string, string, string, string, string>> OutputMaps = new List<Tuple<string, string, string, string, string>>();
 
         // standard props
 
@@ -298,14 +298,58 @@ namespace DWSIM.UnitOperations
         public override List<XElement> SaveData()
         {
             var elements = XMLSerializer.XMLSerializer.Serialize(this);
-
+            var xel = new XElement("InputMaps");
+            foreach (var item in InputMaps)
+            {
+                xel.Add(new XElement("Mapping", new XAttribute("Value1", item.Item1),
+                    new XAttribute("Value2", item.Item2),
+                    new XAttribute("Value3", item.Item3),
+                    new XAttribute("Value4", item.Item4),
+                    new XAttribute("Value5", item.Item5)));
+            }
+            elements.Add(xel);
+            var xel2 = new XElement("OutputMaps");
+            foreach (var item in OutputMaps)
+            {
+                xel2.Add(new XElement("Mapping", new XAttribute("Value1", item.Item1),
+                    new XAttribute("Value2", item.Item2),
+                    new XAttribute("Value3", item.Item3),
+                    new XAttribute("Value4", item.Item4),
+                    new XAttribute("Value5", item.Item5)));
+            }
+            elements.Add(xel2);
             return elements;
         }
 
         public override bool LoadData(List<XElement> data)
         {
             XMLSerializer.XMLSerializer.Deserialize(this, data);
-
+            var d1 = data.Where(x => x.Name == "InputMaps").FirstOrDefault()?.Elements().ToList();
+            InputMaps = new  List<Tuple<string, string, string, string, string>>();
+            foreach (var xel in d1)
+            {
+                foreach (var el in xel.Elements())
+                {
+                    InputMaps.Add(new Tuple<string, string, string, string, string>(el.Attribute("Value1").Value,
+                        el.Attribute("Value2").Value,
+                        el.Attribute("Value3").Value,
+                        el.Attribute("Value4").Value,
+                        el.Attribute("Value5").Value));
+                }
+            }
+            var d2 = data.Where(x => x.Name == "OutputMaps").FirstOrDefault()?.Elements().ToList();
+            OutputMaps = new List<Tuple<string, string, string, string, string>>();
+            foreach (var xel in d2)
+            {
+                foreach (var el in xel.Elements())
+                {
+                    OutputMaps.Add(new Tuple<string, string, string, string, string>(el.Attribute("Value1").Value,
+                        el.Attribute("Value2").Value,
+                        el.Attribute("Value3").Value,
+                        el.Attribute("Value4").Value,
+                        el.Attribute("Value5").Value));
+                }
+            }
             return true;
         }
 

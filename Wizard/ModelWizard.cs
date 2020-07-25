@@ -872,6 +872,11 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
             {
                 try
                 {
+                    if (File.Exists(CurrentModel.ModelPath))
+                    {
+                        MessageBox.Show("The save file already exists. Please create a new file and try again.", "Error", MessageBoxType.Error);
+                        return;
+                    }
                     Classes.Utils.SaveGraphToZip(session, CurrentModel, CurrentModel.ModelPath);
                     SimObject.Model = CurrentModel;
                     MessageBox.Show(String.Format("Model saved successfully to '{0}'", CurrentModel.ModelPath), "Save Model", MessageBoxType.Information);
