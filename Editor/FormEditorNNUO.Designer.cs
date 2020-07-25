@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.GroupBox5 = new System.Windows.Forms.GroupBox();
             this.lblTag = new System.Windows.Forms.TextBox();
             this.lblConnectedTo = new System.Windows.Forms.Label();
@@ -53,9 +55,33 @@
             this.DataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DataGridViewComboBoxColumn1 = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabControl3 = new System.Windows.Forms.TabControl();
+            this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.gridInputMaps = new System.Windows.Forms.DataGridView();
+            this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.gridOutputMaps = new System.Windows.Forms.DataGridView();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.rtbAnnotations = new Extended.Windows.Forms.RichTextBoxExtended();
             this.button1 = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.tbModelPath = new System.Windows.Forms.TextBox();
+            this.btnSearchModel = new System.Windows.Forms.Button();
+            this.buttonReloadModel = new System.Windows.Forms.Button();
+            this.tbModelData = new System.Windows.Forms.TextBox();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewComboBoxColumn2 = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column4 = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataGridViewComboBoxColumn5 = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.DataGridViewTextBoxColumn18 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column1 = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.GroupBox5.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -64,7 +90,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.gridFeeds)).BeginInit();
             this.TabPage5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridProducts)).BeginInit();
+            this.tabPage2.SuspendLayout();
+            this.tabControl3.SuspendLayout();
+            this.tabPage6.SuspendLayout();
+            this.tabPage7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridInputMaps)).BeginInit();
+            this.tabPage8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridOutputMaps)).BeginInit();
             this.tabPage3.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // GroupBox5
@@ -257,7 +291,7 @@
             // 
             // c2
             // 
-            this.c2.HeaderText = "Material Stream";
+            this.c2.HeaderText = "Stream";
             this.c2.Name = "c2";
             // 
             // TabPage5
@@ -303,11 +337,12 @@
             // 
             // DataGridViewComboBoxColumn1
             // 
-            this.DataGridViewComboBoxColumn1.HeaderText = "Material Stream";
+            this.DataGridViewComboBoxColumn1.HeaderText = "Stream";
             this.DataGridViewComboBoxColumn1.Name = "DataGridViewComboBoxColumn1";
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.tabControl3);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -315,6 +350,121 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Model Configuration";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // tabControl3
+            // 
+            this.tabControl3.Controls.Add(this.tabPage6);
+            this.tabControl3.Controls.Add(this.tabPage7);
+            this.tabControl3.Controls.Add(this.tabPage8);
+            this.tabControl3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl3.Location = new System.Drawing.Point(3, 3);
+            this.tabControl3.Name = "tabControl3";
+            this.tabControl3.SelectedIndex = 0;
+            this.tabControl3.Size = new System.Drawing.Size(372, 276);
+            this.tabControl3.TabIndex = 0;
+            // 
+            // tabPage6
+            // 
+            this.tabPage6.Controls.Add(this.tbModelData);
+            this.tabPage6.Controls.Add(this.buttonReloadModel);
+            this.tabPage6.Controls.Add(this.btnSearchModel);
+            this.tabPage6.Controls.Add(this.tbModelPath);
+            this.tabPage6.Controls.Add(this.label2);
+            this.tabPage6.Controls.Add(this.panel1);
+            this.tabPage6.Controls.Add(this.label1);
+            this.tabPage6.Location = new System.Drawing.Point(4, 22);
+            this.tabPage6.Name = "tabPage6";
+            this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage6.Size = new System.Drawing.Size(364, 250);
+            this.tabPage6.TabIndex = 0;
+            this.tabPage6.Text = "General";
+            this.tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // tabPage7
+            // 
+            this.tabPage7.Controls.Add(this.gridInputMaps);
+            this.tabPage7.Location = new System.Drawing.Point(4, 22);
+            this.tabPage7.Name = "tabPage7";
+            this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage7.Size = new System.Drawing.Size(364, 250);
+            this.tabPage7.TabIndex = 1;
+            this.tabPage7.Text = "Input Mappings";
+            this.tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // gridInputMaps
+            // 
+            this.gridInputMaps.AllowUserToAddRows = false;
+            this.gridInputMaps.AllowUserToDeleteRows = false;
+            this.gridInputMaps.AllowUserToResizeRows = false;
+            this.gridInputMaps.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.gridInputMaps.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
+            this.gridInputMaps.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText;
+            this.gridInputMaps.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            this.gridInputMaps.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            this.gridInputMaps.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gridInputMaps.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column9,
+            this.DataGridViewComboBoxColumn5,
+            this.DataGridViewTextBoxColumn18,
+            this.Column1});
+            this.gridInputMaps.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gridInputMaps.Location = new System.Drawing.Point(3, 3);
+            this.gridInputMaps.Name = "gridInputMaps";
+            this.gridInputMaps.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            this.gridInputMaps.RowHeadersVisible = false;
+            this.gridInputMaps.Size = new System.Drawing.Size(358, 244);
+            this.gridInputMaps.TabIndex = 2;
+            this.gridInputMaps.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridInputMaps_CellValueChanged);
+            this.gridInputMaps.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.gridInputMaps_DataError);
+            // 
+            // tabPage8
+            // 
+            this.tabPage8.Controls.Add(this.gridOutputMaps);
+            this.tabPage8.Location = new System.Drawing.Point(4, 22);
+            this.tabPage8.Name = "tabPage8";
+            this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage8.Size = new System.Drawing.Size(364, 250);
+            this.tabPage8.TabIndex = 2;
+            this.tabPage8.Text = "Output Mappings";
+            this.tabPage8.UseVisualStyleBackColor = true;
+            // 
+            // gridOutputMaps
+            // 
+            this.gridOutputMaps.AllowUserToAddRows = false;
+            this.gridOutputMaps.AllowUserToDeleteRows = false;
+            this.gridOutputMaps.AllowUserToResizeRows = false;
+            this.gridOutputMaps.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.gridOutputMaps.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
+            this.gridOutputMaps.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText;
+            this.gridOutputMaps.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            this.gridOutputMaps.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            this.gridOutputMaps.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gridOutputMaps.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn2,
+            this.dataGridViewComboBoxColumn2,
+            this.dataGridViewTextBoxColumn3,
+            this.Column4});
+            this.gridOutputMaps.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gridOutputMaps.Location = new System.Drawing.Point(3, 3);
+            this.gridOutputMaps.Name = "gridOutputMaps";
+            this.gridOutputMaps.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            this.gridOutputMaps.RowHeadersVisible = false;
+            this.gridOutputMaps.Size = new System.Drawing.Size(358, 244);
+            this.gridOutputMaps.TabIndex = 3;
+            this.gridOutputMaps.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridOutputMaps_CellValueChanged);
+            this.gridOutputMaps.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.gridOutputMaps_DataError);
             // 
             // tabPage3
             // 
@@ -349,6 +499,168 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(10, 22);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(73, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Model Source";
+            // 
+            // radioButton1
+            // 
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Checked = true;
+            this.radioButton1.Location = new System.Drawing.Point(3, 3);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(41, 17);
+            this.radioButton1.TabIndex = 1;
+            this.radioButton1.TabStop = true;
+            this.radioButton1.Text = "File";
+            this.radioButton1.UseVisualStyleBackColor = true;
+            this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
+            // 
+            // radioButton2
+            // 
+            this.radioButton2.AutoSize = true;
+            this.radioButton2.Location = new System.Drawing.Point(59, 3);
+            this.radioButton2.Name = "radioButton2";
+            this.radioButton2.Size = new System.Drawing.Size(102, 17);
+            this.radioButton2.TabIndex = 2;
+            this.radioButton2.TabStop = true;
+            this.radioButton2.Text = "Embedded Data";
+            this.radioButton2.UseVisualStyleBackColor = true;
+            // 
+            // panel1
+            // 
+            this.panel1.AutoSize = true;
+            this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panel1.Controls.Add(this.radioButton1);
+            this.panel1.Controls.Add(this.radioButton2);
+            this.panel1.Location = new System.Drawing.Point(112, 17);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(164, 23);
+            this.panel1.TabIndex = 3;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(10, 54);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(61, 13);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Model Path";
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.AddExtension = false;
+            this.openFileDialog1.Filter = "Zip Files|*.zip";
+            // 
+            // tbModelPath
+            // 
+            this.tbModelPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbModelPath.Location = new System.Drawing.Point(112, 51);
+            this.tbModelPath.Name = "tbModelPath";
+            this.tbModelPath.Size = new System.Drawing.Size(155, 20);
+            this.tbModelPath.TabIndex = 5;
+            // 
+            // btnSearchModel
+            // 
+            this.btnSearchModel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSearchModel.Location = new System.Drawing.Point(276, 50);
+            this.btnSearchModel.Name = "btnSearchModel";
+            this.btnSearchModel.Size = new System.Drawing.Size(75, 23);
+            this.btnSearchModel.TabIndex = 6;
+            this.btnSearchModel.Text = "Search";
+            this.btnSearchModel.UseVisualStyleBackColor = true;
+            this.btnSearchModel.Click += new System.EventHandler(this.btnSearchModel_Click);
+            // 
+            // buttonReloadModel
+            // 
+            this.buttonReloadModel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonReloadModel.Location = new System.Drawing.Point(13, 81);
+            this.buttonReloadModel.Name = "buttonReloadModel";
+            this.buttonReloadModel.Size = new System.Drawing.Size(338, 23);
+            this.buttonReloadModel.TabIndex = 7;
+            this.buttonReloadModel.Text = "Reload Model";
+            this.buttonReloadModel.UseVisualStyleBackColor = true;
+            this.buttonReloadModel.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // tbModelData
+            // 
+            this.tbModelData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbModelData.Location = new System.Drawing.Point(13, 112);
+            this.tbModelData.Multiline = true;
+            this.tbModelData.Name = "tbModelData";
+            this.tbModelData.ReadOnly = true;
+            this.tbModelData.Size = new System.Drawing.Size(338, 125);
+            this.tbModelData.TabIndex = 8;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.FillWeight = 20F;
+            this.dataGridViewTextBoxColumn2.HeaderText = "Port";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            // 
+            // dataGridViewComboBoxColumn2
+            // 
+            this.dataGridViewComboBoxColumn2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridViewComboBoxColumn2.FillWeight = 60F;
+            this.dataGridViewComboBoxColumn2.HeaderText = "Property";
+            this.dataGridViewComboBoxColumn2.Name = "dataGridViewComboBoxColumn2";
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridViewTextBoxColumn3.FillWeight = 20F;
+            this.dataGridViewTextBoxColumn3.HeaderText = "Units";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Column4
+            // 
+            this.Column4.FillWeight = 20F;
+            this.Column4.HeaderText = "Variable";
+            this.Column4.Name = "Column4";
+            this.Column4.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Column4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // Column9
+            // 
+            this.Column9.FillWeight = 20F;
+            this.Column9.HeaderText = "Port";
+            this.Column9.Name = "Column9";
+            this.Column9.ReadOnly = true;
+            // 
+            // DataGridViewComboBoxColumn5
+            // 
+            this.DataGridViewComboBoxColumn5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.DataGridViewComboBoxColumn5.FillWeight = 60F;
+            this.DataGridViewComboBoxColumn5.HeaderText = "Property";
+            this.DataGridViewComboBoxColumn5.Name = "DataGridViewComboBoxColumn5";
+            // 
+            // DataGridViewTextBoxColumn18
+            // 
+            this.DataGridViewTextBoxColumn18.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.DataGridViewTextBoxColumn18.FillWeight = 20F;
+            this.DataGridViewTextBoxColumn18.HeaderText = "Units";
+            this.DataGridViewTextBoxColumn18.Name = "DataGridViewTextBoxColumn18";
+            this.DataGridViewTextBoxColumn18.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Column1
+            // 
+            this.Column1.FillWeight = 20F;
+            this.Column1.HeaderText = "Variable";
+            this.Column1.Name = "Column1";
+            this.Column1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Column1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
             // FormEditorNNUO
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -372,7 +684,17 @@
             ((System.ComponentModel.ISupportInitialize)(this.gridFeeds)).EndInit();
             this.TabPage5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridProducts)).EndInit();
+            this.tabPage2.ResumeLayout(false);
+            this.tabControl3.ResumeLayout(false);
+            this.tabPage6.ResumeLayout(false);
+            this.tabPage6.PerformLayout();
+            this.tabPage7.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gridInputMaps)).EndInit();
+            this.tabPage8.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gridOutputMaps)).EndInit();
             this.tabPage3.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -394,17 +716,41 @@
         internal System.Windows.Forms.TabControl TabControl2;
         internal System.Windows.Forms.TabPage TabPage4;
         internal System.Windows.Forms.DataGridView gridFeeds;
-        internal System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        internal System.Windows.Forms.DataGridViewTextBoxColumn c1;
-        internal System.Windows.Forms.DataGridViewComboBoxColumn c2;
         internal System.Windows.Forms.TabPage TabPage5;
         internal System.Windows.Forms.DataGridView gridProducts;
-        internal System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        internal System.Windows.Forms.DataGridViewTextBoxColumn DataGridViewTextBoxColumn1;
-        internal System.Windows.Forms.DataGridViewComboBoxColumn DataGridViewComboBoxColumn1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.TabPage tabPage3;
         public Extended.Windows.Forms.RichTextBoxExtended rtbAnnotations;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TabControl tabControl3;
+        private System.Windows.Forms.TabPage tabPage6;
+        private System.Windows.Forms.TabPage tabPage7;
+        private System.Windows.Forms.TabPage tabPage8;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn c1;
+        private System.Windows.Forms.DataGridViewComboBoxColumn c2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewComboBoxColumn DataGridViewComboBoxColumn1;
+        public System.Windows.Forms.DataGridView gridInputMaps;
+        public System.Windows.Forms.DataGridView gridOutputMaps;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.RadioButton radioButton2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnSearchModel;
+        private System.Windows.Forms.TextBox tbModelPath;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.TextBox tbModelData;
+        private System.Windows.Forms.Button buttonReloadModel;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
+        private System.Windows.Forms.DataGridViewComboBoxColumn DataGridViewComboBoxColumn5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DataGridViewTextBoxColumn18;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Column4;
     }
 }

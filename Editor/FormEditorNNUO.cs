@@ -10,6 +10,8 @@ using System.Windows.Forms;
 using DWSIM.ExtensionMethods;
 using DWSIM.Interfaces;
 using DWSIM.Interfaces.Enums.GraphicObjects;
+using DWSIM.Thermodynamics.Streams;
+using DWSIM.UnitOperations.Streams;
 
 namespace DWSIM.UnitOperations.NeuralNetwork.Editors
 {
@@ -23,6 +25,8 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Editors
         SharedClasses.SystemsOfUnits.Units units;
 
         string nf;
+
+        string[] props1, props2;
 
         public FormEditorNNUO()
         {
@@ -109,6 +113,89 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Editors
                 gridProducts.Rows.Add(new object[] { i, item.ConnectorName, item.IsAttached ? item.AttachedConnector.AttachedTo.Tag : "" });
                 i++;
             }
+
+            var cbProps1 = new DataGridViewComboBoxCell();
+            var cbProps2 = new DataGridViewComboBoxCell();
+
+            cbProps1.Items.Add("");
+
+            var msprops1 = new MaterialStream().GetProperties(Interfaces.Enums.PropertyType.ALL);
+            var esprops1 = new EnergyStream().GetProperties(Interfaces.Enums.PropertyType.ALL);
+
+            cbProps1.Items.AddRange(msprops1);
+            cbProps1.Items.AddRange(esprops1);
+
+            cbProps2.Items.Add("");
+
+            var msprops2 = new MaterialStream().GetProperties(Interfaces.Enums.PropertyType.WR);
+
+            cbProps2.Items.AddRange(msprops2);
+            cbProps2.Items.AddRange(esprops1);
+
+            var p1 = new List<string>();
+            p1.AddRange(msprops1);
+            p1.AddRange(esprops1);
+            props1 = p1.ToArray();
+
+            var p2 = new List<string>();
+            p2.AddRange(msprops2);
+            p2.AddRange(esprops1);
+            props2 = p2.ToArray();
+
+            ((DataGridViewComboBoxColumn)gridInputMaps.Columns[2]).CellTemplate = cbProps1;
+            ((DataGridViewComboBoxColumn)gridOutputMaps.Columns[2]).CellTemplate = cbProps2;
+
+            var cbIVars = new DataGridViewComboBoxCell();
+
+            cbIVars.Items.Add("");
+            cbIVars.Items.AddRange(SimObject.Model.Parameters.Labels.Except(SimObject.Model.Parameters.Labels_Outputs));
+
+            var cbOVars = new DataGridViewComboBoxCell();
+
+            cbOVars.Items.Add("");
+            cbOVars.Items.AddRange(SimObject.Model.Parameters.Labels_Outputs);
+
+            ((DataGridViewComboBoxColumn)gridInputMaps.Columns[3]).CellTemplate = cbIVars;
+            ((DataGridViewComboBoxColumn)gridOutputMaps.Columns[3]).CellTemplate = cbOVars;
+
+            gridInputMaps.Rows.Clear();
+
+            i = 0;
+            foreach (var item in SimObject.InputMaps)
+            {
+                if (props1.Contains(item.Item1) && cbIVars.Items.Contains(item.Item3))
+                {
+                    gridInputMaps.Rows.Add("Port #" + (i + 1).ToString(), SimObject.FlowSheet.GetTranslatedString(item.Item1), item.Item2, item.Item3);
+                }
+                else
+                {
+                    gridInputMaps.Rows.Add("Port #" + (i + 1).ToString(), "", item.Item2, "");
+                }
+            }
+
+            gridOutputMaps.Rows.Clear();
+
+            i = 0;
+            foreach (var item in SimObject.OutputMaps)
+            {
+                if (props2.Contains(item.Item1) && cbOVars.Items.Contains(item.Item3))
+                {
+                    gridOutputMaps.Rows.Add("Port #" + (i + 1).ToString(), SimObject.FlowSheet.GetTranslatedString(item.Item1), item.Item2, item.Item3);
+                }
+                else
+                {
+                    gridOutputMaps.Rows.Add("Port #" + (i + 1).ToString(), "", item.Item2, "");
+                }
+            }
+
+            if (SimObject.Model.ModelSource == Classes.ANNModel.ModelSourceType.FileSystem)
+            {
+                radioButton1.Checked = true;
+            }
+            else
+            {
+                radioButton2.Checked = true;
+            };
 
         }
 
@@ -303,5 +390,74 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Editors
             }
 
         }
+
+        private void gridInputMaps_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (Loaded)
+            {
+                var value = gridInputMaps.Rows[e.RowIndex].Cells[1].Value.ToString();
+                var units = gridInputMaps.Rows[e.RowIndex].Cells[2].Value.ToString();
+                var index = ((DataGridViewComboBoxCell)gridInputMaps.Rows[e.RowIndex].Cells[1]).Items.IndexOf(value);
+                var variable = gridInputMaps.Rows[e.RowIndex].Cells[3].Value.ToString();
+                SimObject.InputMaps[index] = new Tuple<string, string, string, string, string>(props1[index], units, variable, "", "");
+                UpdateInfo();
+            }
+        }
+
+        private void gridOutputMaps_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (Loaded)
+            {
+                var value = gridOutputMaps.Rows[e.RowIndex].Cells[1].Value.ToString();
+                var units = gridOutputMaps.Rows[e.RowIndex].Cells[2].Value.ToString();
+                var index = ((DataGridViewComboBoxCell)gridOutputMaps.Rows[e.RowIndex].Cells[1]).Items.IndexOf(value);
+                var variable = gridOutputMaps.Rows[e.RowIndex].Cells[3].Value.ToString();
+                SimObject.OutputMaps[index] = new Tuple<string, string, string, string, string>(props2[index], units, variable, "", "");
+                UpdateInfo();
+            }
+        }
+
+        private void gridInputMaps_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+        }
+
+        private void gridOutputMaps_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Loaded)
+            {
+                if (radioButton1.Checked)
+                {
+                    SimObject.Model.ModelSource = Classes.ANNModel.ModelSourceType.FileSystem;
+                    tbModelData.Enabled = true;
+                    btnSearchModel.Enabled = true;
+                }
+                else
+                {
+                    SimObject.Model.ModelSource = Classes.ANNModel.ModelSourceType.Embedded;
+                    tbModelData.Enabled = false;
+                    btnSearchModel.Enabled = false;
+                }
+            }
+        }
+
+        private void btnSearchModel_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                tbModelPath.Text = openFileDialog1.FileName;
+                SimObject.Model.ModelPath = openFileDialog1.FileName;
+                SimObject.Model.ModelSource = Classes.ANNModel.ModelSourceType.FileSystem;
+            }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }

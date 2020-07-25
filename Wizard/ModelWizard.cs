@@ -28,6 +28,7 @@ using System.Diagnostics;
 using System.IO.Compression;
 using OxyPlot;
 using OxyPlot.Axes;
+using OxyPlot.Series;
 
 namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
 {
@@ -762,6 +763,8 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
                 }
                 plot.Model.AddScatterSeries(xseries, yseries.Select(x => (double)x).ToList());
                 plot.Model.Series.Last().Title = CurrentModel.Parameters.Labels_Outputs[i];
+                ((ScatterSeries)plot.Model.Series.Last()).MarkerSize = 3.0;
+                ((ScatterSeries)plot.Model.Series.Last()).MarkerType =  MarkerType.Circle;
             }
 
             for (var i = 0; i < yp_train_unscaled.shape[1]; i++)
@@ -791,6 +794,8 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
                 }
                 plot2.Model.AddScatterSeries(xseries2, yseries.Select(x => (double)x).ToList());
                 plot2.Model.Series.Last().Title = CurrentModel.Parameters.Labels_Outputs[i];
+                ((ScatterSeries)plot2.Model.Series.Last()).MarkerSize = 3.0;
+                ((ScatterSeries)plot2.Model.Series.Last()).MarkerType = MarkerType.Circle;
             }
 
             for (var i = 0; i < yp_test_unscaled.shape[1]; i++)
@@ -848,6 +853,7 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
             page.finishAction = () =>
             {
                 page.Close();
+                SimObject.UpdateEditForm();
                 if (session != null) session.Dispose();
             };
 
