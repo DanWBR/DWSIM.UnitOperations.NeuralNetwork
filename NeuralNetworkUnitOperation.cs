@@ -24,6 +24,10 @@ using Tensorflow;
 using System.Xml.Serialization;
 using utils = DWSIM.UnitOperations.NeuralNetwork.Classes.Utils;
 using NumSharp;
+using System.Runtime.CompilerServices;
+using System.Diagnostics.Contracts;
+using System.ComponentModel;
+using Microsoft.Scripting.Hosting;
 
 namespace DWSIM.UnitOperations
 {
@@ -38,6 +42,8 @@ namespace DWSIM.UnitOperations
         double mbal, pbal, ebal;
 
         public ANNModel Model { get; set; } = new ANNModel();
+
+        public string DataTransferScript { get; set; } = "";
 
         public List<Tuple<string, string, string, string, string>> InputMaps = new List<Tuple<string, string, string, string, string>>();
 
@@ -65,7 +71,6 @@ namespace DWSIM.UnitOperations
 
         public NeuralNetworkUnitOperation() : base()
         {
-
             if (!LocalSettings.Initialized)
             {
                 // sets the assembly resolver to find remaining DWSIM libraries on demand
@@ -73,15 +78,21 @@ namespace DWSIM.UnitOperations
                 currentDomain.AssemblyResolve += new ResolveEventHandler(LoadFromNestedFolder);
                 LocalSettings.Initialized = true;
             }
+            InitializeMappings();
+        }
 
+        public void InitializeMappings()
+        {
             InputMaps = new List<Tuple<string, string, string, string, string>>();
             OutputMaps = new List<Tuple<string, string, string, string, string>>();
-            for (var i = 0; i < 10; i++)
+            for (var i = 0; i < Model.Parameters.Labels.Count - Model.Parameters.Labels_Outputs.Count; i++)
             {
                 InputMaps.Add(new Tuple<string, string, string, string, string>("", "", "", "", ""));
+            }
+            for (var i = 0; i < Model.Parameters.Labels_Outputs.Count; i++)
+            {
                 OutputMaps.Add(new Tuple<string, string, string, string, string>("", "", "", "", ""));
             }
-
         }
 
         static Assembly LoadFromNestedFolder(object sender, ResolveEventArgs args)
@@ -343,14 +354,11 @@ namespace DWSIM.UnitOperations
             {
                 foreach (var xel in d1)
                 {
-                    foreach (var el in xel.Elements())
-                    {
-                        InputMaps.Add(new Tuple<string, string, string, string, string>(el.Attribute("Value1").Value,
-                            el.Attribute("Value2").Value,
-                            el.Attribute("Value3").Value,
-                            el.Attribute("Value4").Value,
-                            el.Attribute("Value5").Value));
-                    }
+                    InputMaps.Add(new Tuple<string, string, string, string, string>(xel.Attribute("Value1").Value,
+                        xel.Attribute("Value2").Value,
+                        xel.Attribute("Value3").Value,
+                        xel.Attribute("Value4").Value,
+                        xel.Attribute("Value5").Value));
                 }
             }
             var d2 = data.Where(x => x.Name == "OutputMaps").FirstOrDefault()?.Elements().ToList();
@@ -359,15 +367,16 @@ namespace DWSIM.UnitOperations
             {
                 foreach (var xel in d2)
                 {
-                    foreach (var el in xel.Elements())
-                    {
-                        OutputMaps.Add(new Tuple<string, string, string, string, string>(el.Attribute("Value1").Value,
-                            el.Attribute("Value2").Value,
-                            el.Attribute("Value3").Value,
-                            el.Attribute("Value4").Value,
-                            el.Attribute("Value5").Value));
-                    }
+                    OutputMaps.Add(new Tuple<string, string, string, string, string>(xel.Attribute("Value1").Value,
+                        xel.Attribute("Value2").Value,
+                        xel.Attribute("Value3").Value,
+                        xel.Attribute("Value4").Value,
+                        xel.Attribute("Value5").Value));
                 }
+            }
+            if (InputMaps.Count + OutputMaps.Count != Model.Parameters.Labels.Count)
+            {
+                InitializeMappings();
             }
             return true;
         }
@@ -408,6 +417,9 @@ namespace DWSIM.UnitOperations
 
         public override void Calculate(object args = null)
         {
+
+            RunScript();
+
             if (session == null)
             {
                 if (Model.ModelSource == ANNModel.ModelSourceType.FileSystem)
@@ -425,13 +437,20 @@ namespace DWSIM.UnitOperations
 
             session.graph.as_default();
 
-            var outlayer = session.graph.get_tensor_by_name("out:0");
-            var X = session.graph.get_tensor_by_name("X:0");
-
-            var input = NDArray.FromString("[1100.0, 0.0, 304.0, 343]");
+            var outlayer = session.graph.get_tensor_by_name("Train/out:0");
+            var X = session.graph.get_tensor_by_name("Train/X:0");
+            var Y = session.graph.get_tensor_by_name("Train/Y:0");
 
             var nt = Model.Parameters.Labels.Count;
             var no = Model.Parameters.Labels_Outputs.Count;
+
+            var inputvars = new List<float>();
+            for (var i = 0; i < nt - no; i++)
+            {
+                inputvars.Add(GetInputVariableValue(i));
+            }
+
+            var input = new NDArray(inputvars.ToArray());
 
             input = input.reshape(1, nt - no);
 
@@ -449,17 +468,17 @@ namespace DWSIM.UnitOperations
                 }
             }
 
-            var pred = session.run(outlayer, (X, input_scaled));
+            var pred_scaled = session.run(outlayer, (X, input_scaled));
 
-            var pred_unscaled = new NDArray(np.float32, pred.shape);
+            var pred_unscaled = new NDArray(np.float32, pred_scaled.shape);
 
             var idx = Model.Parameters.Labels.IndexOf(Model.Parameters.Labels_Outputs.First());
 
-            for (var i = 0; i < pred.shape[0]; i++)
+            for (var i = 0; i < pred_scaled.shape[0]; i++)
             {
-                for (var j = 0; j < pred.shape[1]; j++)
+                for (var j = 0; j < pred_scaled.shape[1]; j++)
                 {
-                    pred_unscaled[i][j] = utils.UnScale(pred[i][j],
+                    pred_unscaled[i][j] = utils.UnScale(pred_scaled[i][j],
                     Model.Parameters.MinValues[idx + j],
                     Model.Parameters.MaxValues[idx + j],
                     Model.Parameters.MinScale,
@@ -467,6 +486,80 @@ namespace DWSIM.UnitOperations
                 }
             }
 
+            for (var i = 0; i < pred_unscaled.shape[1]; i++)
+            {
+                SetOutputVariableValue(i, pred_unscaled[0][i]);
+            }
+
+        }
+
+        private float GetInputVariableValue(int index)
+        {
+            var imap = InputMaps[index];
+            var port = int.Parse(imap.Item1) - 1;
+            var propID = imap.Item2;
+            var units = imap.Item3;
+            var objID = GraphicObject.InputConnectors[port].AttachedConnector.AttachedFrom.Name;
+            return (float)FlowSheet.SimulationObjects[objID].GetPropertyValue(propID).ToString().ToDoubleFromCurrent().ConvertFromSI(units);
+        }
+
+        private void SetOutputVariableValue(int index, float value)
+        {
+            var omap = OutputMaps[index];
+            var port = int.Parse(omap.Item1) - 1;
+            var propID = omap.Item2;
+            var units = omap.Item3;
+            var objID = GraphicObject.OutputConnectors[port].AttachedConnector.AttachedTo.Name;
+            FlowSheet.SimulationObjects[objID].SetPropertyValue(propID, ((double)value).ConvertToSI(units));
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            // Check to see if Dispose has already been called.
+            if (!disposedValue)
+            {
+                if (session != null)
+                {
+                    session.Dispose();
+                    session = null;
+                }
+                //Note disposing has been done.
+                disposedValue = true;
+            }
+        }
+
+        private void RunScript()
+        {
+
+            ScriptScope scope;
+            ScriptEngine engine;
+
+            var opts = new Dictionary<string, object>();
+            opts["Frames"] = Microsoft.Scripting.Runtime.ScriptingRuntimeHelpers.True;
+            engine = IronPython.Hosting.Python.CreateEngine(opts);
+            engine.Runtime.LoadAssembly(typeof(System.String).Assembly);
+            engine.Runtime.LoadAssembly(typeof(Thermodynamics.BaseClasses.ConstantProperties).Assembly);
+            engine.Runtime.LoadAssembly(typeof(Drawing.SkiaSharp.GraphicsSurface).Assembly);
+            scope = engine.CreateScope();
+            scope.SetVariable("Flowsheet", this.FlowSheet);
+            scope.SetVariable("This", this);
+            var source = engine.CreateScriptSourceFromString(DataTransferScript, Microsoft.Scripting.SourceCodeKind.Statements);
+            try
+            {
+                source.Execute(scope);
+            }
+            catch (Exception ex)
+            {
+                var ops = engine.GetService<ExceptionOperations>();
+                FlowSheet.ShowMessage("Error running script: " + ops.FormatException(ex).ToString(), IFlowsheet.MessageType.GeneralError);
+            }
+            finally
+            {
+                engine.Runtime.Shutdown();
+                engine = null;
+                scope = null;
+                source = null;
+            }
         }
 
     }

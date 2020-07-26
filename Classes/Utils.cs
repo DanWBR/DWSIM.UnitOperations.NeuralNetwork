@@ -96,8 +96,8 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Classes
 
             var metafile = Directory.GetFiles(tempdir, "*.meta")[0];
 
-            var loader = tf.train.import_meta_graph(metafile);
-            loader.restore(sess, tf.train.latest_checkpoint(tempdir));
+            var loader = tf.train.import_meta_graph(metafile, import_scope: "Train");
+            loader.restore(sess, tf.train.latest_checkpoint(tempdir + Path.DirectorySeparatorChar));
 
             File.Delete(tempfile);
             Directory.Delete(tempdir, true);

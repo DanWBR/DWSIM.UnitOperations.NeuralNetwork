@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="packages\SciSharp.TensorFlow.Redist.2.1.0\build\netstandard2.0\SciSharp.TensorFlow.Redist.props" Condition="Exists('packages\SciSharp.TensorFlow.Redist.2.1.0\build\netstandard2.0\SciSharp.TensorFlow.Redist.props')" />
+  <Import Project="packages\SciSharp.TensorFlow.Redist.1.15.1\build\netstandard2.0\SciSharp.TensorFlow.Redist.props" Condition="Exists('packages\SciSharp.TensorFlow.Redist.1.15.1\build\netstandard2.0\SciSharp.TensorFlow.Redist.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -131,6 +131,15 @@
     <Reference Include="Google.Protobuf, Version=3.11.4.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
       <HintPath>packages\Google.Protobuf.3.11.4\lib\net45\Google.Protobuf.dll</HintPath>
     </Reference>
+    <Reference Include="IronPython">
+      <HintPath>..\dwsim6\DistPackages\Windows\IronPython.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Dynamic">
+      <HintPath>..\dwsim6\DistPackages\Windows\Microsoft.Dynamic.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Scripting">
+      <HintPath>..\dwsim6\DistPackages\Windows\Microsoft.Scripting.dll</HintPath>
+    </Reference>
     <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\dwsim6\DistPackages\Windows\Newtonsoft.Json.dll</HintPath>
@@ -146,6 +155,10 @@
     </Reference>
     <Reference Include="RichTextBoxExtended">
       <HintPath>..\dwsim6\DistPackages\Windows\RichTextBoxExtended.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ScintillaNET">
+      <HintPath>..\dwsim6\DistPackages\Windows\ScintillaNET.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="SkiaSharp">
@@ -177,8 +190,8 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="TensorFlow.NET, Version=0.20.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>packages\TensorFlow.NET.0.20.0-preview2\lib\netstandard2.0\TensorFlow.NET.dll</HintPath>
+    <Reference Include="TensorFlow.NET, Version=0.15.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\TensorFlow.NET.0.15.1\lib\netstandard2.0\TensorFlow.NET.dll</HintPath>
     </Reference>
     <Reference Include="WeifenLuo.WinFormsUI.Docking">
       <HintPath>..\dwsim6\DistPackages\Windows\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
@@ -236,6 +249,6 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('packages\SciSharp.TensorFlow.Redist.2.1.0\build\netstandard2.0\SciSharp.TensorFlow.Redist.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\SciSharp.TensorFlow.Redist.2.1.0\build\netstandard2.0\SciSharp.TensorFlow.Redist.props'))" />
+    <Error Condition="!Exists('packages\SciSharp.TensorFlow.Redist.1.15.1\build\netstandard2.0\SciSharp.TensorFlow.Redist.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\SciSharp.TensorFlow.Redist.1.15.1\build\netstandard2.0\SciSharp.TensorFlow.Redist.props'))" />
   </Target>
 </Project>
