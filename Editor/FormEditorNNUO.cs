@@ -199,6 +199,8 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Editors
                 radioButton2.Checked = true;
             };
 
+            tbModelPath.Text = SimObject.Model.ModelPath;
+
         }
 
         private void button2_Click(object sender, EventArgs e)

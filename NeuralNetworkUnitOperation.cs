@@ -22,6 +22,8 @@ using System.Reflection;
 using System.IO;
 using Tensorflow;
 using System.Xml.Serialization;
+using utils = DWSIM.UnitOperations.NeuralNetwork.Classes.Utils;
+using NumSharp;
 
 namespace DWSIM.UnitOperations
 {
@@ -42,7 +44,7 @@ namespace DWSIM.UnitOperations
         public List<Tuple<string, string, string, string, string>> OutputMaps = new List<Tuple<string, string, string, string, string>>();
 
         [XmlIgnore]
-        public Session session;
+        private Session session;
 
         // standard props
 
@@ -410,14 +412,60 @@ namespace DWSIM.UnitOperations
             {
                 if (Model.ModelSource == ANNModel.ModelSourceType.FileSystem)
                 {
-
+                    session = utils.LoadGraphFromZip(Model.ModelPath);
                 }
                 else
                 {
-
+                    using (var ms = utils.Base64ToStream(Model.SerializedModelData))
+                    {
+                        session = utils.LoadGraphFromStream(ms);
+                    }
                 }
             }
 
+            session.graph.as_default();
+
+            var outlayer = session.graph.get_tensor_by_name("out:0");
+            var X = session.graph.get_tensor_by_name("X:0");
+
+            var input = NDArray.FromString("[1100.0, 0.0, 304.0, 343]");
+
+            var nt = Model.Parameters.Labels.Count;
+            var no = Model.Parameters.Labels_Outputs.Count;
+
+            input = input.reshape(1, nt - no);
+
+            var input_scaled = new NDArray(np.float32, input.shape);
+
+            for (var i = 0; i < input.shape[0]; i++)
+            {
+                for (var j = 0; j < input.shape[1]; j++)
+                {
+                    input_scaled[i][j] = utils.Scale(input[i][j],
+                    Model.Parameters.MinValues[j],
+                    Model.Parameters.MaxValues[j],
+                    Model.Parameters.MinScale,
+                    Model.Parameters.MaxScale);
+                }
+            }
+
+            var pred = session.run(outlayer, (X, input_scaled));
+
+            var pred_unscaled = new NDArray(np.float32, pred.shape);
+
+            var idx = Model.Parameters.Labels.IndexOf(Model.Parameters.Labels_Outputs.First());
+
+            for (var i = 0; i < pred.shape[0]; i++)
+            {
+                for (var j = 0; j < pred.shape[1]; j++)
+                {
+                    pred_unscaled[i][j] = utils.UnScale(pred[i][j],
+                    Model.Parameters.MinValues[idx + j],
+                    Model.Parameters.MaxValues[idx + j],
+                    Model.Parameters.MinScale,
+                    Model.Parameters.MaxScale);
+                }
+            }
 
         }
 
