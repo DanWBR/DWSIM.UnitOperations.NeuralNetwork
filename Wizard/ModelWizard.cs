@@ -379,7 +379,7 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
             var dl = c.GetDefaultContainer();
             dl.Width = Width;
 
-            dl.CreateAndAddDescriptionRow("The Output Variables must be grouped at the end of the list.");
+            dl.CreateAndAddLabelRow2("The Output Variables must be grouped at the end of the list.");
 
             int i = 1;
             foreach (var item in CurrentModel.Parameters.Labels)

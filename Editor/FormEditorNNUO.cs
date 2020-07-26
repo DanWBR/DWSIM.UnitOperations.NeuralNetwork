@@ -12,6 +12,7 @@ using DWSIM.Interfaces;
 using DWSIM.Interfaces.Enums.GraphicObjects;
 using DWSIM.Thermodynamics.Streams;
 using DWSIM.UnitOperations.Streams;
+using DWSIM.UnitOperations;
 using Tensorflow;
 using static Tensorflow.Binding;
 
@@ -39,6 +40,7 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Editors
         private void FormEditorNNUO_Load(object sender, EventArgs e)
         {
             UpdateInfo();
+            txtScript.SetEditorStyle("Consolas", 10, false, false);
         }
 
         public void UpdateInfo()
