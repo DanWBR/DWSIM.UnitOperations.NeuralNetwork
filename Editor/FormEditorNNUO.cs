@@ -12,6 +12,8 @@ using DWSIM.Interfaces;
 using DWSIM.Interfaces.Enums.GraphicObjects;
 using DWSIM.Thermodynamics.Streams;
 using DWSIM.UnitOperations.Streams;
+using Tensorflow;
+using static Tensorflow.Binding;
 
 namespace DWSIM.UnitOperations.NeuralNetwork.Editors
 {
@@ -432,13 +434,13 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Editors
                 if (radioButton1.Checked)
                 {
                     SimObject.Model.ModelSource = Classes.ANNModel.ModelSourceType.FileSystem;
-                    tbModelData.Enabled = true;
+                    tbModelPath.Enabled = true;
                     btnSearchModel.Enabled = true;
                 }
                 else
                 {
                     SimObject.Model.ModelSource = Classes.ANNModel.ModelSourceType.Embedded;
-                    tbModelData.Enabled = false;
+                    tbModelPath.Enabled = false;
                     btnSearchModel.Enabled = false;
                 }
             }
@@ -452,11 +454,6 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Editors
                 SimObject.Model.ModelPath = openFileDialog1.FileName;
                 SimObject.Model.ModelSource = Classes.ANNModel.ModelSourceType.FileSystem;
             }
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-
         }
 
     }

@@ -20,6 +20,8 @@ using DWSIM.GlobalSettings;
 using DWSIM.UnitOperations.NeuralNetwork.Classes;
 using System.Reflection;
 using System.IO;
+using Tensorflow;
+using System.Xml.Serialization;
 
 namespace DWSIM.UnitOperations
 {
@@ -33,13 +35,14 @@ namespace DWSIM.UnitOperations
 
         double mbal, pbal, ebal;
 
-        // feature / objID / propID / propUnits
-
         public ANNModel Model { get; set; } = new ANNModel();
 
         public List<Tuple<string, string, string, string, string>> InputMaps = new List<Tuple<string, string, string, string, string>>();
 
         public List<Tuple<string, string, string, string, string>> OutputMaps = new List<Tuple<string, string, string, string, string>>();
+
+        [XmlIgnore]
+        public Session session;
 
         // standard props
 
@@ -403,6 +406,18 @@ namespace DWSIM.UnitOperations
 
         public override void Calculate(object args = null)
         {
+            if (session == null)
+            {
+                if (Model.ModelSource == ANNModel.ModelSourceType.FileSystem)
+                {
+
+                }
+                else
+                {
+
+                }
+            }
+
 
         }
 
