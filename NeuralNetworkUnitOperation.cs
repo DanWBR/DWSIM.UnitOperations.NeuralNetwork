@@ -313,7 +313,9 @@ namespace DWSIM.UnitOperations
                 Model.ModelName = Path.GetFileNameWithoutExtension(Model.ModelPath);
             };
             lay1.CreateAndAddControlRow(filepicker);
-            lay1.CreateAndAddDescriptionRow("Only use the above to locate the model file if it is stored outside the simulation file and you're opening it from a different location. To use and configure a different model, use the Model Configuration Wizard.");
+            lay1.CreateAndAddDescriptionRow("Only use the above search button to locate the model file if the Unit Operation " +
+                "is set to use a Model File and it was moved from its original location (i.e. you're receiving this simulation" +
+                " from someone else). To use and configure a different model, use the Model Configuration Wizard.");
             lay1.CreateAndAddEmptySpace();
             lay1.CreateAndAddButtonRow("View Help", null, (btn, e) =>
             {

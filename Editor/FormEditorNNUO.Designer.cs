@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormEditorNNUO));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.GroupBox5 = new System.Windows.Forms.GroupBox();
             this.lblTag = new System.Windows.Forms.TextBox();
             this.lblConnectedTo = new System.Windows.Forms.Label();
@@ -58,6 +58,7 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabControl3 = new System.Windows.Forms.TabControl();
             this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.label3 = new System.Windows.Forms.Label();
             this.btnSearchModel = new System.Windows.Forms.Button();
             this.tbModelPath = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -67,23 +68,22 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage7 = new System.Windows.Forms.TabPage();
             this.gridInputMaps = new System.Windows.Forms.DataGridView();
-            this.tabPage8 = new System.Windows.Forms.TabPage();
-            this.gridOutputMaps = new System.Windows.Forms.DataGridView();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.rtbAnnotations = new Extended.Windows.Forms.RichTextBoxExtended();
-            this.button1 = new System.Windows.Forms.Button();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column5 = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.DataGridViewComboBoxColumn5 = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.DataGridViewTextBoxColumn18 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.gridOutputMaps = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dataGridViewComboBoxColumn2 = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage9 = new System.Windows.Forms.TabPage();
             this.txtScript = new ScintillaNET.Scintilla();
-            this.label3 = new System.Windows.Forms.Label();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.rtbAnnotations = new Extended.Windows.Forms.RichTextBoxExtended();
+            this.button1 = new System.Windows.Forms.Button();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.GroupBox5.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -100,8 +100,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.gridInputMaps)).BeginInit();
             this.tabPage8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridOutputMaps)).BeginInit();
-            this.tabPage3.SuspendLayout();
             this.tabPage9.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // GroupBox5
@@ -383,6 +383,16 @@
             this.tabPage6.Text = "General";
             this.tabPage6.UseVisualStyleBackColor = true;
             // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label3.Location = new System.Drawing.Point(10, 85);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(341, 72);
+            this.label3.TabIndex = 7;
+            this.label3.Text = resources.GetString("label3.Text");
+            // 
             // btnSearchModel
             // 
             this.btnSearchModel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -476,13 +486,13 @@
             this.gridInputMaps.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
             this.gridInputMaps.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText;
             this.gridInputMaps.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            this.gridInputMaps.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            this.gridInputMaps.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.gridInputMaps.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gridInputMaps.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column9,
@@ -498,87 +508,6 @@
             this.gridInputMaps.TabIndex = 2;
             this.gridInputMaps.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridInputMaps_CellValueChanged);
             this.gridInputMaps.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.gridInputMaps_DataError);
-            // 
-            // tabPage8
-            // 
-            this.tabPage8.Controls.Add(this.gridOutputMaps);
-            this.tabPage8.Location = new System.Drawing.Point(4, 22);
-            this.tabPage8.Name = "tabPage8";
-            this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage8.Size = new System.Drawing.Size(364, 250);
-            this.tabPage8.TabIndex = 2;
-            this.tabPage8.Text = "Output Mappings";
-            this.tabPage8.UseVisualStyleBackColor = true;
-            // 
-            // gridOutputMaps
-            // 
-            this.gridOutputMaps.AllowUserToAddRows = false;
-            this.gridOutputMaps.AllowUserToDeleteRows = false;
-            this.gridOutputMaps.AllowUserToResizeRows = false;
-            this.gridOutputMaps.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.gridOutputMaps.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
-            this.gridOutputMaps.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText;
-            this.gridOutputMaps.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            this.gridOutputMaps.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
-            this.gridOutputMaps.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.gridOutputMaps.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn2,
-            this.Column1,
-            this.dataGridViewComboBoxColumn2,
-            this.dataGridViewTextBoxColumn3});
-            this.gridOutputMaps.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridOutputMaps.Location = new System.Drawing.Point(3, 3);
-            this.gridOutputMaps.Name = "gridOutputMaps";
-            this.gridOutputMaps.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            this.gridOutputMaps.RowHeadersVisible = false;
-            this.gridOutputMaps.Size = new System.Drawing.Size(358, 244);
-            this.gridOutputMaps.TabIndex = 3;
-            this.gridOutputMaps.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridOutputMaps_CellValueChanged);
-            this.gridOutputMaps.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.gridOutputMaps_DataError);
-            // 
-            // tabPage3
-            // 
-            this.tabPage3.Controls.Add(this.rtbAnnotations);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(378, 282);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Annotations";
-            // 
-            // rtbAnnotations
-            // 
-            this.rtbAnnotations.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtbAnnotations.Location = new System.Drawing.Point(0, 0);
-            this.rtbAnnotations.Name = "rtbAnnotations";
-            this.rtbAnnotations.Rtf = "{\\rtf1\\ansi\\ansicpg1252\\deff0\\nouicompat\\deflang1046{\\fonttbl{\\f0\\fnil Microsoft " +
-    "Sans Serif;}}\r\n{\\*\\generator Riched20 10.0.18362}\\viewkind4\\uc1 \r\n\\pard\\f0\\fs17\\" +
-    "par\r\n}\r\n";
-            this.rtbAnnotations.Size = new System.Drawing.Size(378, 282);
-            this.rtbAnnotations.TabIndex = 1;
-            this.rtbAnnotations.ToolbarVisible = false;
-            // 
-            // button1
-            // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(10, 111);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(386, 23);
-            this.button1.TabIndex = 17;
-            this.button1.Text = "Open Model Configuration Wizard";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // openFileDialog1
-            // 
-            this.openFileDialog1.AddExtension = false;
-            this.openFileDialog1.Filter = "Zip Files|*.zip";
             // 
             // Column9
             // 
@@ -607,6 +536,49 @@
             this.DataGridViewTextBoxColumn18.HeaderText = "Units";
             this.DataGridViewTextBoxColumn18.Name = "DataGridViewTextBoxColumn18";
             this.DataGridViewTextBoxColumn18.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // tabPage8
+            // 
+            this.tabPage8.Controls.Add(this.gridOutputMaps);
+            this.tabPage8.Location = new System.Drawing.Point(4, 22);
+            this.tabPage8.Name = "tabPage8";
+            this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage8.Size = new System.Drawing.Size(364, 250);
+            this.tabPage8.TabIndex = 2;
+            this.tabPage8.Text = "Output Mappings";
+            this.tabPage8.UseVisualStyleBackColor = true;
+            // 
+            // gridOutputMaps
+            // 
+            this.gridOutputMaps.AllowUserToAddRows = false;
+            this.gridOutputMaps.AllowUserToDeleteRows = false;
+            this.gridOutputMaps.AllowUserToResizeRows = false;
+            this.gridOutputMaps.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.gridOutputMaps.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
+            this.gridOutputMaps.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText;
+            this.gridOutputMaps.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            this.gridOutputMaps.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            this.gridOutputMaps.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gridOutputMaps.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn2,
+            this.Column1,
+            this.dataGridViewComboBoxColumn2,
+            this.dataGridViewTextBoxColumn3});
+            this.gridOutputMaps.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gridOutputMaps.Location = new System.Drawing.Point(3, 3);
+            this.gridOutputMaps.Name = "gridOutputMaps";
+            this.gridOutputMaps.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            this.gridOutputMaps.RowHeadersVisible = false;
+            this.gridOutputMaps.Size = new System.Drawing.Size(358, 244);
+            this.gridOutputMaps.TabIndex = 3;
+            this.gridOutputMaps.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridOutputMaps_CellValueChanged);
+            this.gridOutputMaps.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.gridOutputMaps_DataError);
             // 
             // dataGridViewTextBoxColumn2
             // 
@@ -661,15 +633,43 @@
             this.txtScript.TabIndex = 8;
             this.txtScript.TextChanged += new System.EventHandler(this.txtScript_TextChanged);
             // 
-            // label3
+            // tabPage3
             // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.tabPage3.Controls.Add(this.rtbAnnotations);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(378, 282);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Annotations";
+            // 
+            // rtbAnnotations
+            // 
+            this.rtbAnnotations.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtbAnnotations.Location = new System.Drawing.Point(0, 0);
+            this.rtbAnnotations.Name = "rtbAnnotations";
+            this.rtbAnnotations.Rtf = "{\\rtf1\\ansi\\ansicpg1252\\deff0\\nouicompat\\deflang1046{\\fonttbl{\\f0\\fnil Microsoft " +
+    "Sans Serif;}}\r\n{\\*\\generator Riched20 10.0.18362}\\viewkind4\\uc1 \r\n\\pard\\f0\\fs17\\" +
+    "par\r\n}\r\n";
+            this.rtbAnnotations.Size = new System.Drawing.Size(378, 282);
+            this.rtbAnnotations.TabIndex = 1;
+            this.rtbAnnotations.ToolbarVisible = false;
+            // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.label3.Location = new System.Drawing.Point(10, 85);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(341, 72);
-            this.label3.TabIndex = 7;
-            this.label3.Text = resources.GetString("label3.Text");
+            this.button1.Location = new System.Drawing.Point(10, 111);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(386, 23);
+            this.button1.TabIndex = 17;
+            this.button1.Text = "Open Model Configuration Wizard";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.AddExtension = false;
+            this.openFileDialog1.Filter = "Zip Files|*.zip";
             // 
             // FormEditorNNUO
             // 
@@ -704,8 +704,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.gridInputMaps)).EndInit();
             this.tabPage8.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridOutputMaps)).EndInit();
-            this.tabPage3.ResumeLayout(false);
             this.tabPage9.ResumeLayout(false);
+            this.tabPage3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
