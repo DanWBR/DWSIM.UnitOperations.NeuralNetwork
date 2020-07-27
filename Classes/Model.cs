@@ -14,6 +14,7 @@ using Tensorflow.Gradients;
 using static Tensorflow.Binding;
 using OxyPlot;
 using DWSIM.UI.Desktop.Mac.TouchBar;
+using System.Xml.Serialization;
 
 namespace DWSIM.UnitOperations.NeuralNetwork.Classes
 {
@@ -38,10 +39,17 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Classes
 
         public string SerializedModelData { get; set; } = "";
 
+        public string TensorName_X { get; set; } = "Train/X:0";
+
+        public string TensorName_Y { get; set; } = "Train/Y:0";
+
+        public string TensorName_Output { get; set; } = "Train/out:0";
+
         public ModelSourceType ModelSource { get; set; } = ModelSourceType.Embedded;
 
         // fields
 
+        [XmlIgnore]
         public Session session;
 
         public NDArray x_train, y_train, x_test, y_test, yp_train, yp_test;

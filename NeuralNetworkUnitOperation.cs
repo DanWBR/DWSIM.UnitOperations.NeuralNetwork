@@ -28,6 +28,12 @@ using System.Runtime.CompilerServices;
 using System.Diagnostics.Contracts;
 using System.ComponentModel;
 using Microsoft.Scripting.Hosting;
+using Eto.Drawing;
+using Point = DWSIM.DrawingTools.Point.Point;
+using DWSIM.CrossPlatform.UI.Controls.ReoGrid.IO.OpenXML.Schema;
+using Font = Eto.Drawing.Font;
+using DWSIM.UnitOperations.Streams;
+using System.Security.Cryptography;
 
 namespace DWSIM.UnitOperations
 {
@@ -39,9 +45,7 @@ namespace DWSIM.UnitOperations
 
         // props
 
-        double mbal, pbal, ebal;
-
-        public ANNModel Model { get; set; } = new ANNModel();
+        public ANNModel Model { get; set; }
 
         public string DataTransferScript { get; set; } = "";
 
@@ -64,7 +68,7 @@ namespace DWSIM.UnitOperations
         public string Prefix => "NNET-";
 
 
-        [NonSerialized] [System.Xml.Serialization.XmlIgnore] public FormEditorNNUO f;
+        [NonSerialized] [XmlIgnore] public FormEditorNNUO f;
 
         public NeuralNetworkUnitOperation() : base()
         {
@@ -75,21 +79,8 @@ namespace DWSIM.UnitOperations
                 currentDomain.AssemblyResolve += new ResolveEventHandler(LoadFromNestedFolder);
                 LocalSettings.Initialized = true;
             }
+            Model = new ANNModel();
             InitializeMappings();
-        }
-
-        public void InitializeMappings()
-        {
-            InputMaps = new List<Tuple<string, string, string, string, string>>();
-            OutputMaps = new List<Tuple<string, string, string, string, string>>();
-            for (var i = 0; i < Model.Parameters.Labels.Count - Model.Parameters.Labels_Outputs.Count; i++)
-            {
-                InputMaps.Add(new Tuple<string, string, string, string, string>("", "", "", "", ""));
-            }
-            for (var i = 0; i < Model.Parameters.Labels_Outputs.Count; i++)
-            {
-                OutputMaps.Add(new Tuple<string, string, string, string, string>("", "", "", "", ""));
-            }
         }
 
         static Assembly LoadFromNestedFolder(object sender, ResolveEventArgs args)
@@ -103,6 +94,20 @@ namespace DWSIM.UnitOperations
             {
                 Assembly assembly = Assembly.LoadFrom(assemblyPath);
                 return assembly;
+            }
+        }
+
+        public void InitializeMappings()
+        {
+            InputMaps = new List<Tuple<string, string, string, string, string>>();
+            OutputMaps = new List<Tuple<string, string, string, string, string>>();
+            for (var i = 0; i < Model.Parameters.Labels.Count - Model.Parameters.Labels_Outputs.Count; i++)
+            {
+                InputMaps.Add(new Tuple<string, string, string, string, string>("", "", "", "", ""));
+            }
+            for (var i = 0; i < Model.Parameters.Labels_Outputs.Count; i++)
+            {
+                OutputMaps.Add(new Tuple<string, string, string, string, string>("", "", "", "", ""));
             }
         }
 
@@ -265,7 +270,7 @@ namespace DWSIM.UnitOperations
 
             c.CreateAndAddEmptySpace();
 
-            c.CreateAndAddButtonRow("Open Model Wizard", null, (btn, e) =>
+            c.CreateAndAddButtonRow("Open Model Configuration Wizard", null, (btn, e) =>
             {
                 var f = new NeuralNetwork.Wizard.ModelWizard(this);
                 f.Show();
@@ -273,14 +278,49 @@ namespace DWSIM.UnitOperations
 
             c.CreateAndAddEmptySpace();
 
-            c.CreateAndAddButtonRow("View Help", null, (btn, e) =>
+            var dc = new DocumentControl { Height = 300, DisplayArrows = true };
+            var dp1 = new DocumentPage { Closable = false, Text = "General" };
+            var dp2 = new DocumentPage { Closable = false, Text = "Input Mappings" };
+            var dp3 = new DocumentPage { Closable = false, Text = "Output Mappings" };
+            var dp4 = new DocumentPage { Closable = false, Text = "Data Transfer Script" };
+
+            dc.Pages.Add(dp1);
+            dc.Pages.Add(dp2);
+            dc.Pages.Add(dp3);
+            dc.Pages.Add(dp4);
+
+            c.CreateAndAddControlRow(dc);
+
+            var rl = new RadioButtonList { Orientation = Orientation.Horizontal };
+            rl.Spacing = new Size(10, 10);
+            rl.Items.Add("Embedded");
+            rl.Items.Add("External File");
+            rl.SelectedIndex = Model.ModelSource == ANNModel.ModelSourceType.Embedded ? 0 : 1;
+            rl.SelectedIndexChanged += (s, e) =>
+            {
+                Model.ModelSource = rl.SelectedIndex == 0 ? ANNModel.ModelSourceType.Embedded : ANNModel.ModelSourceType.FileSystem;
+            };
+            var lay1 = DWSIM.UI.Shared.Common.GetDefaultContainer();
+            lay1.CreateAndAddLabelRow2("Model Source:");
+            lay1.CreateAndAddControlRow(rl);
+            lay1.CreateAndAddEmptySpace();
+            lay1.CreateAndAddLabelRow2("Model Path (if external):");
+            var filepicker = new FilePicker { Title = "Load Model from Zip File", FileAction = Eto.FileAction.OpenFile };
+            filepicker.Filters.Add(new FileFilter("Zip File", new string[] { ".zip" }));
+            filepicker.FilePathChanged += (s, e) =>
+            {
+                Model.ModelPath = filepicker.FilePath;
+                Model.ModelName = Path.GetFileNameWithoutExtension(Model.ModelPath);
+            };
+            lay1.CreateAndAddControlRow(filepicker);
+            lay1.CreateAndAddDescriptionRow("Only use the above to locate the model file if it is stored outside the simulation file and you're opening it from a different location. To use and configure a different model, use the Model Configuration Wizard.");
+            lay1.CreateAndAddEmptySpace();
+            lay1.CreateAndAddButtonRow("View Help", null, (btn, e) =>
             {
                 "http://dwsim.inforside.com.br/wiki/index.php?title=Neural_Network_Unit_Operation".OpenURL();
             });
-
-            c.CreateAndAddEmptySpace();
-
-            c.CreateAndAddButtonRow("About", null, (btn, e) =>
+            lay1.CreateAndAddEmptySpace();
+            lay1.CreateAndAddButtonRow("About", null, (btn, e) =>
             {
                 Eto.Forms.Application.Instance.Invoke(() =>
                 {
@@ -289,7 +329,103 @@ namespace DWSIM.UnitOperations
                 });
             });
 
+            dp1.Content = lay1;
+
+            var lay2 = new TableLayout();
+            var btn1 = new Button { Text = "Update" };
+            var sed = new Eto.Forms.Controls.Scintilla.Shared.ScintillaControl();
+            sed.ScriptText = DataTransferScript;
+            btn1.Click += (s, e) => DataTransferScript = sed.ScriptText;
+            lay2.Rows.Add(btn1);
+            lay2.Rows.Add(sed);
+            dp4.Content = lay2;
+
+            var stacks = PopulateMappings();
+
+            dp2.Content = new Scrollable { Content = stacks[0], Border = BorderType.None, ExpandContentWidth = true };
+            dp3.Content = new Scrollable { Content = stacks[1], Border = BorderType.None, ExpandContentWidth = true };
+
         }
+
+        private TableLayout[] PopulateMappings()
+        {
+
+            List<string> props1, props2, props1Names, props2Names;
+
+            var msprops1 = new MaterialStream("", "", FlowSheet, null).GetProperties(PropertyType.ALL);
+            var esprops1 = new EnergyStream().GetProperties(PropertyType.ALL);
+            var msprops2 = new MaterialStream("", "", FlowSheet, null).GetProperties(PropertyType.WR);
+
+            var p1 = new List<string>();
+            p1.Add("");
+            p1.AddRange(msprops1);
+            p1.AddRange(esprops1);
+            props1 = p1.ToList();
+
+            var p2 = new List<string>();
+            p2.Add("");
+            p2.AddRange(msprops2);
+            p2.AddRange(esprops1);
+            props2 = p2.ToList();
+
+            props1Names = props1.Select(x => FlowSheet.GetTranslatedString(x)).ToList();
+            props2Names = props2.Select(x => FlowSheet.GetTranslatedString(x)).ToList();
+
+            var ports = new string[] { "", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }.ToList();
+
+            var stack1 = new TableLayout();
+            var stack2 = new TableLayout();
+
+            for (var i = 0; i < InputMaps.Count(); i++)
+            {
+                var imap = InputMaps[i];
+                var layout = UI.Shared.Common.GetDefaultContainer();
+                layout.CreateAndAddLabelRow("Variable: " + Model.Parameters.Labels[i]);
+                layout.CreateAndAddDropDownRow("Port", ports, ports.IndexOf(imap.Item1), (s, e) =>
+                {
+                    imap = InputMaps[i];
+                    InputMaps[i] = new Tuple<string, string, string, string, string>(ports[s.SelectedIndex], imap.Item2, imap.Item3, "", "");
+                });
+                layout.CreateAndAddDropDownRow("Property", props1Names, props1.IndexOf(imap.Item2), (s, e) =>
+                {
+                    imap = InputMaps[i];
+                    InputMaps[i] = new Tuple<string, string, string, string, string>(imap.Item1, props1[s.SelectedIndex], imap.Item3, "", "");
+                });
+                layout.CreateAndAddStringEditorRow("Units", imap.Item3, (s, e) =>
+                {
+                    imap = InputMaps[i];
+                    InputMaps[i] = new Tuple<string, string, string, string, string>(imap.Item1, imap.Item2, s.Text, "", "");
+                });
+                stack1.Rows.Add(layout);
+            }
+
+            for (var i = 0; i < OutputMaps.Count(); i++)
+            {
+                var imap = OutputMaps[i];
+                var layout = UI.Shared.Common.GetDefaultContainer();
+                layout.CreateAndAddLabelRow("Variable: " + Model.Parameters.Labels_Outputs[i]);
+                layout.CreateAndAddDropDownRow("Port", ports, ports.IndexOf(imap.Item1), (s, e) =>
+                {
+                    imap = OutputMaps[i];
+                    OutputMaps[i] = new Tuple<string, string, string, string, string>(ports[s.SelectedIndex], imap.Item2, imap.Item3, "", "");
+                });
+                layout.CreateAndAddDropDownRow("Property", props2Names, props2.IndexOf(imap.Item2), (s, e) =>
+                {
+                    imap = OutputMaps[i];
+                    OutputMaps[i] = new Tuple<string, string, string, string, string>(imap.Item1, props1[s.SelectedIndex], imap.Item3, "", "");
+                });
+                layout.CreateAndAddStringEditorRow("Units", imap.Item3, (s, e) =>
+                {
+                    imap = OutputMaps[i];
+                    OutputMaps[i] = new Tuple<string, string, string, string, string>(imap.Item1, imap.Item2, s.Text, "", "");
+                });
+                stack2.Rows.Add(layout);
+            }
+
+            return new[] { stack1, stack2 };
+
+        }
+
 
         public object ReturnInstance(string typename)
         {
@@ -396,12 +532,6 @@ namespace DWSIM.UnitOperations
             {
                 case "Status":
                     if (Calculated) return "Solved"; else return "Not Solved";
-                case "Mass Balance Residual":
-                    return mbal;
-                case "Pressure Balance Residual":
-                    return pbal;
-                case "Energy Balance Residual":
-                    return ebal;
                 default:
                     return 0.0;
             }
@@ -512,7 +642,7 @@ namespace DWSIM.UnitOperations
 
         public Tuple<string, string, string, string, string> GetInputVariableMap(string varname)
         {
-            return InputMaps[Model.Parameters.Labels.IndexOf(varname)];        
+            return InputMaps[Model.Parameters.Labels.IndexOf(varname)];
         }
 
         public Tuple<string, string, string, string, string> GetOutputVariableMap(string varname)

@@ -947,9 +947,12 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
                 {
                     try
                     {
-                        using (var ms = new MemoryStream())
+                        using (MemoryStream ms = new MemoryStream())
+                        using (FileStream file = new FileStream(CurrentModel.ModelPath, FileMode.Open, FileAccess.Read))
                         {
-                            Classes.Utils.SaveGraphToZipStream(CurrentModel.session, CurrentModel, ms);
+                            byte[] bytes = new byte[file.Length];
+                            file.Read(bytes, 0, (int)file.Length);
+                            ms.Write(bytes, 0, (int)file.Length);
                             SimObject.Model = CurrentModel;
                             ms.Position = 0;
                             SimObject.Model.SerializedModelData = Classes.Utils.StreamToBase64(ms);
