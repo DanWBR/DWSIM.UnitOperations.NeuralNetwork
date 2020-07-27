@@ -518,12 +518,12 @@ namespace DWSIM.UnitOperations
 
         public override string[] GetDefaultProperties()
         {
-            return new string[] { "Status", "Mass Balance Residual", "Pressure Balance Residual", "Energy Balance Residual" };
+            return new string[] { "Status" };
         }
 
         public override string[] GetProperties(PropertyType proptype)
         {
-            return new string[] { "Status", "Mass Balance Residual", "Pressure Balance Residual", "Energy Balance Residual" };
+            return new string[] { "Status" };
         }
 
         public override object GetPropertyValue(string prop, IUnitsOfMeasure su = null)

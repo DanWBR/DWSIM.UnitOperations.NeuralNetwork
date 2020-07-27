@@ -61,6 +61,15 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Classes
 
         }
 
+        public string Summary()
+        {
+            var d1 = SerializedModelData;
+            SerializedModelData = "";
+            var data = Newtonsoft.Json.JsonConvert.SerializeObject(this, Newtonsoft.Json.Formatting.Indented);
+            SerializedModelData = d1;
+            return data;
+        }
+
         public List<XElement> SaveData()
         {
             var elements = XMLSerializer.XMLSerializer.Serialize(this);
