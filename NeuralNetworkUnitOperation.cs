@@ -49,9 +49,6 @@ namespace DWSIM.UnitOperations
 
         public List<Tuple<string, string, string, string, string>> OutputMaps = new List<Tuple<string, string, string, string, string>>();
 
-        [XmlIgnore]
-        private Session session;
-
         // standard props
 
         public override bool MobileCompatible { get => false; }
@@ -418,28 +415,28 @@ namespace DWSIM.UnitOperations
         public override void Calculate(object args = null)
         {
 
-            RunScript();
+            RunDataTransferScript();
 
-            if (session == null)
+            if (Model.session == null)
             {
                 if (Model.ModelSource == ANNModel.ModelSourceType.FileSystem)
                 {
-                    session = utils.LoadGraphFromZip(Model.ModelPath);
+                    Model.session = utils.LoadGraphFromZip(Model.ModelPath);
                 }
                 else
                 {
                     using (var ms = utils.Base64ToStream(Model.SerializedModelData))
                     {
-                        session = utils.LoadGraphFromStream(ms);
+                        Model.session = utils.LoadGraphFromStream(ms);
                     }
                 }
             }
 
-            session.graph.as_default();
+            Model.session.graph.as_default();
 
-            var outlayer = session.graph.get_tensor_by_name("Train/out:0");
-            var X = session.graph.get_tensor_by_name("Train/X:0");
-            var Y = session.graph.get_tensor_by_name("Train/Y:0");
+            var outlayer = Model.session.graph.get_tensor_by_name(Model.Parameters.TensorName_Output);
+            var X = Model.session.graph.get_tensor_by_name(Model.Parameters.TensorName_X);
+            var Y = Model.session.graph.get_tensor_by_name(Model.Parameters.TensorName_Y);
 
             var nt = Model.Parameters.Labels.Count;
             var no = Model.Parameters.Labels_Outputs.Count;
@@ -468,7 +465,7 @@ namespace DWSIM.UnitOperations
                 }
             }
 
-            var pred_scaled = session.run(outlayer, (X, input_scaled));
+            var pred_scaled = Model.session.run(outlayer, (X, input_scaled));
 
             var pred_unscaled = new NDArray(np.float32, pred_scaled.shape);
 
@@ -493,7 +490,7 @@ namespace DWSIM.UnitOperations
 
         }
 
-        private float GetInputVariableValue(int index)
+        public float GetInputVariableValue(int index)
         {
             var imap = InputMaps[index];
             var port = int.Parse(imap.Item1) - 1;
@@ -503,7 +500,7 @@ namespace DWSIM.UnitOperations
             return (float)FlowSheet.SimulationObjects[objID].GetPropertyValue(propID).ToString().ToDoubleFromCurrent().ConvertFromSI(units);
         }
 
-        private void SetOutputVariableValue(int index, float value)
+        public void SetOutputVariableValue(int index, float value)
         {
             var omap = OutputMaps[index];
             var port = int.Parse(omap.Item1) - 1;
@@ -513,22 +510,17 @@ namespace DWSIM.UnitOperations
             FlowSheet.SimulationObjects[objID].SetPropertyValue(propID, ((double)value).ConvertToSI(units));
         }
 
-        protected override void Dispose(bool disposing)
+        public Tuple<string, string, string, string, string> GetInputVariableMap(string varname)
         {
-            // Check to see if Dispose has already been called.
-            if (!disposedValue)
-            {
-                if (session != null)
-                {
-                    session.Dispose();
-                    session = null;
-                }
-                //Note disposing has been done.
-                disposedValue = true;
-            }
+            return InputMaps[Model.Parameters.Labels.IndexOf(varname)];        
         }
 
-        private void RunScript()
+        public Tuple<string, string, string, string, string> GetOutputVariableMap(string varname)
+        {
+            return OutputMaps[Model.Parameters.Labels_Outputs.IndexOf(varname)];
+        }
+
+        public void RunDataTransferScript()
         {
 
             ScriptScope scope;
@@ -561,6 +553,8 @@ namespace DWSIM.UnitOperations
                 source = null;
             }
         }
+
+
 
     }
 }

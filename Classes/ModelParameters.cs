@@ -39,6 +39,12 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Classes
 
         public  List<string> Labels_Outputs { get; set; } = new List<string>();
 
+        public string TensorName_X { get; set; } = "Train/X:0";
+
+        public string TensorName_Y { get; set; } = "Train/Y:0";
+
+        public string TensorName_Output { get; set; } = "Train/out:0";
+
         public bool LoadData(List<XElement> data)
         {
             return XMLSerializer.XMLSerializer.Deserialize(this, data);
