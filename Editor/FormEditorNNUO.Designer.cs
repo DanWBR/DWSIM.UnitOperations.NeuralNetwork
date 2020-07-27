@@ -84,6 +84,8 @@
             this.rtbAnnotations = new Extended.Windows.Forms.RichTextBoxExtended();
             this.button1 = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.tabPage10 = new System.Windows.Forms.TabPage();
+            this.tbSummary = new System.Windows.Forms.TextBox();
             this.GroupBox5.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -102,6 +104,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.gridOutputMaps)).BeginInit();
             this.tabPage9.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            this.tabPage10.SuspendLayout();
             this.SuspendLayout();
             // 
             // GroupBox5
@@ -223,6 +226,7 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage9);
+            this.tabControl1.Controls.Add(this.tabPage10);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Location = new System.Drawing.Point(10, 143);
             this.tabControl1.Name = "tabControl1";
@@ -671,6 +675,27 @@
             this.openFileDialog1.AddExtension = false;
             this.openFileDialog1.Filter = "Zip Files|*.zip";
             // 
+            // tabPage10
+            // 
+            this.tabPage10.Controls.Add(this.tbSummary);
+            this.tabPage10.Location = new System.Drawing.Point(4, 22);
+            this.tabPage10.Name = "tabPage10";
+            this.tabPage10.Size = new System.Drawing.Size(378, 282);
+            this.tabPage10.TabIndex = 4;
+            this.tabPage10.Text = "Model Summary";
+            this.tabPage10.UseVisualStyleBackColor = true;
+            // 
+            // tbSummary
+            // 
+            this.tbSummary.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbSummary.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbSummary.Location = new System.Drawing.Point(0, 0);
+            this.tbSummary.Multiline = true;
+            this.tbSummary.Name = "tbSummary";
+            this.tbSummary.ReadOnly = true;
+            this.tbSummary.Size = new System.Drawing.Size(378, 282);
+            this.tbSummary.TabIndex = 0;
+            // 
             // FormEditorNNUO
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -706,6 +731,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.gridOutputMaps)).EndInit();
             this.tabPage9.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
+            this.tabPage10.ResumeLayout(false);
+            this.tabPage10.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -764,5 +791,7 @@
         private System.Windows.Forms.TabPage tabPage9;
         internal ScintillaNET.Scintilla txtScript;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TabPage tabPage10;
+        private System.Windows.Forms.TextBox tbSummary;
     }
 }

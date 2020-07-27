@@ -2,13 +2,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 using DWSIM.Interfaces;
-using DWSIM.Interfaces.Enums.GraphicObjects;
 using Eto.Forms;
 using c = DWSIM.UI.Shared.Common;
 
-using cv = DWSIM.SharedClasses.SystemsOfUnits.Converter;
-using DWSIM.Thermodynamics.Streams;
-using DWSIM.UI.Desktop.Shared;
 using DWSIM.UI.Shared;
 
 using DWSIM.ExtensionMethods;
@@ -19,15 +15,7 @@ using System.Collections.Generic;
 using DWSIM.CrossPlatform.UI.Controls.ReoGrid;
 using DWSIM.UnitOperations.NeuralNetwork.Classes;
 
-using NumSharp;
-using Tensorflow;
-using Tensorflow.Gradients;
-using static Tensorflow.Binding;
-using System.Diagnostics;
-
-using System.IO.Compression;
 using OxyPlot;
-using OxyPlot.Axes;
 using OxyPlot.Series;
 
 namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
@@ -1212,6 +1200,7 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
             {
                 SimObject.Model = CurrentModel;
                 SimObject.InitializeMappings();
+                SimObject.UpdateEditForm();
                 page.Close();
             };
 

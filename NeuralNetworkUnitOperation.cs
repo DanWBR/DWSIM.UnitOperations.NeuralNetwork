@@ -283,11 +283,13 @@ namespace DWSIM.UnitOperations
             var dp2 = new DocumentPage { Closable = false, Text = "Input Mappings" };
             var dp3 = new DocumentPage { Closable = false, Text = "Output Mappings" };
             var dp4 = new DocumentPage { Closable = false, Text = "Data Transfer Script" };
+            var dp5 = new DocumentPage { Closable = false, Text = "Model Summary" };
 
             dc.Pages.Add(dp1);
             dc.Pages.Add(dp2);
             dc.Pages.Add(dp3);
             dc.Pages.Add(dp4);
+            dc.Pages.Add(dp5);
 
             c.CreateAndAddControlRow(dc);
 
@@ -346,6 +348,10 @@ namespace DWSIM.UnitOperations
 
             dp2.Content = new Scrollable { Content = stacks[0], Border = BorderType.None, ExpandContentWidth = true };
             dp3.Content = new Scrollable { Content = stacks[1], Border = BorderType.None, ExpandContentWidth = true };
+
+            var layt = new TableLayout();
+            layt.CreateAndAddControlRow(new TextArea { Text = Model.Summary(), ReadOnly = true, Font = new Font(FontFamilies.Monospace, 10.0f) }); ;
+            dp5.Content = layt; 
 
         }
 

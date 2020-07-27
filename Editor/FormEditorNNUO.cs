@@ -215,6 +215,8 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Editors
 
             txtScript.Text = SimObject.DataTransferScript;
 
+            tbSummary.Text = SimObject.Model.Summary();
+
             Loaded = true;
 
         }
