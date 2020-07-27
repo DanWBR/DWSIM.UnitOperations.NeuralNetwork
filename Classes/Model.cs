@@ -50,10 +50,19 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Classes
         // fields
 
         [XmlIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public Session session;
 
+        [XmlIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public NDArray x_train, y_train, x_test, y_test, yp_train, yp_test;
+
+        [XmlIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public NDArray x_train_unscaled, y_train_unscaled, x_test_unscaled, y_test_unscaled, yp_train_unscaled, yp_test_unscaled;
+
+        [XmlIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public int n_samples, n_x, n_y;
 
         public ANNModel()
