@@ -187,6 +187,18 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Classes
             tf_with(tf.variable_scope("Train"), delegate
             {
 
+                if (flowsheet != null)
+                {
+                    flowsheet.ShowMessage("Training Started...", IFlowsheet.MessageType.Information);
+                }
+                else
+                {
+                    Application.Instance.Invoke(() =>
+                    {
+                        ta.Append("Training Started..." + nl, true);
+                    });
+                }
+
                 // tf Graph Input
 
                 var X = tf.placeholder(tf.float32, shape: (-1, n_x), name: "X");
