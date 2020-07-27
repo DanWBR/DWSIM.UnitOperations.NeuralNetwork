@@ -978,7 +978,11 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
             var filepicker = new FilePicker { Title = "Load Model from Zip File", FileAction = Eto.FileAction.OpenFile };
             filepicker.Filters.Add(new FileFilter("Zip File", new string[] { ".zip" }));
 
-            filepicker.FilePathChanged += (s, e) => CurrentModel.ModelPath = filepicker.FilePath;
+            filepicker.FilePathChanged += (s, e) =>
+            {
+                CurrentModel.ModelPath = filepicker.FilePath;
+                CurrentModel.ModelName = Path.GetFileNameWithoutExtension(CurrentModel.ModelPath);
+            };
 
             dl.CreateAndAddControlRow(filepicker);
 
@@ -1203,6 +1207,8 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
             };
             page.finishAction = () =>
             {
+                SimObject.Model = CurrentModel;
+                SimObject.InitializeMappings();
                 page.Close();
             };
 
@@ -1215,6 +1221,11 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
             dl.Width = Width;
 
             var p = CurrentModel.Parameters;
+
+            dl.CreateAndAddStringEditorRow("Model Name", CurrentModel.ModelName, (tb, e) =>
+            {
+                CurrentModel.ModelName = tb.Text;
+            });
 
             dl.CreateAndAddTextBoxRow(nf, "Minimum Scaled Value", p.MinScale, (tb, e) =>
             {
