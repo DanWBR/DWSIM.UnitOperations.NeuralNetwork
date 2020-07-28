@@ -112,7 +112,7 @@
             this.Name = "FormAbout";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Pipe Network Unit Operation";
+            this.Text = "Neural Network Unit Operation";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -166,8 +166,8 @@ namespace DWSIM.UnitOperations
                     {
                         GraphicObject.InputConnectors[i].Position = new Point(x, y + (float)(i + 1) / 10f * h);
                         GraphicObject.OutputConnectors[i].Position = new Point(x + w, y + (float)(i + 1) / 10f * h);
-                        GraphicObject.InputConnectors[i].ConnectorName = "Inlet Energy 1 (Port 11)" + (i + 1).ToString();
-                        GraphicObject.OutputConnectors[i].ConnectorName = "Outlet Energy 1 (Port 11)" + (i + 1).ToString();
+                        GraphicObject.InputConnectors[i].ConnectorName = "Inlet Energy 1 (Port 11)";
+                        GraphicObject.OutputConnectors[i].ConnectorName = "Outlet Energy 1 (Port 11)";
                     }
                 }
                 else
@@ -193,13 +193,13 @@ namespace DWSIM.UnitOperations
                         myIC.Position = new Point(x, y + (float)(i + 1) / 10f * h);
                         myIC.Type = ConType.ConEn;
                         myIC.Direction = ConDir.Right;
-                        myIC.ConnectorName = "Inlet Energy 1 (Port 11)" + (i + 1).ToString();
+                        myIC.ConnectorName = "Inlet Energy 1 (Port 11)";
                         GraphicObject.InputConnectors.Add(myIC);
                         var myOC = new ConnectionPoint();
                         myOC.Position = new Point(x + w, y + (float)(i + 1) / 10f * h);
                         myOC.Type = ConType.ConEn;
                         myOC.Direction = ConDir.Right;
-                        myOC.ConnectorName = "Outlet Energy 1 (Port 11)" + (i + 1).ToString();
+                        myOC.ConnectorName = "Outlet Energy 1 (Port 11)";
                         GraphicObject.OutputConnectors.Add(myOC);
                     }
                 }
