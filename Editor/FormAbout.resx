@@ -124,6 +124,18 @@ The data and information within this add-in has been obtained from a wide variet
 
 The results of calculations obtained from tthis software yield approximate results, which will not always be suitable for every application. The software is designed for use by trained professional personnel and is not a substitute for sound professional judgment. It is the sole responsibility of the user to validate the data presented by this software and to determine whether the results of this program are accurate and suitable for any specific purpose. No guarantee of accuracy or fitness for any purpose is expressed or implied.
 
-The author strongly recommends that the data be checked against other sources and/or methods before use and application. The author shall not be held liable for any direct, indirect, consequential or incidental damages incurred through use of the data or calculations.</value>
+The author strongly recommends that the data be checked against other sources and/or methods before use and application. The author shall not be held liable for any direct, indirect, consequential or incidental damages incurred through use of the data or calculations.
+
+LICENSE INFO
+
+This add-in is licensed under the GPLv3 License: https://github.com/DanWBR/DWSIM.UnitOperations.NeuralNetwork/blob/master/LICENSE
+
+TensorFlow.NET is Copyright (c) The SciSharp Team: https://github.com/SciSharp/TensorFlow.NET/blob/master/LICENSE
+
+TensorFlow is Copyright (c) The TensorFlow Authors: https://github.com/tensorflow/tensorflow/blob/master/LICENSE
+
+
+
+</value>
   </data>
 </root>

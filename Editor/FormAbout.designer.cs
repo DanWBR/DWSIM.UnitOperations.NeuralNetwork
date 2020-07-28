@@ -40,7 +40,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(564, 347);
+            this.button1.Location = new System.Drawing.Point(564, 471);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(90, 23);
             this.button1.TabIndex = 0;
@@ -82,7 +82,7 @@
             // 
             this.label3.Location = new System.Drawing.Point(19, 124);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(635, 209);
+            this.label3.Size = new System.Drawing.Size(635, 334);
             this.label3.TabIndex = 4;
             this.label3.Text = resources.GetString("label3.Text");
             // 
@@ -100,7 +100,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(666, 382);
+            this.ClientSize = new System.Drawing.Size(666, 506);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.lblVersion);
