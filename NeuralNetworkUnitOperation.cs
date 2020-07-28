@@ -53,6 +53,8 @@ namespace DWSIM.UnitOperations
 
         public List<Tuple<string, string, string, string, string>> OutputMaps = new List<Tuple<string, string, string, string, string>>();
 
+        public List<float> OutputVariablesValuesFromLastRun = new List<float>();
+
         // standard props
 
         public override bool MobileCompatible { get => false; }
@@ -149,30 +151,57 @@ namespace DWSIM.UnitOperations
             x = GraphicObject.X;
             y = GraphicObject.Y;
 
-            for (var i = 0; i < 10; i++)
+            for (var i = 0; i < 11; i++)
             {
-                if (GraphicObject.InputConnectors.Count == 10)
+                if (GraphicObject.InputConnectors.Count == 11)
                 {
-                    GraphicObject.InputConnectors[i].Position = new Point(x, y + (float)(i + 1) / 10f * h);
-                    GraphicObject.OutputConnectors[i].Position = new Point(x + w, y + (float)(i + 1) / 10f * h);
-                    GraphicObject.InputConnectors[i].ConnectorName = "Inlet Port #" + (i + 1).ToString();
-                    GraphicObject.OutputConnectors[i].ConnectorName = "Outlet Port #" + (i + 1).ToString();
+                    if (i < 10)
+                    {
+                        GraphicObject.InputConnectors[i].Position = new Point(x, y + (float)(i + 1) / 10f * h);
+                        GraphicObject.OutputConnectors[i].Position = new Point(x + w, y + (float)(i + 1) / 10f * h);
+                        GraphicObject.InputConnectors[i].ConnectorName = "Inlet Port #" + (i + 1).ToString();
+                        GraphicObject.OutputConnectors[i].ConnectorName = "Outlet Port #" + (i + 1).ToString();
+                    }
+                    else
+                    {
+                        GraphicObject.InputConnectors[i].Position = new Point(x, y + (float)(i + 1) / 10f * h);
+                        GraphicObject.OutputConnectors[i].Position = new Point(x + w, y + (float)(i + 1) / 10f * h);
+                        GraphicObject.InputConnectors[i].ConnectorName = "Inlet Energy Port #" + (i + 1).ToString();
+                        GraphicObject.OutputConnectors[i].ConnectorName = "Outlet Energy Port #" + (i + 1).ToString();
+                    }
                 }
                 else
                 {
-                    var myIC = new ConnectionPoint();
-                    myIC.Position = new Point(x, y + (float)(i + 1) / 10f * h);
-                    myIC.Type = ConType.ConIn;
-                    myIC.Direction = ConDir.Right;
-                    myIC.ConnectorName = "Inlet Port #" + (i + 1).ToString();
-                    GraphicObject.InputConnectors.Add(myIC);
-
-                    var myOC = new ConnectionPoint();
-                    myOC.Position = new Point(x + w, y + (float)(i + 1) / 10f * h);
-                    myOC.Type = ConType.ConOut;
-                    myOC.Direction = ConDir.Right;
-                    myOC.ConnectorName = "Outlet Port #" + (i + 1).ToString();
-                    GraphicObject.OutputConnectors.Add(myOC);
+                    if (i < 10)
+                    {
+                        var myIC = new ConnectionPoint();
+                        myIC.Position = new Point(x, y + (float)(i + 1) / 10f * h);
+                        myIC.Type = ConType.ConIn;
+                        myIC.Direction = ConDir.Right;
+                        myIC.ConnectorName = "Inlet Port #" + (i + 1).ToString();
+                        GraphicObject.InputConnectors.Add(myIC);
+                        var myOC = new ConnectionPoint();
+                        myOC.Position = new Point(x + w, y + (float)(i + 1) / 10f * h);
+                        myOC.Type = ConType.ConOut;
+                        myOC.Direction = ConDir.Right;
+                        myOC.ConnectorName = "Outlet Port #" + (i + 1).ToString();
+                        GraphicObject.OutputConnectors.Add(myOC);
+                    }
+                    else
+                    {
+                        var myIC = new ConnectionPoint();
+                        myIC.Position = new Point(x, y + (float)(i + 1) / 10f * h);
+                        myIC.Type = ConType.ConEn;
+                        myIC.Direction = ConDir.Right;
+                        myIC.ConnectorName = "Inlet Energy Port #" + (i + 1).ToString();
+                        GraphicObject.InputConnectors.Add(myIC);
+                        var myOC = new ConnectionPoint();
+                        myOC.Position = new Point(x + w, y + (float)(i + 1) / 10f * h);
+                        myOC.Type = ConType.ConEn;
+                        myOC.Direction = ConDir.Right;
+                        myOC.ConnectorName = "Outlet Energy Port #" + (i + 1).ToString();
+                        GraphicObject.OutputConnectors.Add(myOC);
+                    }
                 }
             }
 
@@ -335,7 +364,7 @@ namespace DWSIM.UnitOperations
 
             dp1.Content = lay1;
 
-            var lay2 = new TableLayout();
+            var lay2 = new TableLayout() { Spacing = new Size(10, 10), Padding = new Padding(5) };
             var btn1 = new Button { Text = "Update" };
             var sed = new Eto.Forms.Controls.Scintilla.Shared.ScintillaControl();
             sed.ScriptText = DataTransferScript;
@@ -351,7 +380,7 @@ namespace DWSIM.UnitOperations
 
             var layt = new TableLayout();
             layt.CreateAndAddControlRow(new TextArea { Text = Model.Summary(), ReadOnly = true, Font = new Font(FontFamilies.Monospace, 10.0f) }); ;
-            dp5.Content = layt; 
+            dp5.Content = layt;
 
         }
 
@@ -379,7 +408,7 @@ namespace DWSIM.UnitOperations
             props1Names = props1.Select(x => FlowSheet.GetTranslatedString(x)).ToList();
             props2Names = props2.Select(x => FlowSheet.GetTranslatedString(x)).ToList();
 
-            var ports = new string[] { "", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }.ToList();
+            var ports = new string[] { "", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11" }.ToList();
 
             var stack1 = new TableLayout();
             var stack2 = new TableLayout();
@@ -388,21 +417,22 @@ namespace DWSIM.UnitOperations
             {
                 var imap = InputMaps[i];
                 var layout = UI.Shared.Common.GetDefaultContainer();
+                layout.Tag = i;
                 layout.CreateAndAddLabelRow("Variable: " + Model.Parameters.Labels[i]);
                 layout.CreateAndAddDropDownRow("Port", ports, ports.IndexOf(imap.Item1), (s, e) =>
                 {
-                    imap = InputMaps[i];
-                    InputMaps[i] = new Tuple<string, string, string, string, string>(ports[s.SelectedIndex], imap.Item2, imap.Item3, "", "");
+                    imap = InputMaps[(int)layout.Tag];
+                    InputMaps[(int)layout.Tag] = new Tuple<string, string, string, string, string>(ports[s.SelectedIndex], imap.Item2, imap.Item3, "", "");
                 });
                 layout.CreateAndAddDropDownRow("Property", props1Names, props1.IndexOf(imap.Item2), (s, e) =>
                 {
-                    imap = InputMaps[i];
-                    InputMaps[i] = new Tuple<string, string, string, string, string>(imap.Item1, props1[s.SelectedIndex], imap.Item3, "", "");
+                    imap = InputMaps[(int)layout.Tag];
+                    InputMaps[(int)layout.Tag] = new Tuple<string, string, string, string, string>(imap.Item1, props1[s.SelectedIndex], imap.Item3, "", "");
                 });
                 layout.CreateAndAddStringEditorRow("Units", imap.Item3, (s, e) =>
                 {
-                    imap = InputMaps[i];
-                    InputMaps[i] = new Tuple<string, string, string, string, string>(imap.Item1, imap.Item2, s.Text, "", "");
+                    imap = InputMaps[(int)layout.Tag];
+                    InputMaps[(int)layout.Tag] = new Tuple<string, string, string, string, string>(imap.Item1, imap.Item2, s.Text, "", "");
                 });
                 stack1.Rows.Add(layout);
             }
@@ -411,21 +441,22 @@ namespace DWSIM.UnitOperations
             {
                 var imap = OutputMaps[i];
                 var layout = UI.Shared.Common.GetDefaultContainer();
+                layout.Tag = i;
                 layout.CreateAndAddLabelRow("Variable: " + Model.Parameters.Labels_Outputs[i]);
                 layout.CreateAndAddDropDownRow("Port", ports, ports.IndexOf(imap.Item1), (s, e) =>
                 {
-                    imap = OutputMaps[i];
-                    OutputMaps[i] = new Tuple<string, string, string, string, string>(ports[s.SelectedIndex], imap.Item2, imap.Item3, "", "");
+                    imap = OutputMaps[(int)layout.Tag];
+                    OutputMaps[(int)layout.Tag] = new Tuple<string, string, string, string, string>(ports[s.SelectedIndex], imap.Item2, imap.Item3, "", "");
                 });
                 layout.CreateAndAddDropDownRow("Property", props2Names, props2.IndexOf(imap.Item2), (s, e) =>
                 {
-                    imap = OutputMaps[i];
-                    OutputMaps[i] = new Tuple<string, string, string, string, string>(imap.Item1, props1[s.SelectedIndex], imap.Item3, "", "");
+                    imap = OutputMaps[(int)layout.Tag];
+                    OutputMaps[(int)layout.Tag] = new Tuple<string, string, string, string, string>(imap.Item1, props1[s.SelectedIndex], imap.Item3, "", "");
                 });
                 layout.CreateAndAddStringEditorRow("Units", imap.Item3, (s, e) =>
                 {
-                    imap = OutputMaps[i];
-                    OutputMaps[i] = new Tuple<string, string, string, string, string>(imap.Item1, imap.Item2, s.Text, "", "");
+                    imap = OutputMaps[(int)layout.Tag];
+                    OutputMaps[(int)layout.Tag] = new Tuple<string, string, string, string, string>(imap.Item1, imap.Item2, s.Text, "", "");
                 });
                 stack2.Rows.Add(layout);
             }
@@ -526,22 +557,34 @@ namespace DWSIM.UnitOperations
 
         public override string[] GetDefaultProperties()
         {
-            return new string[] { "Status" };
+            var props = base.GetDefaultProperties().ToList();
+            props.Insert(0, "Status");
+            return props.ToArray();
         }
 
         public override string[] GetProperties(PropertyType proptype)
         {
-            return new string[] { "Status" };
+            var props = base.GetProperties(PropertyType.ALL).ToList();
+            props.Insert(0, "Status");
+            return props.ToArray();
         }
 
         public override object GetPropertyValue(string prop, IUnitsOfMeasure su = null)
         {
-            switch (prop)
+            var propval = base.GetPropertyValue(prop, su);
+            if (propval == null)
             {
-                case "Status":
-                    if (Calculated) return "Solved"; else return "Not Solved";
-                default:
-                    return 0.0;
+                switch (prop)
+                {
+                    case "Status":
+                        if (Calculated) return "Solved"; else return "Not Solved";
+                    default:
+                        return 0.0;
+                }
+            }
+            else
+            {
+                return propval;
             }
         }
 
@@ -621,8 +664,10 @@ namespace DWSIM.UnitOperations
                 }
             }
 
+            OutputVariablesValuesFromLastRun = new List<float>();
             for (var i = 0; i < pred_unscaled.shape[1]; i++)
             {
+                OutputVariablesValuesFromLastRun.Add(pred_unscaled[0][i]);
                 SetOutputVariableValue(i, pred_unscaled[0][i]);
             }
 
@@ -630,22 +675,70 @@ namespace DWSIM.UnitOperations
 
         public float GetInputVariableValue(int index)
         {
-            var imap = InputMaps[index];
-            var port = int.Parse(imap.Item1) - 1;
-            var propID = imap.Item2;
-            var units = imap.Item3;
-            var objID = GraphicObject.InputConnectors[port].AttachedConnector.AttachedFrom.Name;
-            return (float)FlowSheet.SimulationObjects[objID].GetPropertyValue(propID).ToString().ToDoubleFromCurrent().ConvertFromSI(units);
+            try
+            {
+                var imap = InputMaps[index];
+                var port = int.Parse(imap.Item1) - 1;
+                var propID = imap.Item2;
+                var units = imap.Item3;
+                var objID = GraphicObject.InputConnectors[port].AttachedConnector.AttachedFrom.Name;
+                if (GraphicObject.OutputConnectors[port].IsAttached)
+                {
+                    return (float)FlowSheet.SimulationObjects[objID].GetPropertyValue(propID).ToString().ToDoubleFromCurrent().ConvertFromSI(units);
+                }
+                else
+                {
+                    FlowSheet.ShowMessage(String.Format(GraphicObject.Tag + ": could not get value of input variable {0}. {1}",
+                    Model.Parameters.Labels_Outputs[index],
+                    "Variable is not mapped to a valid flowsheet object/property."), IFlowsheet.MessageType.Warning);
+                    return float.NaN;
+                }
+            }
+            catch (Exception ex)
+            {
+                FlowSheet.ShowMessage(String.Format(GraphicObject.Tag + ": could not get value of input variable {0}. {1}",
+                    Model.Parameters.Labels_Outputs[index], ex.Message), IFlowsheet.MessageType.GeneralError);
+                return float.NaN;
+            }
         }
 
         public void SetOutputVariableValue(int index, float value)
         {
-            var omap = OutputMaps[index];
-            var port = int.Parse(omap.Item1) - 1;
-            var propID = omap.Item2;
-            var units = omap.Item3;
-            var objID = GraphicObject.OutputConnectors[port].AttachedConnector.AttachedTo.Name;
-            FlowSheet.SimulationObjects[objID].SetPropertyValue(propID, ((double)value).ConvertToSI(units));
+            try
+            {
+                var omap = OutputMaps[index];
+                var port = int.Parse(omap.Item1) - 1;
+                var propID = omap.Item2;
+                var units = omap.Item3;
+                if (GraphicObject.OutputConnectors[port].IsAttached)
+                {
+                    var objID = GraphicObject.OutputConnectors[port].AttachedConnector.AttachedTo.Name;
+                    FlowSheet.SimulationObjects[objID].SetPropertyValue(propID, ((double)value).ConvertToSI(units));
+                }
+                else
+                {
+                    FlowSheet.ShowMessage(String.Format(GraphicObject.Tag + ": could not set output variable {0}={1}. {2}",
+                    Model.Parameters.Labels_Outputs[index],
+                    value.ToString(), "Variable is not mapped to a valid flowsheet object/property."), IFlowsheet.MessageType.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                FlowSheet.ShowMessage(String.Format(GraphicObject.Tag + ": could not set output variable {0}={1}. {2}",
+                    Model.Parameters.Labels_Outputs[index],
+                    value.ToString(), ex.Message), IFlowsheet.MessageType.GeneralError);
+            }
+        }
+
+        public void WriteOutputVariableTo(string varname, string objtag, string prop, string units)
+        {
+            var obj = FlowSheet.GetFlowsheetSimulationObject(objtag);
+            var propID = obj.GetProperties(PropertyType.ALL).Where(x => prop == FlowSheet.GetTranslatedString(x)).FirstOrDefault();
+            if (propID != null)
+            {
+                obj.SetPropertyValue(propID,
+                    OutputVariablesValuesFromLastRun[Model.Parameters.Labels_Outputs.IndexOf(varname)].ToString().ToDoubleFromCurrent().ConvertToSI(units));
+            }
         }
 
         public Tuple<string, string, string, string, string> GetInputVariableMap(string varname)
@@ -686,9 +779,6 @@ namespace DWSIM.UnitOperations
             finally
             {
                 engine.Runtime.Shutdown();
-                engine = null;
-                scope = null;
-                source = null;
             }
         }
 

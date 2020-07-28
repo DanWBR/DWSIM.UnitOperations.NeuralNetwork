@@ -96,6 +96,7 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Editors
 
             cbMS.Items.Add("");
             cbMS.Items.AddRange(SimObject.FlowSheet.SimulationObjects.Values.Where(x => x.GraphicObject.ObjectType == Interfaces.Enums.GraphicObjects.ObjectType.MaterialStream).Select(x2 => x2.GraphicObject.Tag).ToArray());
+            cbMS.Items.AddRange(SimObject.FlowSheet.SimulationObjects.Values.Where(x => x.GraphicObject.ObjectType == Interfaces.Enums.GraphicObjects.ObjectType.EnergyStream).Select(x2 => x2.GraphicObject.Tag).ToArray());
 
             ((DataGridViewComboBoxColumn)gridFeeds.Columns[2]).CellTemplate = cbMS;
             ((DataGridViewComboBoxColumn)gridProducts.Columns[2]).CellTemplate = cbMS;
@@ -154,7 +155,7 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Editors
             var cbPorts = new DataGridViewComboBoxCell();
 
             cbPorts.Items.Add("");
-            cbPorts.Items.AddRange(new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", });
+            cbPorts.Items.AddRange(new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11" });
 
             ((DataGridViewComboBoxColumn)gridInputMaps.Columns[1]).CellTemplate = cbPorts;
             ((DataGridViewComboBoxColumn)gridOutputMaps.Columns[1]).CellTemplate = cbPorts;

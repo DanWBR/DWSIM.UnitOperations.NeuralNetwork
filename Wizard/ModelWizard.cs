@@ -832,6 +832,7 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
             {
                 page.Close();
                 SimObject.UpdateEditForm();
+                if (!GlobalSettings.Settings.OldUI) SimObject.FlowSheet.UpdateOpenEditForms();
             };
 
             page.Title = "Neural Network Model Wizard";
@@ -1201,6 +1202,7 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
                 SimObject.Model = CurrentModel;
                 SimObject.InitializeMappings();
                 SimObject.UpdateEditForm();
+                if (!GlobalSettings.Settings.OldUI) SimObject.FlowSheet.UpdateOpenEditForms();
                 page.Close();
             };
 
