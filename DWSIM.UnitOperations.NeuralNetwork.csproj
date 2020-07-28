@@ -212,6 +212,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Extensions.cs" />
     <Compile Include="Classes\LocalSettings.cs" />
     <Compile Include="Classes\Model.cs" />
     <Compile Include="Classes\ModelParameters.cs" />

@@ -15,6 +15,7 @@ using static Tensorflow.Binding;
 using OxyPlot;
 using DWSIM.UI.Desktop.Mac.TouchBar;
 using System.Xml.Serialization;
+using System.Threading;
 
 namespace DWSIM.UnitOperations.NeuralNetwork.Classes
 {
@@ -116,7 +117,9 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Classes
         public void PrepareData()
         {
 
-            var transfdata = Data.Select(x => x.ToArray()).ToArray();
+            var data_shuffled = Data.Select(x => x.ToArray()).ToList();
+            data_shuffled.Shuffle();
+            var transfdata = data_shuffled.ToArray();
 
             Parameters.MinValues = new List<float>();
             Parameters.MaxValues = new List<float>();
