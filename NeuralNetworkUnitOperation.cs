@@ -159,15 +159,15 @@ namespace DWSIM.UnitOperations
                     {
                         GraphicObject.InputConnectors[i].Position = new Point(x, y + (float)(i + 1) / 10f * h);
                         GraphicObject.OutputConnectors[i].Position = new Point(x + w, y + (float)(i + 1) / 10f * h);
-                        GraphicObject.InputConnectors[i].ConnectorName = "Inlet Port #" + (i + 1).ToString();
-                        GraphicObject.OutputConnectors[i].ConnectorName = "Outlet Port #" + (i + 1).ToString();
+                        GraphicObject.InputConnectors[i].ConnectorName = "Inlet Material " + (i + 1).ToString() + " (Port " + (i + 1).ToString() + ")";
+                        GraphicObject.OutputConnectors[i].ConnectorName = "Outlet Material " + (i + 1).ToString() + " (Port " + (i + 1).ToString() + ")";
                     }
                     else
                     {
                         GraphicObject.InputConnectors[i].Position = new Point(x, y + (float)(i + 1) / 10f * h);
                         GraphicObject.OutputConnectors[i].Position = new Point(x + w, y + (float)(i + 1) / 10f * h);
-                        GraphicObject.InputConnectors[i].ConnectorName = "Inlet Energy Port #" + (i + 1).ToString();
-                        GraphicObject.OutputConnectors[i].ConnectorName = "Outlet Energy Port #" + (i + 1).ToString();
+                        GraphicObject.InputConnectors[i].ConnectorName = "Inlet Energy 1 (Port 11)" + (i + 1).ToString();
+                        GraphicObject.OutputConnectors[i].ConnectorName = "Outlet Energy 1 (Port 11)" + (i + 1).ToString();
                     }
                 }
                 else
@@ -178,13 +178,13 @@ namespace DWSIM.UnitOperations
                         myIC.Position = new Point(x, y + (float)(i + 1) / 10f * h);
                         myIC.Type = ConType.ConIn;
                         myIC.Direction = ConDir.Right;
-                        myIC.ConnectorName = "Inlet Port #" + (i + 1).ToString();
+                        myIC.ConnectorName = "Inlet Material " + (i + 1).ToString() + " (Port " + (i + 1).ToString() + ")";
                         GraphicObject.InputConnectors.Add(myIC);
                         var myOC = new ConnectionPoint();
                         myOC.Position = new Point(x + w, y + (float)(i + 1) / 10f * h);
                         myOC.Type = ConType.ConOut;
                         myOC.Direction = ConDir.Right;
-                        myOC.ConnectorName = "Outlet Port #" + (i + 1).ToString();
+                        myOC.ConnectorName = "Outlet Material " + (i + 1).ToString() + " (Port " + (i + 1).ToString() + ")";
                         GraphicObject.OutputConnectors.Add(myOC);
                     }
                     else
@@ -193,13 +193,13 @@ namespace DWSIM.UnitOperations
                         myIC.Position = new Point(x, y + (float)(i + 1) / 10f * h);
                         myIC.Type = ConType.ConEn;
                         myIC.Direction = ConDir.Right;
-                        myIC.ConnectorName = "Inlet Energy Port #" + (i + 1).ToString();
+                        myIC.ConnectorName = "Inlet Energy 1 (Port 11)" + (i + 1).ToString();
                         GraphicObject.InputConnectors.Add(myIC);
                         var myOC = new ConnectionPoint();
                         myOC.Position = new Point(x + w, y + (float)(i + 1) / 10f * h);
                         myOC.Type = ConType.ConEn;
                         myOC.Direction = ConDir.Right;
-                        myOC.ConnectorName = "Outlet Energy Port #" + (i + 1).ToString();
+                        myOC.ConnectorName = "Outlet Energy 1 (Port 11)" + (i + 1).ToString();
                         GraphicObject.OutputConnectors.Add(myOC);
                     }
                 }
