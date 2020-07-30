@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormEditorNNUO));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.GroupBox5 = new System.Windows.Forms.GroupBox();
             this.lblTag = new System.Windows.Forms.TextBox();
             this.lblConnectedTo = new System.Windows.Forms.Label();
@@ -80,12 +80,12 @@
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage9 = new System.Windows.Forms.TabPage();
             this.txtScript = new ScintillaNET.Scintilla();
+            this.tabPage10 = new System.Windows.Forms.TabPage();
+            this.tbSummary = new System.Windows.Forms.TextBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.rtbAnnotations = new Extended.Windows.Forms.RichTextBoxExtended();
             this.button1 = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.tabPage10 = new System.Windows.Forms.TabPage();
-            this.tbSummary = new System.Windows.Forms.TextBox();
             this.GroupBox5.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -103,8 +103,8 @@
             this.tabPage8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridOutputMaps)).BeginInit();
             this.tabPage9.SuspendLayout();
-            this.tabPage3.SuspendLayout();
             this.tabPage10.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // GroupBox5
@@ -490,13 +490,13 @@
             this.gridInputMaps.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
             this.gridInputMaps.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText;
             this.gridInputMaps.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            this.gridInputMaps.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            this.gridInputMaps.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.gridInputMaps.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gridInputMaps.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column9,
@@ -561,13 +561,13 @@
             this.gridOutputMaps.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
             this.gridOutputMaps.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText;
             this.gridOutputMaps.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            this.gridOutputMaps.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            this.gridOutputMaps.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.gridOutputMaps.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gridOutputMaps.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn2,
@@ -637,6 +637,28 @@
             this.txtScript.TabIndex = 8;
             this.txtScript.TextChanged += new System.EventHandler(this.txtScript_TextChanged);
             // 
+            // tabPage10
+            // 
+            this.tabPage10.Controls.Add(this.tbSummary);
+            this.tabPage10.Location = new System.Drawing.Point(4, 22);
+            this.tabPage10.Name = "tabPage10";
+            this.tabPage10.Size = new System.Drawing.Size(378, 282);
+            this.tabPage10.TabIndex = 4;
+            this.tabPage10.Text = "Model Summary";
+            this.tabPage10.UseVisualStyleBackColor = true;
+            // 
+            // tbSummary
+            // 
+            this.tbSummary.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbSummary.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbSummary.Location = new System.Drawing.Point(0, 0);
+            this.tbSummary.Multiline = true;
+            this.tbSummary.Name = "tbSummary";
+            this.tbSummary.ReadOnly = true;
+            this.tbSummary.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.tbSummary.Size = new System.Drawing.Size(378, 282);
+            this.tbSummary.TabIndex = 0;
+            // 
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.rtbAnnotations);
@@ -675,32 +697,10 @@
             this.openFileDialog1.AddExtension = false;
             this.openFileDialog1.Filter = "Zip Files|*.zip";
             // 
-            // tabPage10
-            // 
-            this.tabPage10.Controls.Add(this.tbSummary);
-            this.tabPage10.Location = new System.Drawing.Point(4, 22);
-            this.tabPage10.Name = "tabPage10";
-            this.tabPage10.Size = new System.Drawing.Size(378, 282);
-            this.tabPage10.TabIndex = 4;
-            this.tabPage10.Text = "Model Summary";
-            this.tabPage10.UseVisualStyleBackColor = true;
-            // 
-            // tbSummary
-            // 
-            this.tbSummary.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbSummary.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbSummary.Location = new System.Drawing.Point(0, 0);
-            this.tbSummary.Multiline = true;
-            this.tbSummary.Name = "tbSummary";
-            this.tbSummary.ReadOnly = true;
-            this.tbSummary.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tbSummary.Size = new System.Drawing.Size(378, 282);
-            this.tbSummary.TabIndex = 0;
-            // 
             // FormEditorNNUO
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(405, 518);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.tabControl1);
@@ -731,9 +731,9 @@
             this.tabPage8.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridOutputMaps)).EndInit();
             this.tabPage9.ResumeLayout(false);
-            this.tabPage3.ResumeLayout(false);
             this.tabPage10.ResumeLayout(false);
             this.tabPage10.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
