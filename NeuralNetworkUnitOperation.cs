@@ -34,6 +34,7 @@ using DWSIM.CrossPlatform.UI.Controls.ReoGrid.IO.OpenXML.Schema;
 using Font = Eto.Drawing.Font;
 using DWSIM.UnitOperations.Streams;
 using System.Security.Cryptography;
+using DWSIM.CrossPlatform.UI.Controls.ReoGrid;
 
 namespace DWSIM.UnitOperations
 {
@@ -397,18 +398,24 @@ namespace DWSIM.UnitOperations
             p1.Add("");
             p1.AddRange(msprops1);
             p1.AddRange(esprops1);
-            props1 = p1.ToList();
 
             var p2 = new List<string>();
             p2.Add("");
             p2.AddRange(msprops2);
             p2.AddRange(esprops1);
+
+            var grid = (ReoGridControl)FlowSheet.GetSpreadsheetObject();
+            var sheets = grid.Worksheets.Select(x => x.Name).ToArray();
+            p1.AddRange(sheets);
+            p2.AddRange(sheets);
+
+            props1 = p1.ToList();
             props2 = p2.ToList();
 
             props1Names = props1.Select(x => FlowSheet.GetTranslatedString(x)).ToList();
             props2Names = props2.Select(x => FlowSheet.GetTranslatedString(x)).ToList();
 
-            var ports = new string[] { "", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11" }.ToList();
+            var ports = new string[] { "", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "S" }.ToList();
 
             var stack1 = new TableLayout();
             var stack2 = new TableLayout();
@@ -678,20 +685,28 @@ namespace DWSIM.UnitOperations
             try
             {
                 var imap = InputMaps[index];
-                var port = int.Parse(imap.Item1) - 1;
-                var propID = imap.Item2;
-                var units = imap.Item3;
-                var objID = GraphicObject.InputConnectors[port].AttachedConnector.AttachedFrom.Name;
-                if (GraphicObject.OutputConnectors[port].IsAttached)
+                if (imap.Item1 == "S")
                 {
-                    return (float)FlowSheet.SimulationObjects[objID].GetPropertyValue(propID).ToString().ToDoubleFromCurrent().ConvertFromSI(units);
+                    var grid = (ReoGridControl)FlowSheet.GetSpreadsheetObject();
+                    return float.Parse(grid.Worksheets[imap.Item2].Cells[imap.Item3].Data.ToString());
                 }
                 else
                 {
-                    FlowSheet.ShowMessage(String.Format(GraphicObject.Tag + ": could not get value of input variable {0}. {1}",
-                    Model.Parameters.Labels_Outputs[index],
-                    "Variable is not mapped to a valid flowsheet object/property."), IFlowsheet.MessageType.Warning);
-                    return float.NaN;
+                    var port = int.Parse(imap.Item1) - 1;
+                    var propID = imap.Item2;
+                    var units = imap.Item3;
+                    var objID = GraphicObject.InputConnectors[port].AttachedConnector.AttachedFrom.Name;
+                    if (GraphicObject.OutputConnectors[port].IsAttached)
+                    {
+                        return (float)FlowSheet.SimulationObjects[objID].GetPropertyValue(propID).ToString().ToDoubleFromCurrent().ConvertFromSI(units);
+                    }
+                    else
+                    {
+                        FlowSheet.ShowMessage(String.Format(GraphicObject.Tag + ": could not get value of input variable {0}. {1}",
+                        Model.Parameters.Labels_Outputs[index],
+                        "Variable is not mapped to a valid flowsheet object/property."), IFlowsheet.MessageType.Warning);
+                        return float.NaN;
+                    }
                 }
             }
             catch (Exception ex)
@@ -707,19 +722,27 @@ namespace DWSIM.UnitOperations
             try
             {
                 var omap = OutputMaps[index];
-                var port = int.Parse(omap.Item1) - 1;
-                var propID = omap.Item2;
-                var units = omap.Item3;
-                if (GraphicObject.OutputConnectors[port].IsAttached)
+                if (omap.Item1 == "S")
                 {
-                    var objID = GraphicObject.OutputConnectors[port].AttachedConnector.AttachedTo.Name;
-                    FlowSheet.SimulationObjects[objID].SetPropertyValue(propID, ((double)value).ConvertToSI(units));
+                    var grid = (ReoGridControl)FlowSheet.GetSpreadsheetObject();
+                    grid.Worksheets[omap.Item2].Cells[omap.Item3].Data = value;
                 }
                 else
                 {
-                    FlowSheet.ShowMessage(String.Format(GraphicObject.Tag + ": could not set output variable {0}={1}. {2}",
-                    Model.Parameters.Labels_Outputs[index],
-                    value.ToString(), "Variable is not mapped to a valid flowsheet object/property."), IFlowsheet.MessageType.Warning);
+                    var port = int.Parse(omap.Item1) - 1;
+                    var propID = omap.Item2;
+                    var units = omap.Item3;
+                    if (GraphicObject.OutputConnectors[port].IsAttached)
+                    {
+                        var objID = GraphicObject.OutputConnectors[port].AttachedConnector.AttachedTo.Name;
+                        FlowSheet.SimulationObjects[objID].SetPropertyValue(propID, ((double)value).ConvertToSI(units));
+                    }
+                    else
+                    {
+                        FlowSheet.ShowMessage(String.Format(GraphicObject.Tag + ": could not set output variable {0}={1}. {2}",
+                        Model.Parameters.Labels_Outputs[index],
+                        value.ToString(), "Variable is not mapped to a valid flowsheet object/property."), IFlowsheet.MessageType.Warning);
+                    }
                 }
             }
             catch (Exception ex)

@@ -40,6 +40,7 @@
     </Reference>
     <Reference Include="DWSIM.CrossPlatform.UI.Controls.ReoGrid">
       <HintPath>..\dwsim6\DistPackages\Windows\DWSIM.CrossPlatform.UI.Controls.ReoGrid.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DWSIM.Drawing.SkiaSharp">
       <HintPath>..\dwsim6\DistPackages\Windows\DWSIM.Drawing.SkiaSharp.dll</HintPath>
@@ -204,6 +205,10 @@
     <Reference Include="System.Xml" />
     <Reference Include="TensorFlow.NET, Version=0.15.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\TensorFlow.NET.0.15.1\lib\netstandard2.0\TensorFlow.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="unvell.ReoGrid">
+      <HintPath>..\dwsim6\DWSIM\References\ReoGrid.WinForms\unvell.ReoGrid.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="WeifenLuo.WinFormsUI.Docking">
       <HintPath>..\dwsim6\DistPackages\Windows\WeifenLuo.WinFormsUI.Docking.dll</HintPath>

@@ -15,6 +15,8 @@ using DWSIM.UnitOperations.Streams;
 using DWSIM.UnitOperations;
 using Tensorflow;
 using static Tensorflow.Binding;
+using cpui = DWSIM.CrossPlatform.UI.Controls.ReoGrid;
+using cui = unvell.ReoGrid;
 
 namespace DWSIM.UnitOperations.NeuralNetwork.Editors
 {
@@ -141,12 +143,30 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Editors
             p1.Add("");
             p1.AddRange(msprops1);
             p1.AddRange(esprops1);
-            props1 = p1.ToArray();
 
             var p2 = new List<string>();
             p2.Add("");
             p2.AddRange(msprops2);
             p2.AddRange(esprops1);
+
+            if (GlobalSettings.Settings.OldUI)
+            {
+                var grid = (cpui.ReoGridControl)SimObject.FlowSheet.GetSpreadsheetObject();
+                var sheets = grid.Worksheets.Select(x => x.Name).ToArray();
+                cbProps1.Items.AddRange(sheets);
+                cbProps2.Items.AddRange(sheets);
+                p1.AddRange(sheets);
+                p2.AddRange(sheets);
+            }
+            else
+            {
+                var grid = (cui.ReoGridControl)SimObject.FlowSheet.GetSpreadsheetObject();
+                var sheets = grid.Worksheets.Select(x => x.Name).ToArray();
+                p1.AddRange(sheets);
+                p2.AddRange(sheets);
+            }
+
+            props1 = p1.ToArray();
             props2 = p2.ToArray();
 
             ((DataGridViewComboBoxColumn)gridInputMaps.Columns[2]).CellTemplate = cbProps1;
@@ -155,7 +175,7 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Editors
             var cbPorts = new DataGridViewComboBoxCell();
 
             cbPorts.Items.Add("");
-            cbPorts.Items.AddRange(new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11" });
+            cbPorts.Items.AddRange(new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "S" });
 
             ((DataGridViewComboBoxColumn)gridInputMaps.Columns[1]).CellTemplate = cbPorts;
             ((DataGridViewComboBoxColumn)gridOutputMaps.Columns[1]).CellTemplate = cbPorts;
