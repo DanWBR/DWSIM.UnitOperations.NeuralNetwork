@@ -1,20 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using DWSIM.ExtensionMethods;
 using DWSIM.Interfaces;
 using DWSIM.Interfaces.Enums.GraphicObjects;
 using DWSIM.Thermodynamics.Streams;
 using DWSIM.UnitOperations.Streams;
-using DWSIM.UnitOperations;
-using Tensorflow;
-using static Tensorflow.Binding;
 using cpui = DWSIM.CrossPlatform.UI.Controls.ReoGrid;
 using cui = unvell.ReoGrid;
 
@@ -151,7 +145,7 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Editors
 
             if (GlobalSettings.Settings.OldUI)
             {
-                var grid = (cpui.ReoGridControl)SimObject.FlowSheet.GetSpreadsheetObject();
+                var grid = (cui.ReoGridControl)SimObject.FlowSheet.GetSpreadsheetObject();
                 var sheets = grid.Worksheets.Select(x => x.Name).ToArray();
                 cbProps1.Items.AddRange(sheets);
                 cbProps2.Items.AddRange(sheets);
@@ -160,7 +154,7 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Editors
             }
             else
             {
-                var grid = (cui.ReoGridControl)SimObject.FlowSheet.GetSpreadsheetObject();
+                var grid = (cpui.ReoGridControl)SimObject.FlowSheet.GetSpreadsheetObject();
                 var sheets = grid.Worksheets.Select(x => x.Name).ToArray();
                 p1.AddRange(sheets);
                 p2.AddRange(sheets);

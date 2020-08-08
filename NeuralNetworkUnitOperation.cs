@@ -1,5 +1,4 @@
 ﻿using DWSIM.Drawing.SkiaSharp.GraphicObjects;
-using DWSIM.DrawingTools.Point;
 using DWSIM.Interfaces;
 using DWSIM.Interfaces.Enums;
 using DWSIM.Interfaces.Enums.GraphicObjects;
@@ -12,29 +11,20 @@ using Eto.Forms;
 using System.Xml.Linq;
 using DWSIM.Thermodynamics.Streams;
 using DWSIM.ExtensionMethods;
-using cv = DWSIM.SharedClasses.SystemsOfUnits.Converter;
-using DWSIM.UI.Desktop.Editors;
-using System.Threading.Tasks;
 using DWSIM.UnitOperations.NeuralNetwork.Editors;
-using DWSIM.GlobalSettings;
 using DWSIM.UnitOperations.NeuralNetwork.Classes;
 using System.Reflection;
 using System.IO;
-using Tensorflow;
 using System.Xml.Serialization;
 using utils = DWSIM.UnitOperations.NeuralNetwork.Classes.Utils;
 using NumSharp;
-using System.Runtime.CompilerServices;
-using System.Diagnostics.Contracts;
-using System.ComponentModel;
 using Microsoft.Scripting.Hosting;
 using Eto.Drawing;
 using Point = DWSIM.DrawingTools.Point.Point;
-using DWSIM.CrossPlatform.UI.Controls.ReoGrid.IO.OpenXML.Schema;
 using Font = Eto.Drawing.Font;
 using DWSIM.UnitOperations.Streams;
-using System.Security.Cryptography;
-using DWSIM.CrossPlatform.UI.Controls.ReoGrid;
+using cpui = DWSIM.CrossPlatform.UI.Controls.ReoGrid;
+using cui = unvell.ReoGrid;
 
 namespace DWSIM.UnitOperations
 {
@@ -404,10 +394,20 @@ namespace DWSIM.UnitOperations
             p2.AddRange(msprops2);
             p2.AddRange(esprops1);
 
-            var grid = (ReoGridControl)FlowSheet.GetSpreadsheetObject();
-            var sheets = grid.Worksheets.Select(x => x.Name).ToArray();
-            p1.AddRange(sheets);
-            p2.AddRange(sheets);
+            if (GlobalSettings.Settings.OldUI)
+            {
+                var grid = (cui.ReoGridControl)FlowSheet.GetSpreadsheetObject();
+                var sheets = grid.Worksheets.Select(x => x.Name).ToArray();
+                p1.AddRange(sheets);
+                p2.AddRange(sheets);
+            }
+            else
+            {
+                var grid = (cpui.ReoGridControl)FlowSheet.GetSpreadsheetObject();
+                var sheets = grid.Worksheets.Select(x => x.Name).ToArray();
+                p1.AddRange(sheets);
+                p2.AddRange(sheets);
+            }
 
             props1 = p1.ToList();
             props2 = p2.ToList();
@@ -687,8 +687,16 @@ namespace DWSIM.UnitOperations
                 var imap = InputMaps[index];
                 if (imap.Item1 == "S")
                 {
-                    var grid = (ReoGridControl)FlowSheet.GetSpreadsheetObject();
-                    return float.Parse(grid.Worksheets[imap.Item2].Cells[imap.Item3].Data.ToString());
+                    if (GlobalSettings.Settings.OldUI)
+                    {
+                        var grid = (cui.ReoGridControl)FlowSheet.GetSpreadsheetObject();
+                        return float.Parse(grid.Worksheets[imap.Item2].Cells[imap.Item3].Data.ToString());
+                    }
+                    else
+                    {
+                        var grid = (cpui.ReoGridControl)FlowSheet.GetSpreadsheetObject();
+                        return float.Parse(grid.Worksheets[imap.Item2].Cells[imap.Item3].Data.ToString());
+                    }
                 }
                 else
                 {
@@ -724,8 +732,16 @@ namespace DWSIM.UnitOperations
                 var omap = OutputMaps[index];
                 if (omap.Item1 == "S")
                 {
-                    var grid = (ReoGridControl)FlowSheet.GetSpreadsheetObject();
-                    grid.Worksheets[omap.Item2].Cells[omap.Item3].Data = value;
+                    if (GlobalSettings.Settings.OldUI)
+                    {
+                        var grid = (cui.ReoGridControl)FlowSheet.GetSpreadsheetObject();
+                        grid.Worksheets[omap.Item2].Cells[omap.Item3].Data = value;
+                    }
+                    else
+                    {
+                        var grid = (cpui.ReoGridControl)FlowSheet.GetSpreadsheetObject();
+                        grid.Worksheets[omap.Item2].Cells[omap.Item3].Data = value;
+                    }
                 }
                 else
                 {
