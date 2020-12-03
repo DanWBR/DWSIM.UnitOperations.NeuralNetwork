@@ -21,5 +21,10 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Editors
         {
             Close();
         }
+
+        private void FormAbout_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
