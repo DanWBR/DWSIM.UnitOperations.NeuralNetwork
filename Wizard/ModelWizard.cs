@@ -202,7 +202,7 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
             var dl = c.GetDefaultContainer();
             dl.Width = Width;
 
-            var ReoGridControl = new ReoGridFullControl() { Size = new Size(Width, Height) };
+            var ReoGridControl = new ReoGridFullControl(false) { Size = new Size(Width, Height) };
             ReoGridControl.GridControl.bottomPanel.Visible = false;
             var stacks = ReoGridControl.Children.Where(x => x is StackLayout).ToList();
             foreach (var stack in stacks)
@@ -675,7 +675,7 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
                 MinorGridlineStyle = OxyPlot.LineStyle.Dot,
                 Position = OxyPlot.Axes.AxisPosition.Bottom,
                 FontSize = 10,
-                Title = "Data Row",
+                Title = "Input Value (Scaled)",
                 Key = "x",
             });
             plot.Model.Axes.Add(new OxyPlot.Axes.LinearAxis()
@@ -684,7 +684,7 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
                 MinorGridlineStyle = OxyPlot.LineStyle.Dot,
                 Position = OxyPlot.Axes.AxisPosition.Left,
                 FontSize = 10,
-                Title = "Output Vars"
+                Title = "Predicted Value (Scaled)",
             });
             plot.Model.LegendFontSize = 11;
             plot.Model.LegendPlacement = OxyPlot.LegendPlacement.Outside;
@@ -706,7 +706,7 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
                 MinorGridlineStyle = OxyPlot.LineStyle.Dot,
                 Position = OxyPlot.Axes.AxisPosition.Bottom,
                 FontSize = 10,
-                Title = "Data Row",
+                Title = "Input Value (Scaled)",
                 Key = "x",
             });
             plot2.Model.Axes.Add(new OxyPlot.Axes.LinearAxis()
@@ -715,7 +715,7 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
                 MinorGridlineStyle = OxyPlot.LineStyle.Dot,
                 Position = OxyPlot.Axes.AxisPosition.Left,
                 FontSize = 10,
-                Title = "Output Vars"
+                Title = "Predicted Value (Scaled)"
             });
             plot2.Model.LegendFontSize = 11;
             plot2.Model.LegendPlacement = OxyPlot.LegendPlacement.Outside;
@@ -725,66 +725,63 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
             plot2.Model.Title = "Testing Dataset";
             plot2.Width = 380;
 
+            var minscale = CurrentModel.Parameters.MinScale;
+            var maxscale = CurrentModel.Parameters.MaxScale;
+
             // training plot
 
-            var xseries = new List<double>();
-            for (var j = 0; j < CurrentModel.x_train_unscaled.shape[0]; j++)
-            {
-                xseries.Add(j);
-            }
-
+            plot.Model.AddLineSeries(new double[] { minscale, maxscale }, new double[] { minscale, maxscale }, OxyColors.Black);
             for (var i = 0; i < CurrentModel.y_train_unscaled.shape[1]; i++)
             {
-                var yseries = new List<float>();
+                var xseries = new List<float>();
                 for (var j = 0; j < CurrentModel.y_train_unscaled.shape[0]; j++)
                 {
-                    yseries.Add(CurrentModel.y_train_unscaled[j][i]);
+                    xseries.Add(CurrentModel.y_train_unscaled[j][i]);
                 }
-                plot.Model.AddScatterSeries(xseries, yseries.Select(x => (double)x).ToList());
-                plot.Model.Series.Last().Title = CurrentModel.Parameters.Labels_Outputs[i];
-                ((ScatterSeries)plot.Model.Series.Last()).MarkerSize = 3.0;
-                ((ScatterSeries)plot.Model.Series.Last()).MarkerType = MarkerType.Circle;
-            }
-
-            for (var i = 0; i < CurrentModel.yp_train_unscaled.shape[1]; i++)
-            {
                 var yseries = new List<float>();
                 for (var j = 0; j < CurrentModel.yp_train_unscaled.shape[0]; j++)
                 {
                     yseries.Add(CurrentModel.yp_train_unscaled[j][i]);
                 }
-                plot.Model.AddLineSeries(xseries, yseries.Select(x => (double)x).ToList(), CurrentModel.Parameters.Labels_Outputs[i] + " (predicted)");
+                var min = xseries.Min();
+                var max = xseries.Max();
+                var xseries2 = xseries.Select(x => (double)x).ToList();
+                xseries2 = xseries2.Select(x => Utils.Scale(x, min, max, minscale, maxscale)).ToList();
+                var yseries2 = yseries.Select(x => (double)x).ToList();
+                yseries2 = yseries2.Select(y => Utils.Scale(y, min, max, minscale, maxscale)).ToList();
+                plot.Model.AddScatterSeries(xseries2, yseries2);
+                plot.Model.Series.Last().Title = CurrentModel.Parameters.Labels_Outputs[i];
+                ((ScatterSeries)plot.Model.Series.Last()).MarkerSize = 3.0;
+                ((ScatterSeries)plot.Model.Series.Last()).MarkerType = MarkerType.Circle;
+                ((ScatterSeries)plot.Model.Series.Last()).Title = CurrentModel.Parameters.Labels_Outputs[i];
             }
 
             // testing plot
 
-            var xseries2 = new List<double>();
-            for (var j = 0; j < CurrentModel.x_test_unscaled.shape[0]; j++)
-            {
-                xseries2.Add(j);
-            }
-
+            plot2.Model.AddLineSeries(new double[] { minscale, maxscale }, new double[] { minscale, maxscale }, OxyColors.Black);
             for (var i = 0; i < CurrentModel.y_test_unscaled.shape[1]; i++)
             {
-                var yseries = new List<float>();
+                var xseries = new List<float>();
                 for (var j = 0; j < CurrentModel.y_test_unscaled.shape[0]; j++)
                 {
-                    yseries.Add(CurrentModel.y_test_unscaled[j][i]);
+                    xseries.Add(CurrentModel.y_test_unscaled[j][i]);
                 }
-                plot2.Model.AddScatterSeries(xseries2, yseries.Select(x => (double)x).ToList());
-                plot2.Model.Series.Last().Title = CurrentModel.Parameters.Labels_Outputs[i];
-                ((ScatterSeries)plot2.Model.Series.Last()).MarkerSize = 3.0;
-                ((ScatterSeries)plot2.Model.Series.Last()).MarkerType = MarkerType.Circle;
-            }
-
-            for (var i = 0; i < CurrentModel.yp_test_unscaled.shape[1]; i++)
-            {
                 var yseries = new List<float>();
                 for (var j = 0; j < CurrentModel.yp_test_unscaled.shape[0]; j++)
                 {
                     yseries.Add(CurrentModel.yp_test_unscaled[j][i]);
                 }
-                plot2.Model.AddLineSeries(xseries2, yseries.Select(x => (double)x).ToList(), CurrentModel.Parameters.Labels_Outputs[i] + " (predicted)");
+                var min = xseries.Min();
+                var max = xseries.Max();
+                var xseries2 = xseries.Select(x => (double)x).ToList();
+                xseries2 = xseries2.Select(x => Utils.Scale(x, min, max, minscale, maxscale)).ToList();
+                var yseries2 = yseries.Select(x => (double)x).ToList();
+                yseries2 = yseries2.Select(y => Utils.Scale(y, min, max, minscale, maxscale)).ToList();
+                plot2.Model.AddScatterSeries(xseries2, yseries2);
+                plot2.Model.Series.Last().Title = CurrentModel.Parameters.Labels_Outputs[i];
+                ((ScatterSeries)plot2.Model.Series.Last()).MarkerSize = 3.0;
+                ((ScatterSeries)plot2.Model.Series.Last()).MarkerType = MarkerType.Circle;
+                ((ScatterSeries)plot2.Model.Series.Last()).Title = CurrentModel.Parameters.Labels_Outputs[i];
             }
 
             plot.Model.InvalidatePlot(true);
