@@ -700,20 +700,33 @@ namespace DWSIM.UnitOperations
                 }
                 else
                 {
-                    var port = int.Parse(imap.Item1) - 1;
-                    var propID = imap.Item2;
-                    var units = imap.Item3;
-                    var objID = GraphicObject.InputConnectors[port].AttachedConnector.AttachedFrom.Name;
-                    if (GraphicObject.OutputConnectors[port].IsAttached)
+                    var pint = 0;
+                    if (int.TryParse(imap.Item1, out pint))
                     {
-                        return (float)FlowSheet.SimulationObjects[objID].GetPropertyValue(propID).ToString().ToDoubleFromCurrent().ConvertFromSI(units);
+                        var port = int.Parse(imap.Item1) - 1;
+                        var propID = imap.Item2;
+                        var units = imap.Item3;
+                        var objID = GraphicObject.InputConnectors[port].AttachedConnector.AttachedFrom.Name;
+                        if (GraphicObject.OutputConnectors[port].IsAttached)
+                        {
+                            return (float)FlowSheet.SimulationObjects[objID].GetPropertyValue(propID).ToString().ToDoubleFromCurrent().ConvertFromSI(units);
+                        }
+                        else
+                        {
+                            FlowSheet.ShowMessage(String.Format(GraphicObject.Tag + ": could not get value of input variable {0}. {1}",
+                            Model.Parameters.Labels_Outputs[index],
+                            "Variable is not mapped to a valid flowsheet object/property."), IFlowsheet.MessageType.Warning);
+                            return float.NaN;
+                        }
                     }
-                    else
+                    else if (imap.Item1 == "Self")
                     {
-                        FlowSheet.ShowMessage(String.Format(GraphicObject.Tag + ": could not get value of input variable {0}. {1}",
-                        Model.Parameters.Labels_Outputs[index],
-                        "Variable is not mapped to a valid flowsheet object/property."), IFlowsheet.MessageType.Warning);
-                        return float.NaN;
+                        var propID = imap.Item2;
+                        var units = imap.Item3;
+                        return (float)GetPropertyValue(propID).ToString().ToDoubleFromCurrent().ConvertFromSI(units);
+                    }
+                    else {
+                        return 0.0f;
                     }
                 }
             }
@@ -745,19 +758,30 @@ namespace DWSIM.UnitOperations
                 }
                 else
                 {
-                    var port = int.Parse(omap.Item1) - 1;
-                    var propID = omap.Item2;
-                    var units = omap.Item3;
-                    if (GraphicObject.OutputConnectors[port].IsAttached)
+                    if (omap.Item1 == "") return;
+                    var pint = 0;
+                    if (int.TryParse(omap.Item1, out pint))
                     {
-                        var objID = GraphicObject.OutputConnectors[port].AttachedConnector.AttachedTo.Name;
-                        FlowSheet.SimulationObjects[objID].SetPropertyValue(propID, ((double)value).ConvertToSI(units));
+                        var port = int.Parse(omap.Item1) - 1;
+                        var propID = omap.Item2;
+                        var units = omap.Item3;
+                        if (GraphicObject.OutputConnectors[port].IsAttached)
+                        {
+                            var objID = GraphicObject.OutputConnectors[port].AttachedConnector.AttachedTo.Name;
+                            FlowSheet.SimulationObjects[objID].SetPropertyValue(propID, ((double)value).ConvertToSI(units));
+                        }
+                        else
+                        {
+                            FlowSheet.ShowMessage(String.Format(GraphicObject.Tag + ": could not set output variable {0}={1}. {2}",
+                            Model.Parameters.Labels_Outputs[index],
+                            value.ToString(), "Variable is not mapped to a valid flowsheet object/property."), IFlowsheet.MessageType.Warning);
+                        }
                     }
-                    else
+                    else if (omap.Item1 == "Self")
                     {
-                        FlowSheet.ShowMessage(String.Format(GraphicObject.Tag + ": could not set output variable {0}={1}. {2}",
-                        Model.Parameters.Labels_Outputs[index],
-                        value.ToString(), "Variable is not mapped to a valid flowsheet object/property."), IFlowsheet.MessageType.Warning);
+                        var propID = omap.Item2;
+                        var units = omap.Item3;
+                        SetPropertyValue(propID, ((double)value).ConvertToSI(units));
                     }
                 }
             }

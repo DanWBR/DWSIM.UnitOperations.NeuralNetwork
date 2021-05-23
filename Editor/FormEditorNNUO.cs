@@ -25,12 +25,15 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Editors
 
         string nf;
 
-        string[] props1, props2;
+        Dictionary<string, string> propsdict;
+
+        string[] sheets;
 
         public FormEditorNNUO()
         {
             InitializeComponent();
             ShowHint = (WeifenLuo.WinFormsUI.Docking.DockState)GlobalSettings.Settings.DefaultEditFormLocation;
+            propsdict = new Dictionary<string, string>();
         }
 
         private void FormEditorNNUO_Load(object sender, EventArgs e)
@@ -115,61 +118,21 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Editors
                 i++;
             }
 
-            var cbProps1 = new DataGridViewComboBoxCell();
-            var cbProps2 = new DataGridViewComboBoxCell();
-
-            cbProps1.Items.Add("");
-
-            var msprops1 = new MaterialStream("", "", SimObject.FlowSheet, null).GetProperties(Interfaces.Enums.PropertyType.ALL);
-            var esprops1 = new EnergyStream().GetProperties(Interfaces.Enums.PropertyType.ALL);
-
-            cbProps1.Items.AddRange(msprops1.Select(x => SimObject.FlowSheet.GetTranslatedString(x)).ToArray());
-            cbProps1.Items.AddRange(esprops1.Select(x => SimObject.FlowSheet.GetTranslatedString(x)).ToArray());
-
-            cbProps2.Items.Add("");
-
-            var msprops2 = new MaterialStream("", "", SimObject.FlowSheet, null).GetProperties(Interfaces.Enums.PropertyType.WR);
-
-            cbProps2.Items.AddRange(msprops2.Select(x => SimObject.FlowSheet.GetTranslatedString(x)).ToArray());
-            cbProps2.Items.AddRange(esprops1.Select(x => SimObject.FlowSheet.GetTranslatedString(x)).ToArray());
-
-            var p1 = new List<string>();
-            p1.Add("");
-            p1.AddRange(msprops1);
-            p1.AddRange(esprops1);
-
-            var p2 = new List<string>();
-            p2.Add("");
-            p2.AddRange(msprops2);
-            p2.AddRange(esprops1);
-
             if (GlobalSettings.Settings.OldUI)
             {
                 var grid = (cui.ReoGridControl)SimObject.FlowSheet.GetSpreadsheetObject();
-                var sheets = grid.Worksheets.Select(x => x.Name).ToArray();
-                cbProps1.Items.AddRange(sheets);
-                cbProps2.Items.AddRange(sheets);
-                p1.AddRange(sheets);
-                p2.AddRange(sheets);
+                sheets = grid.Worksheets.Select(x => x.Name).ToArray();
             }
             else
             {
                 var grid = (cpui.ReoGridControl)SimObject.FlowSheet.GetSpreadsheetObject();
-                var sheets = grid.Worksheets.Select(x => x.Name).ToArray();
-                p1.AddRange(sheets);
-                p2.AddRange(sheets);
+                sheets = grid.Worksheets.Select(x => x.Name).ToArray();
             }
-
-            props1 = p1.ToArray();
-            props2 = p2.ToArray();
-
-            ((DataGridViewComboBoxColumn)gridInputMaps.Columns[2]).CellTemplate = cbProps1;
-            ((DataGridViewComboBoxColumn)gridOutputMaps.Columns[2]).CellTemplate = cbProps2;
 
             var cbPorts = new DataGridViewComboBoxCell();
 
             cbPorts.Items.Add("");
-            cbPorts.Items.AddRange(new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "S" });
+            cbPorts.Items.AddRange(new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "S", "Self" });
 
             ((DataGridViewComboBoxColumn)gridInputMaps.Columns[1]).CellTemplate = cbPorts;
             ((DataGridViewComboBoxColumn)gridOutputMaps.Columns[1]).CellTemplate = cbPorts;
@@ -179,13 +142,63 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Editors
             i = 0;
             foreach (var item in SimObject.InputMaps)
             {
-                if (props1.Contains(item.Item2))
+                gridInputMaps.Rows.Add(SimObject.Model.Parameters.Labels[i], item.Item1, "", item.Item3);
+                var pint = 0;
+                if (item.Item1 != "")
                 {
-                    gridInputMaps.Rows.Add(SimObject.Model.Parameters.Labels[i], item.Item1, SimObject.FlowSheet.GetTranslatedString(item.Item2), item.Item3);
-                }
-                else
-                {
-                    gridInputMaps.Rows.Add(SimObject.Model.Parameters.Labels[i], item.Item1, "", item.Item3);
+                    if (int.TryParse(item.Item1, out pint))
+                    {
+                        var portobj = SimObject.GraphicObject.InputConnectors[pint - 1];
+                        if (portobj.IsAttached)
+                        {
+                            var stream = portobj.AttachedConnector.AttachedFrom;
+                            var cbcell = (DataGridViewComboBoxCell)gridInputMaps.Rows[gridInputMaps.Rows.Count - 1].Cells[2];
+                            cbcell.Items.Clear();
+                            cbcell.Items.Add("");
+                            var props = SimObject.FlowSheet.SimulationObjects[stream.Name].GetProperties(Interfaces.Enums.PropertyType.ALL);
+                            foreach (var prop in props)
+                            {
+                                if (!propsdict.ContainsKey(SimObject.FlowSheet.GetTranslatedString(prop)))
+                                    propsdict.Add(SimObject.FlowSheet.GetTranslatedString(prop), prop);
+                                cbcell.Items.Add(SimObject.FlowSheet.GetTranslatedString(prop));
+                            }
+                            try
+                            {
+                                cbcell.Value = SimObject.FlowSheet.GetTranslatedString(item.Item2);
+                            }
+                            catch { }
+                        }
+                    }
+                    else if (item.Item1 == "S")
+                    {
+                        var cbcell = (DataGridViewComboBoxCell)gridInputMaps.Rows[gridInputMaps.Rows.Count - 1].Cells[2];
+                        cbcell.Items.Clear();
+                        cbcell.Items.Add("");
+                        cbcell.Items.AddRange(sheets);
+                        try
+                        {
+                            cbcell.Value = SimObject.FlowSheet.GetTranslatedString(item.Item2);
+                        }
+                        catch { }
+                    }
+                    else if (item.Item1 == "Self")
+                    {
+                        var cbcell = (DataGridViewComboBoxCell)gridInputMaps.Rows[gridInputMaps.Rows.Count - 1].Cells[2];
+                        cbcell.Items.Clear();
+                        cbcell.Items.Add("");
+                        var props = SimObject.GetProperties(Interfaces.Enums.PropertyType.ALL);
+                        foreach (var prop in props)
+                        {
+                            if (!propsdict.ContainsKey(SimObject.FlowSheet.GetTranslatedString(prop)))
+                                propsdict.Add(SimObject.FlowSheet.GetTranslatedString(prop), prop);
+                            cbcell.Items.Add(SimObject.FlowSheet.GetTranslatedString(prop));
+                        }
+                        try
+                        {
+                            cbcell.Value = SimObject.FlowSheet.GetTranslatedString(item.Item2);
+                        }
+                        catch { }
+                    }
                 }
                 i += 1;
             }
@@ -195,13 +208,63 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Editors
             i = 0;
             foreach (var item in SimObject.OutputMaps)
             {
-                if (props1.Contains(item.Item2))
+                gridOutputMaps.Rows.Add(SimObject.Model.Parameters.Labels_Outputs[i], item.Item1, "", item.Item3);
+                var pint = 0;
+                if (item.Item1 != "")
                 {
-                    gridOutputMaps.Rows.Add(SimObject.Model.Parameters.Labels_Outputs[i], item.Item1, SimObject.FlowSheet.GetTranslatedString(item.Item2), item.Item3);
-                }
-                else
-                {
-                    gridOutputMaps.Rows.Add(SimObject.Model.Parameters.Labels_Outputs[i], item.Item1, "", item.Item3);
+                    if (int.TryParse(item.Item1, out pint))
+                    {
+                        var portobj = SimObject.GraphicObject.OutputConnectors[pint - 1];
+                        if (portobj.IsAttached)
+                        {
+                            var stream = portobj.AttachedConnector.AttachedTo;
+                            var cbcell = (DataGridViewComboBoxCell)gridOutputMaps.Rows[gridOutputMaps.Rows.Count - 1].Cells[2];
+                            cbcell.Items.Clear();
+                            cbcell.Items.Add("");
+                            var props = SimObject.FlowSheet.SimulationObjects[stream.Name].GetProperties(Interfaces.Enums.PropertyType.WR);
+                            foreach (var prop in props)
+                            {
+                                if (!propsdict.ContainsKey(SimObject.FlowSheet.GetTranslatedString(prop)))
+                                    propsdict.Add(SimObject.FlowSheet.GetTranslatedString(prop), prop);
+                                cbcell.Items.Add(SimObject.FlowSheet.GetTranslatedString(prop));
+                            }
+                            try
+                            {
+                                cbcell.Value = SimObject.FlowSheet.GetTranslatedString(item.Item2);
+                            }
+                            catch { }
+                        }
+                    }
+                    else if (item.Item1 == "S")
+                    {
+                        var cbcell = (DataGridViewComboBoxCell)gridOutputMaps.Rows[gridOutputMaps.Rows.Count - 1].Cells[2];
+                        cbcell.Items.Clear();
+                        cbcell.Items.Add("");
+                        cbcell.Items.AddRange(sheets);
+                        try
+                        {
+                            cbcell.Value = SimObject.FlowSheet.GetTranslatedString(item.Item2);
+                        }
+                        catch { }
+                    }
+                    else if (item.Item1 == "Self")
+                    {
+                        var cbcell = (DataGridViewComboBoxCell)gridOutputMaps.Rows[gridOutputMaps.Rows.Count - 1].Cells[2];
+                        cbcell.Items.Clear();
+                        cbcell.Items.Add("");
+                        var props = SimObject.GetProperties(Interfaces.Enums.PropertyType.WR);
+                        foreach (var prop in props)
+                        {
+                            if (!propsdict.ContainsKey(SimObject.FlowSheet.GetTranslatedString(prop)))
+                                propsdict.Add(SimObject.FlowSheet.GetTranslatedString(prop), prop);
+                            cbcell.Items.Add(SimObject.FlowSheet.GetTranslatedString(prop));
+                        }
+                        try
+                        {
+                            cbcell.Value = SimObject.FlowSheet.GetTranslatedString(item.Item2);
+                        }
+                        catch { }
+                    }
                 }
                 i += 1;
             }
@@ -432,12 +495,63 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Editors
         {
             if (Loaded)
             {
-                var value = gridInputMaps.Rows[e.RowIndex].Cells[2].Value.ToString();
-                var units = gridInputMaps.Rows[e.RowIndex].Cells[3].Value.ToString();
-                var index = ((DataGridViewComboBoxCell)gridInputMaps.Rows[e.RowIndex].Cells[2]).Items.IndexOf(value);
                 var port = gridInputMaps.Rows[e.RowIndex].Cells[1].Value.ToString();
-                SimObject.InputMaps[e.RowIndex] = new Tuple<string, string, string, string, string>(port, props1[index], units, "", "");
-                UpdateInfo();
+                switch (e.ColumnIndex)
+                {
+                    case 1:
+                        if (port != "")
+                        {
+                            var pint = 0;
+                            if (int.TryParse(port, out pint))
+                            {
+                                var portobj = SimObject.GraphicObject.InputConnectors[pint - 1];
+                                if (portobj.IsAttached)
+                                {
+                                    var stream = portobj.AttachedConnector.AttachedFrom;
+                                    var cbcell = (DataGridViewComboBoxCell)gridInputMaps.Rows[e.RowIndex].Cells[2];
+                                    cbcell.Items.Clear();
+                                    cbcell.Items.Add("");
+                                    var props = SimObject.FlowSheet.SimulationObjects[stream.Name].GetProperties(Interfaces.Enums.PropertyType.ALL);
+                                    foreach (var prop in props)
+                                    {
+                                        if (!propsdict.ContainsKey(SimObject.FlowSheet.GetTranslatedString(prop)))
+                                            propsdict.Add(SimObject.FlowSheet.GetTranslatedString(prop), prop);
+                                        cbcell.Items.Add(SimObject.FlowSheet.GetTranslatedString(prop));
+                                    }
+                                    cbcell.Value = "";
+                                }
+                            }
+                            else if (port == "S")
+                            {
+                                var cbcell = (DataGridViewComboBoxCell)gridInputMaps.Rows[gridInputMaps.Rows.Count - 1].Cells[2];
+                                cbcell.Items.Clear();
+                                cbcell.Items.Add("");
+                                cbcell.Items.AddRange(sheets);
+                                cbcell.Value = "";
+                            }
+                            else if (port == "Self")
+                            {
+                                var cbcell = (DataGridViewComboBoxCell)gridInputMaps.Rows[gridInputMaps.Rows.Count - 1].Cells[2];
+                                cbcell.Items.Clear();
+                                cbcell.Items.Add("");
+                                var props = SimObject.GetProperties(Interfaces.Enums.PropertyType.ALL);
+                                foreach (var prop in props)
+                                {
+                                    if (!propsdict.ContainsKey(SimObject.FlowSheet.GetTranslatedString(prop)))
+                                        propsdict.Add(SimObject.FlowSheet.GetTranslatedString(prop), prop);
+                                    cbcell.Items.Add(SimObject.FlowSheet.GetTranslatedString(prop));
+                                }
+                                cbcell.Value = "";
+                            }
+                        }
+                        break;
+                    default:
+                        var value = gridInputMaps.Rows[e.RowIndex].Cells[2].Value.ToString();
+                        var units = gridInputMaps.Rows[e.RowIndex].Cells[3].Value.ToString();
+                        SimObject.InputMaps[e.RowIndex] = new Tuple<string, string, string, string, string>(port, propsdict[value], units, "", "");
+                        UpdateInfo();
+                        break;
+                }
             }
         }
 
@@ -445,12 +559,66 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Editors
         {
             if (Loaded)
             {
-                var value = gridOutputMaps.Rows[e.RowIndex].Cells[2].Value.ToString();
-                var units = gridOutputMaps.Rows[e.RowIndex].Cells[3].Value.ToString();
-                var index = ((DataGridViewComboBoxCell)gridOutputMaps.Rows[e.RowIndex].Cells[2]).Items.IndexOf(value);
                 var port = gridOutputMaps.Rows[e.RowIndex].Cells[1].Value.ToString();
-                SimObject.OutputMaps[e.RowIndex] = new Tuple<string, string, string, string, string>(port, props2[index], units, "", "");
-                UpdateInfo();
+                switch (e.ColumnIndex)
+                {
+                    case 1:
+                        if (port != "")
+                        {
+                            var pint = 0;
+                            if (int.TryParse(port, out pint))
+                            {
+                                var portobj = SimObject.GraphicObject.OutputConnectors[pint - 1];
+                                if (portobj.IsAttached)
+                                {
+                                    var stream = portobj.AttachedConnector.AttachedTo;
+                                    var cbcell = (DataGridViewComboBoxCell)gridOutputMaps.Rows[e.RowIndex].Cells[2];
+                                    cbcell.Items.Clear();
+                                    cbcell.Items.Add("");
+                                    var props = SimObject.FlowSheet.SimulationObjects[stream.Name].GetProperties(Interfaces.Enums.PropertyType.WR);
+                                    foreach (var prop in props)
+                                    {
+                                        if (!propsdict.ContainsKey(SimObject.FlowSheet.GetTranslatedString(prop)))
+                                            propsdict.Add(SimObject.FlowSheet.GetTranslatedString(prop), prop);
+                                        cbcell.Items.Add(SimObject.FlowSheet.GetTranslatedString(prop));
+                                    }
+                                    //cbcell.Items.AddRange(sheets);
+                                    cbcell.Value = "";
+                                }
+                            }
+                            else if (port == "S")
+                            {
+                                var cbcell = (DataGridViewComboBoxCell)gridOutputMaps.Rows[gridOutputMaps.Rows.Count - 1].Cells[2];
+                                cbcell.Items.Clear();
+                                cbcell.Items.Add("");
+                                cbcell.Items.AddRange(sheets);
+                                cbcell.Value = "";
+                            }
+                            else if (port == "Self")
+                            {
+                                var cbcell = (DataGridViewComboBoxCell)gridOutputMaps.Rows[gridOutputMaps.Rows.Count - 1].Cells[2];
+                                cbcell.Items.Clear();
+                                cbcell.Items.Add("");
+                                var props = SimObject.GetProperties(Interfaces.Enums.PropertyType.WR);
+                                foreach (var prop in props)
+                                {
+                                    if (!propsdict.ContainsKey(SimObject.FlowSheet.GetTranslatedString(prop)))
+                                        propsdict.Add(SimObject.FlowSheet.GetTranslatedString(prop), prop);
+                                    cbcell.Items.Add(SimObject.FlowSheet.GetTranslatedString(prop));
+                                }
+                                cbcell.Value = "";
+                            }
+                        }
+                        break;
+                    default:
+                        var value = gridOutputMaps.Rows[e.RowIndex].Cells[2].Value.ToString();
+                        var units = gridOutputMaps.Rows[e.RowIndex].Cells[3].Value.ToString();
+                        var index = ((DataGridViewComboBoxCell)gridOutputMaps.Rows[e.RowIndex].Cells[2]).Items.IndexOf(value);
+                        SimObject.OutputMaps[e.RowIndex] = new Tuple<string, string, string, string, string>(port, propsdict[value], units, "", "");
+                        UpdateInfo();
+                        break;
+                }
+
             }
         }
 
