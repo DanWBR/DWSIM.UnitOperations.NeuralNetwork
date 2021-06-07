@@ -707,7 +707,7 @@ namespace DWSIM.UnitOperations
                         var propID = imap.Item2;
                         var units = imap.Item3;
                         var objID = GraphicObject.InputConnectors[port].AttachedConnector.AttachedFrom.Name;
-                        if (GraphicObject.OutputConnectors[port].IsAttached)
+                        if (GraphicObject.InputConnectors[port].IsAttached)
                         {
                             return (float)FlowSheet.SimulationObjects[objID].GetPropertyValue(propID).ToString().ToDoubleFromCurrent().ConvertFromSI(units);
                         }
