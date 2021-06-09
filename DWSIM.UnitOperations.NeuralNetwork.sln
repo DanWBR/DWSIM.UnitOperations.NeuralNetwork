@@ -8,13 +8,19 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		DebugWin|Any CPU = DebugWin|Any CPU
 		Release|Any CPU = Release|Any CPU
+		ReleaseWin|Any CPU = ReleaseWin|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{949A068C-9707-4CA3-81C5-F80EE49BD3D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{949A068C-9707-4CA3-81C5-F80EE49BD3D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{949A068C-9707-4CA3-81C5-F80EE49BD3D8}.DebugWin|Any CPU.ActiveCfg = DebugWin|Any CPU
+		{949A068C-9707-4CA3-81C5-F80EE49BD3D8}.DebugWin|Any CPU.Build.0 = DebugWin|Any CPU
 		{949A068C-9707-4CA3-81C5-F80EE49BD3D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{949A068C-9707-4CA3-81C5-F80EE49BD3D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{949A068C-9707-4CA3-81C5-F80EE49BD3D8}.ReleaseWin|Any CPU.ActiveCfg = ReleaseWin|Any CPU
+		{949A068C-9707-4CA3-81C5-F80EE49BD3D8}.ReleaseWin|Any CPU.Build.0 = ReleaseWin|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

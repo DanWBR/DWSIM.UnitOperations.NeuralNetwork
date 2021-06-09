@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DWSIM.Interfaces;
 using Eto.Forms;
+using Eto.WinForms;
 using c = DWSIM.UI.Shared.Common;
 
 using DWSIM.UI.Shared;
@@ -202,6 +203,109 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
             var dl = c.GetDefaultContainer();
             dl.Width = Width;
 
+#if WINDOWS
+
+            var ReoGridControl = new unvell.ReoGrid.ReoGridControl();
+            var ReoGridControlProxy = ReoGridControl.ToEto();
+            ReoGridControlProxy.Size = new Size(Width, Height);
+            ReoGridControl.SheetTabVisible = false;
+
+            dl.CreateAndAddControlRow(ReoGridControlProxy);
+
+            page.nextAction = () =>
+            {
+
+                var sheet = ReoGridControl.CurrentWorksheet;
+                int firstcol, lastcol, firstrow, lastrow;
+                firstcol = sheet.SelectionRange.Col;
+                lastcol = sheet.SelectionRange.EndCol;
+                firstrow = sheet.SelectionRange.Row;
+                lastrow = sheet.SelectionRange.EndRow;
+                double d;
+                bool hasheaders = !Double.TryParse(sheet.Cells[firstrow, firstcol].Data.ToString(), out d);
+
+                CurrentModel.Parameters.Labels = new List<string>();
+                CurrentModel.Data = new List<List<double>>();
+                if (hasheaders)
+                {
+                    for (int i = firstcol; i <= lastcol; i++)
+                    {
+                        CurrentModel.Parameters.Labels.Add(sheet.Cells[firstrow, i].Data.ToString());
+                    }
+                    int counter = 0;
+                    for (int i = firstrow + 1; i <= lastrow; i++)
+                    {
+                        CurrentModel.Data.Add(new List<double>());
+                        for (int j = firstcol; j <= lastcol; j++)
+                        {
+                            CurrentModel.Data[counter].Add(sheet.Cells[i, j].Data.ToString().ToDoubleFromCurrent());
+                        }
+                        counter += 1;
+                    }
+                }
+                else
+                {
+                    for (int i = firstcol; i <= lastcol; i++)
+                    {
+                        CurrentModel.Parameters.Labels.Add("Column" + i.ToString());
+                    }
+                    int counter = 0;
+                    for (int i = firstrow; i <= lastrow; i++)
+                    {
+                        CurrentModel.Data.Add(new List<double>());
+                        for (int j = firstcol; j <= lastcol; j++)
+                        {
+                            CurrentModel.Data[counter].Add(sheet.Cells[i, j].Data.ToString().ToDoubleFromCurrent());
+                        }
+                        counter += 1;
+                    }
+                }
+
+                page.Close();
+
+                Application.Instance.Invoke(() => DisplayPage_LabelData());
+
+            };
+
+            page.Init(Width, Height);
+            page.Topmost = false;
+
+            page.ContentContainer.Add(dl);
+
+            page.Show();
+
+            if (File.Exists(CurrentModel.DataSourcePath))
+            {
+                DWSIM.UI.Forms.Forms.LoadingData f = null;
+                f = new DWSIM.UI.Forms.Forms.LoadingData();
+                f.loadingtext.Text = "Loading Data, Please Wait...";
+                f.Title = "Loading Data Source";
+                f.Show();
+                Application.Instance.AsyncInvoke(() =>
+                {
+                    try
+                    {
+                        ReoGridControl.Load(CurrentModel.DataSourcePath);
+                        ReoGridControl.CurrentWorksheet.SetRows(ReoGridControl.CurrentWorksheet.MaxContentRow);
+                        ReoGridControl.CurrentWorksheet.SetCols(ReoGridControl.CurrentWorksheet.MaxContentCol);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.ToString(), "Error reading data source", MessageBoxType.Error);
+                    }
+                    finally
+                    {
+                        f.Close();
+                    }
+                });
+            }
+            else
+            {
+                MessageBox.Show("You didn't select a data source to open. Please go back and try again.", "Error reading data source", MessageBoxType.Error);
+            }
+
+#else
+
             var ReoGridControl = new ReoGridFullControl(false) { Size = new Size(Width, Height) };
             ReoGridControl.GridControl.bottomPanel.Visible = false;
             var stacks = ReoGridControl.Children.Where(x => x is StackLayout).ToList();
@@ -303,6 +407,8 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
             {
                 MessageBox.Show("You didn't select a data source to open. Please go back and try again.", "Error reading data source", MessageBoxType.Error);
             }
+
+#endif
 
         }
 
