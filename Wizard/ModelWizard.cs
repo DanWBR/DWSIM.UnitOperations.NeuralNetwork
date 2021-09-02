@@ -571,7 +571,7 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
                 }
             });
 
-            dl.CreateAndAddTextBoxRow("N0", "Number of Network Layers (Min = 2, Max = 4)", p.NumberOfLayers, (tb, e) =>
+            dl.CreateAndAddTextBoxRow("N0", "Number of Hidden Layers (Min = 2, Max = 4)", p.NumberOfLayers, (tb, e) =>
             {
                 if (tb.Text.IsValidDouble())
                 {
@@ -582,7 +582,7 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
                 }
             });
 
-            dl.CreateAndAddTextBoxRow("N0", "Number of Neurons on First Layer", p.NumberOfNeuronsOnFirstLayer, (tb, e) =>
+            dl.CreateAndAddTextBoxRow("N0", "Number of Neurons on First Hidden Layer", p.NumberOfNeuronsOnFirstLayer, (tb, e) =>
             {
                 if (tb.Text.IsValidDouble())
                 {
