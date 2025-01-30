@@ -380,8 +380,8 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
 
             if (File.Exists(CurrentModel.DataSourcePath))
             {
-                DWSIM.UI.Forms.Forms.LoadingData f = null;
-                f = new DWSIM.UI.Forms.Forms.LoadingData();
+                UI.Forms.Forms.LoadingData f = null;
+                f = new UI.Forms.Forms.LoadingData();
                 f.loadingtext.Text = "Loading Data, Please Wait...";
                 f.Title = "Loading Data Source";
                 f.Show();
