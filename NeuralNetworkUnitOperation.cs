@@ -298,7 +298,7 @@ namespace DWSIM.UnitOperations
 
             c.CreateAndAddEmptySpace();
 
-            var dc = new DocumentControl { Height = 300, DisplayArrows = true };
+            var dc = new DocumentControl { Height = 300 };
             var dp1 = new DocumentPage { Closable = false, Text = "General" };
             var dp2 = new DocumentPage { Closable = false, Text = "Input Mappings" };
             var dp3 = new DocumentPage { Closable = false, Text = "Output Mappings" };
