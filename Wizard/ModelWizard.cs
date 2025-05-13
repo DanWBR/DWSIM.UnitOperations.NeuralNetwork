@@ -275,7 +275,7 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
             page.Init(Width, Height);
             page.Topmost = false;
 
-            page.ContentContainer.Add(dl);
+            page.ContentContainer.Content = dl;
 
             page.Show();
 
