@@ -18,6 +18,7 @@ using DWSIM.UnitOperations.NeuralNetwork.Classes;
 
 using OxyPlot;
 using OxyPlot.Series;
+using DWSIM.ExtensionMethods.Eto;
 
 namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
 {
@@ -110,7 +111,9 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
 
             page1.Init(Width, Height);
             page1.Topmost = false;
-            page1.ContentContainer.Add(scrollable);
+            page1.ContentContainer.Content = scrollable;
+            page1.SetFontAndPadding();
+            page1.Center();
             page1.Show();
 
         }
@@ -169,7 +172,9 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
             page2.Init(Width, Height);
             page2.Topmost = false;
 
-            page2.ContentContainer.Add(scrollable);
+            page2.ContentContainer.Content = scrollable;
+            page2.SetFontAndPadding();
+            page2.Center();
             page2.Show();
 
         }
@@ -374,8 +379,10 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
             page.Init(Width, Height);
             page.Topmost = false;
 
-            page.ContentContainer.Add(dl);
+            page.ContentContainer.Content = dl;
 
+            page.SetFontAndPadding();
+            page.Center();
             page.Show();
 
             if (File.Exists(CurrentModel.DataSourcePath))
@@ -494,8 +501,10 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
 
             var scrollable = new Scrollable { Content = dl, Border = BorderType.None, Size = new Size(Width, Height), ExpandContentHeight = true };
 
-            page.ContentContainer.Add(scrollable);
+            page.ContentContainer.Content = scrollable;
 
+            page.SetFontAndPadding();
+            page.Center();
             page.Show();
 
         }
@@ -627,8 +636,10 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
 
             var scrollable = new Scrollable { Content = dl, Border = BorderType.None, Size = new Size(Width, Height), ExpandContentHeight = true };
 
-            page.ContentContainer.Add(scrollable);
+            page.ContentContainer.Content = scrollable;
 
+            page.SetFontAndPadding();
+            page.Center();
             page.Show();
 
         }
@@ -726,8 +737,10 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
 
             var scrollable = new Scrollable { Content = dl, Border = BorderType.None, Size = new Size(Width, Height), ExpandContentHeight = true };
 
-            page.ContentContainer.Add(scrollable);
+            page.ContentContainer.Content = scrollable;
 
+            page.SetFontAndPadding();
+            page.Center();
             page.Show();
 
         }
@@ -902,8 +915,10 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
 
             var scrollable = new Scrollable { Content = dl, Border = BorderType.None, Size = new Size(Width, Height), ExpandContentHeight = true };
 
-            page.ContentContainer.Add(scrollable);
+            page.ContentContainer.Content = scrollable;
 
+            page.SetFontAndPadding();
+            page.Center();
             page.Show();
 
         }
@@ -1002,8 +1017,10 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
 
             var scrollable = new Scrollable { Content = dl, Border = BorderType.None, Size = new Size(Width, Height), ExpandContentHeight = true };
 
-            page.ContentContainer.Add(scrollable);
+            page.ContentContainer.Content = scrollable;
 
+            page.SetFontAndPadding();
+            page.Center();
             page.Show();
 
         }
@@ -1100,8 +1117,10 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
 
             var scrollable = new Scrollable { Content = dl, Border = BorderType.None, Size = new Size(Width, Height), ExpandContentHeight = true };
 
-            page.ContentContainer.Add(scrollable);
+            page.ContentContainer.Content = scrollable;
 
+            page.SetFontAndPadding();
+            page.Center();
             page.Show();
 
         }
@@ -1197,8 +1216,10 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
 
             var scrollable = new Scrollable { Content = dl, Border = BorderType.None, Size = new Size(Width, Height), ExpandContentHeight = true };
 
-            page.ContentContainer.Add(scrollable);
+            page.ContentContainer.Content = scrollable;
 
+            page.SetFontAndPadding();
+            page.Center();
             page.Show();
 
         }
@@ -1271,8 +1292,10 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
 
             var scrollable = new Scrollable { Content = dl, Border = BorderType.None, Size = new Size(Width, Height), ExpandContentHeight = true };
 
-            page.ContentContainer.Add(scrollable);
+            page.ContentContainer.Content = scrollable;
 
+            page.SetFontAndPadding();
+            page.Center();
             page.Show();
 
         }
@@ -1360,8 +1383,10 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Wizard
 
             var scrollable = new Scrollable { Content = dl, Border = BorderType.None, Size = new Size(Width, Height), ExpandContentHeight = true };
 
-            page.ContentContainer.Add(scrollable);
+            page.ContentContainer.Content = scrollable;
 
+            page.SetFontAndPadding();
+            page.Center();
             page.Show();
 
         }

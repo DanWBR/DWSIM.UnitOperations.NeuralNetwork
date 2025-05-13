@@ -7,8 +7,6 @@ using System.Windows.Forms;
 using DWSIM.ExtensionMethods;
 using DWSIM.Interfaces;
 using DWSIM.Interfaces.Enums.GraphicObjects;
-using DWSIM.Thermodynamics.Streams;
-using DWSIM.UnitOperations.Streams;
 using cpui = DWSIM.CrossPlatform.UI.Controls.ReoGrid;
 using cui = unvell.ReoGrid;
 
@@ -40,6 +38,7 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Editors
         {
             UpdateInfo();
             txtScript.SetEditorStyle("Consolas", 10, false, false);
+            this.ChangeDefaultFont();
         }
 
         public void UpdateInfo()

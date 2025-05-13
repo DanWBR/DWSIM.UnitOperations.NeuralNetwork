@@ -21,7 +21,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\dwsim\DWSIM\bin\x64\Debug\unitops\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -87,6 +87,7 @@
     </Reference>
     <Reference Include="DWSIM.Interfaces">
       <HintPath>..\dwsim\DistPackages\Windows\DWSIM.Interfaces.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DWSIM.MathOps">
       <HintPath>..\dwsim\DistPackages\Windows\DWSIM.MathOps.dll</HintPath>
@@ -142,6 +143,7 @@
     </Reference>
     <Reference Include="Eto.OxyPlot">
       <HintPath>..\dwsim\DistPackages\Windows\Eto.OxyPlot.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Eto.WinForms">
       <HintPath>..\dwsim\DistPackages\Windows\Eto.WinForms.dll</HintPath>
@@ -152,6 +154,7 @@
     </Reference>
     <Reference Include="IronPython">
       <HintPath>..\dwsim\DistPackages\Windows\IronPython.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.Dynamic">
       <HintPath>..\dwsim\DistPackages\Windows\Microsoft.Dynamic.dll</HintPath>
@@ -164,12 +167,14 @@
     <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\dwsim\DistPackages\Windows\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="NumSharp.Lite, Version=0.1.7.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\NumSharp.Lite.0.1.7\lib\netstandard2.0\NumSharp.Lite.dll</HintPath>
     </Reference>
     <Reference Include="OxyPlot">
       <HintPath>..\dwsim\DistPackages\Windows\OxyPlot.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Protobuf.Text, Version=0.4.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\Protobuf.Text.0.4.0\lib\netstandard2.0\Protobuf.Text.dll</HintPath>
@@ -180,6 +185,7 @@
     </Reference>
     <Reference Include="Scintilla.Eto.Shared">
       <HintPath>..\dwsim\DistPackages\Windows\Scintilla.Eto.Shared.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="ScintillaNET">
       <HintPath>..\dwsim\DistPackages\Windows\ScintillaNET.dll</HintPath>
@@ -193,28 +199,32 @@
     <Reference Include="System.Buffers, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Buffers.4.4.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System.IO.Compression.FileSystem">
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Memory.4.5.3\lib\netstandard2.0\System.Memory.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Numerics.Vectors.4.4.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />

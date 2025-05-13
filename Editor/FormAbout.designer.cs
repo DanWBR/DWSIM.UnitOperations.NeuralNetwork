@@ -91,9 +91,9 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(125, 76);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(172, 13);
+            this.label4.Size = new System.Drawing.Size(293, 13);
             this.label4.TabIndex = 5;
-            this.label4.Text = "Copyright (c) 2020 Daniel Medeiros";
+            this.label4.Text = "Copyright (c) 2020-2025 Daniel Wagner Oliveira de Medeiros";
             // 
             // FormAbout
             // 

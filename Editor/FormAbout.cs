@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
+using DWSIM.ExtensionMethods;
 
 namespace DWSIM.UnitOperations.NeuralNetwork.Editors
 {
@@ -24,7 +20,7 @@ namespace DWSIM.UnitOperations.NeuralNetwork.Editors
 
         private void FormAbout_Load(object sender, EventArgs e)
         {
-
+            this.ChangeDefaultFont();
         }
     }
 }
