@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DWSIM.UnitOperations.NeuralNetwork</RootNamespace>
     <AssemblyName>DWSIM.UnitOperations.NeuralNetwork</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
@@ -21,7 +21,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\dwsim\DWSIM\bin\x64\Debug\unitops\</OutputPath>
+    <OutputPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\unitops\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -29,7 +29,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\DWSIM_Private\DistPackages\Windows_Plus\unitops\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -54,145 +54,144 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CapeOpen">
-      <HintPath>..\dwsim\DistPackages\Windows\CapeOpen.dll</HintPath>
+      <HintPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\CapeOpen.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DWSIM.CrossPlatform.UI.Controls.ReoGrid">
-      <HintPath>..\dwsim\DistPackages\Windows\DWSIM.CrossPlatform.UI.Controls.ReoGrid.dll</HintPath>
+      <HintPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\DWSIM.CrossPlatform.UI.Controls.ReoGrid.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DWSIM.Drawing.SkiaSharp">
-      <HintPath>..\dwsim\DistPackages\Windows\DWSIM.Drawing.SkiaSharp.dll</HintPath>
+      <HintPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\DWSIM.Drawing.SkiaSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DWSIM.DrawingTools.Point">
-      <HintPath>..\dwsim\DistPackages\Windows\DWSIM.DrawingTools.Point.dll</HintPath>
+      <HintPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\DWSIM.DrawingTools.Point.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DWSIM.ExtensionMethods">
-      <HintPath>..\dwsim\DistPackages\Windows\DWSIM.ExtensionMethods.dll</HintPath>
+      <HintPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\DWSIM.ExtensionMethods.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DWSIM.ExtensionMethods.Eto">
-      <HintPath>..\dwsim\DistPackages\Windows\DWSIM.ExtensionMethods.Eto.dll</HintPath>
+      <HintPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\DWSIM.ExtensionMethods.Eto.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DWSIM.FlowsheetBase">
-      <HintPath>..\dwsim\DistPackages\Windows\DWSIM.FlowsheetBase.dll</HintPath>
+      <HintPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\DWSIM.FlowsheetBase.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DWSIM.GlobalSettings">
-      <HintPath>..\dwsim\DistPackages\Windows\DWSIM.GlobalSettings.dll</HintPath>
+      <HintPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\DWSIM.GlobalSettings.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DWSIM.Interfaces">
-      <HintPath>..\dwsim\DistPackages\Windows\DWSIM.Interfaces.dll</HintPath>
+      <HintPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\DWSIM.Interfaces.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DWSIM.MathOps">
-      <HintPath>..\dwsim\DistPackages\Windows\DWSIM.MathOps.dll</HintPath>
+      <HintPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\DWSIM.MathOps.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DWSIM.SharedClasses">
-      <HintPath>..\dwsim\DistPackages\Windows\DWSIM.SharedClasses.dll</HintPath>
+      <HintPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\DWSIM.SharedClasses.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DWSIM.Thermodynamics">
-      <HintPath>..\dwsim\DistPackages\Windows\DWSIM.Thermodynamics.dll</HintPath>
+      <HintPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\DWSIM.Thermodynamics.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DWSIM.UI.Desktop.Editors">
-      <HintPath>..\dwsim\DistPackages\Windows\DWSIM.UI.Desktop.Editors.dll</HintPath>
+      <HintPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\DWSIM.UI.Desktop.Editors.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DWSIM.UI.Desktop.Forms">
-      <HintPath>..\dwsim\DistPackages\Windows\DWSIM.UI.Desktop.Forms.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="DWSIM.UI.Desktop.GTK">
-      <HintPath>..\dwsim\DistPackages\Windows\DWSIM.UI.Desktop.GTK.dll</HintPath>
+      <HintPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\DWSIM.UI.Desktop.Forms.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DWSIM.UI.Desktop.Mac">
-      <HintPath>..\dwsim\DistPackages\Windows\DWSIM.UI.Desktop.Mac.dll</HintPath>
+      <HintPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\DWSIM.UI.Desktop.Mac.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DWSIM.UI.Desktop.Shared">
-      <HintPath>..\dwsim\DistPackages\Windows\DWSIM.UI.Desktop.Shared.dll</HintPath>
+      <HintPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\DWSIM.UI.Desktop.Shared.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DWSIM.UI.Desktop.WinForms">
-      <HintPath>..\dwsim\DistPackages\Windows\DWSIM.UI.Desktop.WinForms.dll</HintPath>
+      <HintPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\DWSIM.UI.Desktop.WinForms.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DWSIM.UI.Desktop.WPF">
-      <HintPath>..\dwsim\DistPackages\Windows\DWSIM.UI.Desktop.WPF.dll</HintPath>
+      <HintPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\DWSIM.UI.Desktop.WPF.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DWSIM.UnitOperations">
-      <HintPath>..\dwsim\DistPackages\Windows\DWSIM.UnitOperations.dll</HintPath>
+      <HintPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\DWSIM.UnitOperations.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DWSIM.XMLSerializer">
-      <HintPath>..\dwsim\DistPackages\Windows\DWSIM.XMLSerializer.dll</HintPath>
+      <HintPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\DWSIM.XMLSerializer.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Eto">
-      <HintPath>..\dwsim\DistPackages\Windows\Eto.dll</HintPath>
+      <HintPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\Eto.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Eto.OxyPlot">
-      <HintPath>..\dwsim\DistPackages\Windows\Eto.OxyPlot.dll</HintPath>
+      <HintPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\Eto.OxyPlot.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Eto.WinForms">
-      <HintPath>..\dwsim\DistPackages\Windows\Eto.WinForms.dll</HintPath>
+      <HintPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\Eto.WinForms.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Google.Protobuf, Version=3.11.4.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
       <HintPath>packages\Google.Protobuf.3.11.4\lib\net45\Google.Protobuf.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="IronPython">
-      <HintPath>..\dwsim\DistPackages\Windows\IronPython.dll</HintPath>
+      <HintPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\IronPython.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.Dynamic">
-      <HintPath>..\dwsim\DistPackages\Windows\Microsoft.Dynamic.dll</HintPath>
+      <HintPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\Microsoft.Dynamic.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.Scripting">
-      <HintPath>..\dwsim\DistPackages\Windows\Microsoft.Scripting.dll</HintPath>
+      <HintPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\Microsoft.Scripting.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\dwsim\DistPackages\Windows\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="NumSharp.Lite, Version=0.1.7.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\NumSharp.Lite.0.1.7\lib\netstandard2.0\NumSharp.Lite.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="OxyPlot">
-      <HintPath>..\dwsim\DistPackages\Windows\OxyPlot.dll</HintPath>
+      <HintPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\OxyPlot.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Protobuf.Text, Version=0.4.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\Protobuf.Text.0.4.0\lib\netstandard2.0\Protobuf.Text.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="RichTextBoxExtended">
-      <HintPath>..\dwsim\DistPackages\Windows\RichTextBoxExtended.dll</HintPath>
+      <HintPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\RichTextBoxExtended.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Scintilla.Eto.Shared">
-      <HintPath>..\dwsim\DistPackages\Windows\Scintilla.Eto.Shared.dll</HintPath>
+      <HintPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\Scintilla.Eto.Shared.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="ScintillaNET">
-      <HintPath>..\dwsim\DistPackages\Windows\ScintillaNET.dll</HintPath>
+      <HintPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\ScintillaNET.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="SkiaSharp">
-      <HintPath>..\dwsim\DistPackages\Windows\SkiaSharp.dll</HintPath>
+      <HintPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\SkiaSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -237,11 +236,11 @@
       <HintPath>packages\TensorFlow.NET.0.15.1\lib\netstandard2.0\TensorFlow.NET.dll</HintPath>
     </Reference>
     <Reference Include="unvell.ReoGrid">
-      <HintPath>..\dwsim\DWSIM\References\ReoGrid.WinForms\unvell.ReoGrid.dll</HintPath>
+      <HintPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\unvell.ReoGrid.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="WeifenLuo.WinFormsUI.Docking">
-      <HintPath>..\dwsim\DistPackages\Windows\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+      <HintPath>..\..\DWSIM_Private\DWSIM\bin\x64\Debug\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="WindowsBase" />
